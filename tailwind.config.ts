@@ -42,6 +42,13 @@ export default {
         "accent-alt": {
           DEFAULT: "hsl(var(--accent-alt))",
         },
+        "theme": {
+          primary: "hsl(var(--theme-primary))",
+          accent: "hsl(var(--theme-accent))",
+          "accent-alt": "hsl(var(--theme-accent-alt))",
+          "dark-variant": "hsl(var(--theme-dark-variant))",
+          "light-variant": "hsl(var(--theme-light-variant))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",

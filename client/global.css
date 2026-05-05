@@ -43,6 +43,13 @@
 
     --radius: 0.5rem;
 
+    /* Dynamic theme variables (applied by city selection) */
+    --theme-primary: 210 10% 20%;
+    --theme-accent: 139 68% 43%;
+    --theme-accent-alt: 38 92% 50%;
+    --theme-dark-variant: 139 68% 30%;
+    --theme-light-variant: 139 68% 60%;
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
