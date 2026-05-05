@@ -36,13 +36,13 @@ export const CITY_THEMES: Record<string, CityTheme> = {
     darkVariant: "259 62% 35%",
     lightVariant: "259 62% 65%",
   },
-  "Rupa Rupa": {
-    name: "Rupa Rupa",
+  "Tarapoto": {
+    name: "Tarapoto",
     primary: "210 10% 20%",
-    accent: "24 80% 44%", // Deep orange
-    accentAlt: "18 91% 54%", // Bright orange-red
-    darkVariant: "24 80% 30%",
-    lightVariant: "24 80% 60%",
+    accent: "160 84% 39%", // Tropical emerald green
+    accentAlt: "25 95% 53%", // Warm tropical orange
+    darkVariant: "160 84% 25%", // Darker emerald
+    lightVariant: "160 84% 55%", // Lighter emerald
   },
 };
 

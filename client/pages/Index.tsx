@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { applyThemeToDOM } from "@/lib/cityThemes";
 
-const CITIES = ["Tingo María", "Huánuco", "La Unión", "Rupa Rupa"];
+const CITIES = ["Tingo María", "Huánuco", "La Unión", "Tarapoto"];
 
 const TOURISM_DESTINATIONS = [
   {
