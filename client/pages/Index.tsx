@@ -19,6 +19,13 @@ import { sitiosTuristicos } from "@/lib/turismoData";
 
 const CITIES = ["Tingo María", "Huánuco", "La Unión", "Tarapoto", "Cusco", "Lima"];
 
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
 const TOURISM_DESTINATIONS = [
   {
     id: 1,
@@ -171,8 +178,28 @@ export default function Index() {
   const [selectedCategory, setSelectedCategory] = useState("Restaurantes");
 
   useEffect(() => {
-    applyThemeToDOM(selectedCity);
-  }, [selectedCity]);
+  // 1. Mantener la lógica del tema de Tingo María y otras ciudades
+  applyThemeToDOM(selectedCity);
+
+  // 2. Lógica de Google Analytics
+  const gaId = import.meta.env.VITE_GOOGLE_ANALYTICS_ID;
+  
+  if (gaId && !window.gtag) {
+    // Crear el script de Google Tag Manager
+    const script = document.createElement("script");
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    script.async = true;
+    document.head.appendChild(script);
+
+    // Configurar el dataLayer
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function() {
+      window.dataLayer.push(arguments);
+    };
+    window.gtag('js', new Date());
+    window.gtag('config', gaId);
+  }
+}, [selectedCity]);
 
   const filteredBusinesses = BUSINESSES.filter((b) => b.category === selectedCategory);
 
