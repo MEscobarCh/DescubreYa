@@ -15,6 +15,7 @@ import {
   Zap,
 } from "lucide-react";
 import { applyThemeToDOM } from "@/lib/cityThemes";
+import { sitiosTuristicos } from "@/lib/turismoData";
 
 const CITIES = ["Tingo María", "Huánuco", "La Unión", "Tarapoto", "Cusco", "Lima"];
 
@@ -254,72 +255,75 @@ export default function Index() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {isTourism ? (
-          // Tourism View
-          <section className="space-y-8">
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Mountain className="w-6 h-6 text-[hsl(var(--theme-accent))]" />
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[hsl(var(--theme-primary))]">
-                  Explora {selectedCity}
-                </h2>
+    // Vista de Turismo Dinámica
+    <section className="space-y-8">
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <Mountain className="w-6 h-6 text-[hsl(var(--theme-accent))]" />
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[hsl(var(--theme-primary))]">
+            Explora {selectedCity}
+          </h2>
+        </div>
+        <p className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl">
+          Descubre destinos increíbles, atracciones turísticas y aventuras que no olvidarás.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Ahora mapeamos sobre los datos reales de turismoData.ts */}
+        {sitiosTuristicos.map((sitio) => (
+          <div
+            key={sitio.id}
+            className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white"
+          >
+            {/* Contenedor de Imagen */}
+            <div className="relative h-56 overflow-hidden bg-gray-300">
+              <img
+                src={sitio.imagen}
+                alt={sitio.nombre}
+                className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </div>
+
+            {/* Contenido */}
+            <div className="p-5 sm:p-6">
+              <div className="flex justify-between items-start mb-3">
+                <span className="inline-block px-3 py-1 bg-gradient-to-r from-[hsl(var(--theme-accent))]/20 to-[hsl(var(--theme-accent-alt))]/20 text-[hsl(var(--theme-accent))] text-xs font-bold rounded-full border border-[hsl(var(--theme-accent))]/30">
+                  {sitio.categoria}
+                </span>
+                {/* Nuevo: Badge de precio */}
+                <span className="text-[hsl(var(--theme-primary))] text-xs font-black">
+                  {sitio.precioEntrada}
+                </span>
               </div>
-              <p className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl">
-                Descubre destinos increíbles, atracciones turísticas y aventuras que no olvidarás.
+
+              <h3 className="text-lg sm:text-xl font-black text-[hsl(var(--theme-primary))] mb-2 line-clamp-2">
+                {sitio.nombre}
+              </h3>
+              <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                {sitio.descripcion}
               </p>
+
+              {/* Dificultad */}
+              <div className={`mb-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold ${getDifficultyColor(sitio.dificultad)}`}>
+                <Zap className="w-3 h-3" />
+                {sitio.dificultad}
+              </div>
+
+              {/* Botón de Mapa Dinámico */}
+              <button
+                onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${sitio.coordenadas}`, "_blank")}
+                className="w-full py-3 px-4 rounded-xl font-bold text-white transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 text-sm sm:text-base"
+              >
+                <MapIcon className="w-4 h-4" />
+                Trazar Ruta
+              </button>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {TOURISM_DESTINATIONS.map((destination) => (
-                <div
-                  key={destination.id}
-                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white"
-                >
-                  {/* Image Container */}
-                  <div className="relative h-56 overflow-hidden bg-gray-300">
-                    <img
-                      src={destination.image}
-                      alt={destination.name}
-                      className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
-                    />
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-5 sm:p-6">
-                    {/* Category Badge */}
-                    <div className="mb-3">
-                      <span className="inline-block px-3 py-1 bg-gradient-to-r from-[hsl(var(--theme-accent))]/20 to-[hsl(var(--theme-accent-alt))]/20 text-[hsl(var(--theme-accent))] text-xs font-bold rounded-full border border-[hsl(var(--theme-accent))]/30">
-                        {destination.category}
-                      </span>
-                    </div>
-
-                    <h3 className="text-lg sm:text-xl font-black text-[hsl(var(--theme-primary))] mb-2 line-clamp-2">
-                      {destination.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                      {destination.description}
-                    </p>
-
-                    {/* Difficulty */}
-                    <div className={`mb-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold ${getDifficultyColor(destination.difficulty)}`}>
-                      <Zap className="w-3 h-3" />
-                      {destination.difficulty}
-                    </div>
-
-                    {/* Map Button */}
-                    <button
-                      onClick={() => window.open(destination.mapUrl, "_blank")}
-                      className="w-full py-3 px-4 rounded-xl font-bold text-white transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 text-sm sm:text-base"
-                    >
-                      <MapIcon className="w-4 h-4" />
-                      Trazar Ruta
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          </div>
+        ))}
+      </div>
+    </section>
         ) : (
           // Business View
           <section className="space-y-10">
