@@ -203,6 +203,19 @@ export default function Index() {
 
   const filteredBusinesses = BUSINESSES.filter((b) => b.category === selectedCategory);
 
+  const trackRutaClick = (sitioNombre: string, categoria: string) => {
+    if (window.gtag) {
+      window.gtag('event', 'click_trazar_ruta', {
+        'destination_name': sitioNombre,
+        'category': categoria,
+        'city': selectedCity
+      });
+      console.log("Evento enviado a GA4:", sitioNombre); // Esto te ayudará a ver que funciona en la consola
+    } else {
+      console.warn("Google Analytics no está listo aún.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--theme-bg-gradient-start))] to-[hsl(var(--theme-bg-gradient-end))]">
       {/* Header */}
@@ -516,6 +529,7 @@ export default function Index() {
     </div>
   );
 }
+
 // Función para rastrear suscripción
 const trackSuscripcion = (email: string) => {
   if (window.gtag) {
