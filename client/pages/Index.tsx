@@ -205,20 +205,20 @@ export default function Index() {
             {/* Center Controls */}
             <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-center md:max-w-2xl">
               {/* City Selector */}
-              <div className="relative flex-1 md:flex-none">
-                <select
-                  value={selectedCity}
-                  onChange={(e) => setSelectedCity(e.target.value)}
-                  className="appearance-none w-full md:w-48 px-3 sm:px-4 py-2.5 pr-8 border-2 border-gray-200 rounded-lg bg-white text-[hsl(var(--theme-primary))] font-semibold text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[hsl(var(--theme-accent))] transition-all hover:border-[hsl(var(--theme-accent))]"
-                >
-                  {CITIES.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
-              </div>
+                <div className="relative flex-1 md:flex-none min-w-[140px] sm:min-w-[160px]"> 
+                  <select
+                    value={selectedCity}
+                    onChange={(e) => setSelectedCity(e.target.value)}
+                    className="appearance-none w-full md:w-48 px-2 sm:px-4 py-2.5 pr-8 border-2 border-gray-200 rounded-lg bg-white text-[hsl(var(--theme-primary))] font-semibold text-xs sm:text-base focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[hsl(var(--theme-accent))] transition-all hover:border-[hsl(var(--theme-accent))]"
+                  >
+                    {CITIES.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
+                </div>
 
               {/* Toggle Switch */}
               <div className="flex items-center gap-2 sm:gap-3">
