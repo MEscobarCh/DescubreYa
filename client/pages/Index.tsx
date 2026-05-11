@@ -180,8 +180,8 @@ export default function Index() {
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--theme-bg-gradient-start))] to-[hsl(var(--theme-bg-gradient-end))]">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-          <div className="flex items-center justify-between gap-4 md:gap-6">
+        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 md:py-5"> {/* Reducimos padding lateral y vertical */}
+        <div className="flex items-center justify-between gap-2 md:gap-6"> {/* Cambiamos gap-4 por gap-2 */}
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] flex items-center justify-center text-white font-bold">
@@ -203,7 +203,7 @@ export default function Index() {
             </div>
 
             {/* Center Controls */}
-            <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-center md:max-w-2xl">
+            <div className="flex items-center gap-1.5 sm:gap-4 flex-1 justify-end md:justify-center md:max-w-2xl"> {/* Cambiamos gap-2 por gap-1.5 y justify-center por justify-end */}
               {/* City Selector */}
                 <div className="relative flex-1 md:flex-none min-w-[140px] sm:min-w-[160px]"> 
                   <select
@@ -221,19 +221,18 @@ export default function Index() {
                 </div>
 
               {/* Toggle Switch */}
-              <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-1 sm:gap-3">
                 <button
                   onClick={() => setIsTourism(!isTourism)}
-                  className={`relative inline-flex h-11 w-24 md:h-12 md:w-28 items-center rounded-full transition-all duration-300 flex-shrink-0 shadow-md hover:shadow-lg ${
+                  className={`relative inline-flex h-9 w-20 md:h-12 md:w-28 items-center rounded-full transition-all duration-300 flex-shrink-0 shadow-md ${
                     isTourism
                       ? "bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))]"
                       : "bg-gradient-to-r from-[hsl(var(--theme-accent-alt))] to-[hsl(var(--theme-accent))]"
                   }`}
-                  aria-label="Alternar entre vista de turismo y negocios"
                 >
                   <span
-                    className={`inline-block h-9 w-9 md:h-10 md:w-10 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-lg shadow-md flex-shrink-0 ${
-                      isTourism ? "translate-x-1 md:translate-x-1" : "translate-x-12 md:translate-x-16"
+                    className={`inline-block h-7 w-7 md:h-10 md:w-10 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-sm md:text-lg shadow-md ${
+                      isTourism ? "translate-x-1" : "translate-x-12 md:translate-x-16"
                     }`}
                   >
                     {isTourism ? "⛰️" : "🏪"}
