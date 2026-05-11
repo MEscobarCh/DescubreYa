@@ -8,72 +8,73 @@ import {
   MapIcon,
   ChevronDown,
   Mountain,
-  Store,
   Clock,
   MapPinIcon,
   Tag,
+  Star,
+  Zap,
 } from "lucide-react";
 import { applyThemeToDOM } from "@/lib/cityThemes";
 
-const CITIES = ["Tingo María", "Huánuco", "La Unión", "Tarapoto"];
+const CITIES = ["Tingo María", "Huánuco", "La Unión", "Tarapoto", "Cusco", "Lima"];
 
 const TOURISM_DESTINATIONS = [
   {
     id: 1,
     name: "Tingo María",
-    category: "Mountain Town",
+    category: "Pueblo Montañoso",
     image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
     description:
-      "A beautiful mountain town known for its stunning natural landscape and mysterious caves.",
-    difficulty: "Moderate",
+      "Un hermoso pueblo montañoso conocido por sus impresionantes paisajes naturales y misteriosas cuevas.",
+    difficulty: "Moderada",
     mapUrl: "https://maps.google.com/maps/search/Tingo+Maria+Peru",
   },
   {
     id: 2,
     name: "Castillo de Leoncio Prado",
-    category: "Historic Site",
+    category: "Sitio Histórico",
     image: "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&h=600&fit=crop",
-    description: "Historic fortress offering panoramic views of the entire region.",
-    difficulty: "Easy",
+    description: "Fortaleza histórica que ofrece vistas panorámicas de toda la región.",
+    difficulty: "Fácil",
     mapUrl: "https://maps.google.com/maps/search/Castillo+Leoncio+Prado",
   },
   {
     id: 3,
-    name: "Bella Durmiente Cave",
-    category: "Natural Wonder",
+    name: "Cueva de la Bella Durmiente",
+    category: "Maravilla Natural",
     image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=600&fit=crop",
     description:
-      "Mysterious cave formations with striking rock shapes and guided tours available.",
-    difficulty: "Moderate",
+      "Formaciones de cuevas misteriosas con formas rocosas impresionantes. Tours guiados disponibles.",
+    difficulty: "Moderada",
     mapUrl: "https://maps.google.com/maps/search/Bella+Durmiente+Cave",
   },
   {
     id: 4,
-    name: "Pucallpa River Valley",
-    category: "Adventure",
+    name: "Valle del Río Pucallpa",
+    category: "Aventura",
     image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
     description:
-      "Scenic valley perfect for hiking, trekking, and deep nature exploration.",
-    difficulty: "Hard",
+      "Valle escénico perfecto para senderismo, trekking y exploración profunda de la naturaleza.",
+    difficulty: "Difícil",
     mapUrl: "https://maps.google.com/maps/search/Pucallpa+River",
   },
 ];
 
 const BUSINESS_CATEGORIES = [
-  { id: 1, name: "Restaurants", icon: "🍽️", label: "Food & Dining" },
-  { id: 2, name: "Hotels", icon: "🏨", label: "Lodging" },
-  { id: 3, name: "Billiards", icon: "🎱", label: "Billiards" },
-  { id: 4, name: "PlayStation", icon: "🎮", label: "Gaming" },
-  { id: 5, name: "Paintball", icon: "🎨", label: "Sports" },
-  { id: 6, name: "Liquor Stores", icon: "🍷", label: "Beverages" },
-  { id: 7, name: "Bookstores", icon: "📚", label: "Books" },
+  { id: 1, name: "Restaurantes", icon: "🍽️" },
+  { id: 2, name: "Hoteles", icon: "🏨" },
+  { id: 3, name: "Billar", icon: "🎱" },
+  { id: 4, name: "Videojuegos", icon: "🎮" },
+  { id: 5, name: "Deportes", icon: "🎨" },
+  { id: 6, name: "Bebidas", icon: "🍷" },
+  { id: 7, name: "Libros", icon: "📚" },
 ];
 
 const BUSINESSES = [
   {
     id: 1,
     name: "El Comedor Tradicional",
-    category: "Restaurants",
+    category: "Restaurantes",
     image: "https://images.unsplash.com/photo-1552632391-70bc08deaca3?w=400&h=300&fit=crop",
     phone: "+51 999 999 999",
     whatsapp: "51999999999",
@@ -81,12 +82,12 @@ const BUSINESSES = [
     facebook: "ElComedorTradicional",
     mapUrl: "https://maps.google.com",
     status: "Abierto ahora",
-    tags: ["Parking disponible", "Pet-friendly", "Reservas online"],
+    tags: ["Estacionamiento", "Mascotas bienvenidas", "Reservas online"],
   },
   {
     id: 2,
     name: "Hotel Bosque Amazónico",
-    category: "Hotels",
+    category: "Hoteles",
     image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&h=300&fit=crop",
     phone: "+51 998 888 888",
     whatsapp: "51998888888",
@@ -99,7 +100,7 @@ const BUSINESSES = [
   {
     id: 3,
     name: "Club de Billar Premium",
-    category: "Billiards",
+    category: "Billar",
     image: "https://images.unsplash.com/photo-1600298881974-6be191ceeda1?w=400&h=300&fit=crop",
     phone: "+51 997 777 777",
     whatsapp: "51997777777",
@@ -112,7 +113,7 @@ const BUSINESSES = [
   {
     id: 4,
     name: "Game Zone Tingo",
-    category: "PlayStation",
+    category: "Videojuegos",
     image: "https://images.unsplash.com/photo-1538481143081-91852e401c61?w=400&h=300&fit=crop",
     phone: "+51 996 666 666",
     whatsapp: "51996666666",
@@ -125,7 +126,7 @@ const BUSINESSES = [
   {
     id: 5,
     name: "Paintball Amazonía",
-    category: "Paintball",
+    category: "Deportes",
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop",
     phone: "+51 995 555 555",
     whatsapp: "51995555555",
@@ -138,7 +139,7 @@ const BUSINESSES = [
   {
     id: 6,
     name: "Licorería San José",
-    category: "Liquor Stores",
+    category: "Bebidas",
     image: "https://images.unsplash.com/photo-1514432324607-2e467f4af445?w=400&h=300&fit=crop",
     phone: "+51 994 444 444",
     whatsapp: "51994444444",
@@ -150,10 +151,23 @@ const BUSINESSES = [
   },
 ];
 
+const getDifficultyColor = (difficulty: string) => {
+  switch (difficulty) {
+    case "Fácil":
+      return "bg-emerald-100 text-emerald-700";
+    case "Moderada":
+      return "bg-amber-100 text-amber-700";
+    case "Difícil":
+      return "bg-orange-100 text-orange-700";
+    default:
+      return "bg-gray-100 text-gray-700";
+  }
+};
+
 export default function Index() {
   const [isTourism, setIsTourism] = useState(true);
   const [selectedCity, setSelectedCity] = useState("Tingo María");
-  const [selectedCategory, setSelectedCategory] = useState("Restaurants");
+  const [selectedCategory, setSelectedCategory] = useState("Restaurantes");
 
   useEffect(() => {
     applyThemeToDOM(selectedCity);
@@ -162,20 +176,23 @@ export default function Index() {
   const filteredBusinesses = BUSINESSES.filter((b) => b.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--theme-bg-gradient-start))] to-[hsl(var(--theme-bg-gradient-end))]">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex items-center justify-between gap-4 md:gap-6">
             {/* Logo */}
-            <div className="flex-shrink-0">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[hsl(var(--theme-primary))]">
+            <div className="flex-shrink-0 flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] flex items-center justify-center text-white font-bold">
+                🌍
+              </div>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-[hsl(var(--theme-primary))]">
                 ¡Descubre
                 <span
-                  className={`transition-colors duration-300 ${
+                  className={`transition-all duration-300 inline-block ml-1 ${
                     isTourism
-                      ? "text-[hsl(var(--theme-accent))]"
-                      : "text-[hsl(var(--theme-accent-alt))]"
+                      ? "text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))]"
+                      : "text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--theme-accent-alt))] to-[hsl(var(--theme-accent))]"
                   }`}
                 >
                   YA
@@ -185,13 +202,13 @@ export default function Index() {
             </div>
 
             {/* Center Controls */}
-            <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-center md:max-w-lg">
+            <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-center md:max-w-2xl">
               {/* City Selector */}
               <div className="relative flex-1 md:flex-none">
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className="appearance-none w-full md:w-44 px-3 sm:px-4 py-2 pr-8 border border-gray-300 rounded-lg bg-white text-[hsl(var(--theme-primary))] font-medium text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[hsl(var(--theme-accent))] transition-colors"
+                  className="appearance-none w-full md:w-48 px-3 sm:px-4 py-2.5 pr-8 border-2 border-gray-200 rounded-lg bg-white text-[hsl(var(--theme-primary))] font-semibold text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[hsl(var(--theme-accent))] transition-all hover:border-[hsl(var(--theme-accent))]"
                 >
                   {CITIES.map((city) => (
                     <option key={city} value={city}>
@@ -199,36 +216,36 @@ export default function Index() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
               </div>
 
               {/* Toggle Switch */}
               <div className="flex items-center gap-2 sm:gap-3">
                 <button
                   onClick={() => setIsTourism(!isTourism)}
-                  className={`relative inline-flex h-10 w-20 md:h-12 md:w-24 items-center rounded-full transition-colors duration-300 flex-shrink-0 ${
+                  className={`relative inline-flex h-11 w-24 md:h-12 md:w-28 items-center rounded-full transition-all duration-300 flex-shrink-0 shadow-md hover:shadow-lg ${
                     isTourism
-                      ? "bg-[hsl(var(--theme-accent))]"
-                      : "bg-[hsl(var(--theme-accent-alt))]"
+                      ? "bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))]"
+                      : "bg-gradient-to-r from-[hsl(var(--theme-accent-alt))] to-[hsl(var(--theme-accent))]"
                   }`}
-                  aria-label="Toggle between tourism and business view"
+                  aria-label="Alternar entre vista de turismo y negocios"
                 >
                   <span
-                    className={`inline-block h-8 w-8 md:h-10 md:w-10 transform rounded-full bg-white transition-transform duration-300 flex items-center justify-center text-lg ${
-                      isTourism ? "translate-x-1 md:translate-x-1" : "translate-x-11 md:translate-x-14"
+                    className={`inline-block h-9 w-9 md:h-10 md:w-10 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-lg shadow-md flex-shrink-0 ${
+                      isTourism ? "translate-x-1 md:translate-x-1" : "translate-x-12 md:translate-x-16"
                     }`}
                   >
                     {isTourism ? "⛰️" : "🏪"}
                   </span>
                 </button>
 
-                <div className="text-xs sm:text-sm font-semibold text-[hsl(var(--theme-primary))] hidden sm:block min-w-24">
+                <div className="text-xs sm:text-sm font-bold text-[hsl(var(--theme-primary))] hidden sm:block min-w-20 text-center">
                   {isTourism ? "Turismo" : "Negocios"}
                 </div>
               </div>
             </div>
 
-            {/* Spacer for balance */}
+            {/* Spacer */}
             <div className="hidden md:flex-shrink-0 md:w-32" />
           </div>
         </div>
@@ -239,55 +256,61 @@ export default function Index() {
         {isTourism ? (
           // Tourism View
           <section className="space-y-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[hsl(var(--theme-primary))] mb-2">
-                Explora {selectedCity}
-              </h2>
-              <p className="text-gray-600 text-sm sm:text-base">
-                Descubre destinos increíbles y atracciones turísticas en {selectedCity}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Mountain className="w-6 h-6 text-[hsl(var(--theme-accent))]" />
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[hsl(var(--theme-primary))]">
+                  Explora {selectedCity}
+                </h2>
+              </div>
+              <p className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl">
+                Descubre destinos increíbles, atracciones turísticas y aventuras que no olvidarás.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {TOURISM_DESTINATIONS.map((destination) => (
                 <div
                   key={destination.id}
-                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group"
+                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white"
                 >
                   {/* Image Container */}
-                  <div className="relative h-48 sm:h-56 overflow-hidden bg-gray-200">
+                  <div className="relative h-56 overflow-hidden bg-gray-300">
                     <img
                       src={destination.image}
                       alt={destination.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
                     />
-                    {/* Category Badge */}
-                    <div className="absolute top-3 right-3">
-                      <span className="px-3 py-1 bg-white text-[hsl(var(--theme-accent))] text-xs sm:text-sm font-bold rounded-full shadow-md">
-                        {destination.category}
-                      </span>
-                    </div>
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
 
                   {/* Content */}
-                  <div className="p-4 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-bold text-[hsl(var(--theme-primary))] mb-2">
+                  <div className="p-5 sm:p-6">
+                    {/* Category Badge */}
+                    <div className="mb-3">
+                      <span className="inline-block px-3 py-1 bg-gradient-to-r from-[hsl(var(--theme-accent))]/20 to-[hsl(var(--theme-accent-alt))]/20 text-[hsl(var(--theme-accent))] text-xs font-bold rounded-full border border-[hsl(var(--theme-accent))]/30">
+                        {destination.category}
+                      </span>
+                    </div>
+
+                    <h3 className="text-lg sm:text-xl font-black text-[hsl(var(--theme-primary))] mb-2 line-clamp-2">
                       {destination.name}
                     </h3>
-                    <p className="text-sm sm:text-base text-gray-600 mb-4 line-clamp-2">
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-3">
                       {destination.description}
                     </p>
 
-                    {/* Info Row */}
-                    <div className="mb-4 inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-lg text-xs sm:text-sm font-semibold text-gray-700">
-                      <MapPinIcon className="w-4 h-4" />
-                      Dificultad: {destination.difficulty}
+                    {/* Difficulty */}
+                    <div className={`mb-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold ${getDifficultyColor(destination.difficulty)}`}>
+                      <Zap className="w-3 h-3" />
+                      {destination.difficulty}
                     </div>
 
                     {/* Map Button */}
                     <button
                       onClick={() => window.open(destination.mapUrl, "_blank")}
-                      className={`w-full py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 bg-[hsl(var(--theme-accent))] hover:bg-[hsl(var(--theme-dark-variant))] text-sm sm:text-base active:scale-95`}
+                      className="w-full py-3 px-4 rounded-xl font-bold text-white transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 text-sm sm:text-base"
                     >
                       <MapIcon className="w-4 h-4" />
                       Trazar Ruta
@@ -299,30 +322,33 @@ export default function Index() {
           </section>
         ) : (
           // Business View
-          <section className="space-y-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[hsl(var(--theme-primary))] mb-2">
-                Directorio de Negocios
-              </h2>
-              <p className="text-gray-600 text-sm sm:text-base">
-                Encuentra servicios y negocios en {selectedCity}
+          <section className="space-y-10">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Star className="w-6 h-6 text-[hsl(var(--theme-accent))]" />
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[hsl(var(--theme-primary))]">
+                  Directorio de Negocios
+                </h2>
+              </div>
+              <p className="text-gray-600 text-sm sm:text-base md:text-lg">
+                Encuentra los mejores servicios y negocios en {selectedCity}
               </p>
             </div>
 
             {/* Category Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 pb-6">
               {BUSINESS_CATEGORIES.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.name)}
-                  className={`p-3 sm:p-4 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 flex flex-col items-center gap-2 transform hover:scale-105 ${
+                  className={`p-4 rounded-2xl font-black text-xs sm:text-sm transition-all duration-300 flex flex-col items-center gap-2 transform hover:scale-110 active:scale-95 border-2 ${
                     selectedCategory === category.name
-                      ? `bg-[hsl(var(--theme-accent))] text-white shadow-lg`
-                      : "bg-gray-100 text-[hsl(var(--theme-primary))] hover:bg-gray-200"
+                      ? `bg-gradient-to-br from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] text-white shadow-xl border-transparent`
+                      : "bg-white text-[hsl(var(--theme-primary))] hover:bg-gradient-to-br hover:from-[hsl(var(--theme-accent))]/10 hover:to-[hsl(var(--theme-accent-alt))]/10 border-gray-200 hover:border-[hsl(var(--theme-accent))]"
                   }`}
                 >
-                  <div className="text-2xl sm:text-3xl">{category.icon}</div>
-                  <span className="text-center leading-tight">{category.label}</span>
+                  <div className="text-3xl">{category.icon}</div>
+                  <span className="text-center leading-tight">{category.name}</span>
                 </button>
               ))}
             </div>
@@ -333,22 +359,25 @@ export default function Index() {
                 filteredBusinesses.map((business) => (
                   <div
                     key={business.id}
-                    className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col"
+                    className="group bg-white rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col border-2 border-gray-100 hover:border-[hsl(var(--theme-accent))]/30"
                   >
                     {/* Image Container */}
-                    <div className="relative h-40 sm:h-48 overflow-hidden bg-gray-200">
+                    <div className="relative h-48 overflow-hidden bg-gray-300">
                       <img
                         src={business.image}
                         alt={business.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
+                      {/* Gradient Overlay on Hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                       {/* Status Badge */}
-                      <div className="absolute top-3 right-3">
+                      <div className="absolute top-4 right-4">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs sm:text-sm font-bold flex items-center gap-1 ${
+                          className={`px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg ${
                             business.status === "Abierto ahora"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-yellow-100 text-yellow-700"
+                              ? "bg-gradient-to-r from-emerald-400 to-green-500 text-white"
+                              : "bg-gradient-to-r from-amber-400 to-orange-500 text-white"
                           }`}
                         >
                           <Clock className="w-3 h-3" />
@@ -358,18 +387,18 @@ export default function Index() {
                     </div>
 
                     {/* Content */}
-                    <div className="p-4 sm:p-5 flex-1 flex flex-col">
+                    <div className="p-5 sm:p-6 flex-1 flex flex-col">
                       {/* Header */}
-                      <div className="mb-4">
-                        <h3 className="text-base sm:text-lg font-bold text-[hsl(var(--theme-primary))] mb-1">
+                      <div className="mb-5">
+                        <h3 className="text-lg sm:text-xl font-black text-[hsl(var(--theme-primary))] mb-1 line-clamp-2">
                           {business.name}
                         </h3>
-                        <p className="text-xs sm:text-sm font-semibold text-[hsl(var(--theme-accent))]">
+                        <p className="text-xs sm:text-sm font-bold text-[hsl(var(--theme-accent))] uppercase tracking-wide">
                           {business.category}
                         </p>
                       </div>
 
-                      {/* Contact Buttons - Mobile Touch-Friendly (min 44px) */}
+                      {/* Contact Buttons */}
                       <div className="flex gap-2 mb-4">
                         <button
                           onClick={() =>
@@ -380,7 +409,7 @@ export default function Index() {
                               "_blank"
                             )
                           }
-                          className="flex-1 flex items-center justify-center gap-2 py-3 sm:py-2 px-3 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 active:scale-95 transition-all font-semibold text-xs sm:text-sm min-h-[44px] sm:min-h-auto"
+                          className="flex-1 flex items-center justify-center gap-2 py-3 px-3 bg-gradient-to-br from-green-400 to-emerald-500 text-white rounded-xl hover:shadow-lg hover:-translate-y-1 active:translate-y-0 transition-all font-bold text-xs sm:text-sm min-h-[44px] sm:min-h-auto"
                           title="WhatsApp"
                         >
                           <MessageCircle className="w-4 h-4" />
@@ -388,8 +417,8 @@ export default function Index() {
                         </button>
                         <button
                           onClick={() => (window.location.href = `tel:${business.phone}`)}
-                          className="flex-1 flex items-center justify-center gap-2 py-3 sm:py-2 px-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 active:scale-95 transition-all font-semibold text-xs sm:text-sm min-h-[44px] sm:min-h-auto"
-                          title="Call"
+                          className="flex-1 flex items-center justify-center gap-2 py-3 px-3 bg-gradient-to-br from-blue-400 to-blue-600 text-white rounded-xl hover:shadow-lg hover:-translate-y-1 active:translate-y-0 transition-all font-bold text-xs sm:text-sm min-h-[44px] sm:min-h-auto"
+                          title="Llamar"
                         >
                           <Phone className="w-4 h-4" />
                           <span className="hidden sm:inline">Llamar</span>
@@ -397,13 +426,13 @@ export default function Index() {
                       </div>
 
                       {/* Social Links */}
-                      <div className="flex gap-2 mb-4">
+                      <div className="flex gap-2 mb-5">
                         {business.instagram && (
                           <button
                             onClick={() =>
                               window.open(`https://instagram.com/${business.instagram}`, "_blank")
                             }
-                            className="p-3 sm:p-2 bg-pink-100 text-pink-600 rounded-lg hover:bg-pink-200 active:scale-95 transition-all min-h-[44px] sm:min-h-auto flex items-center justify-center"
+                            className="flex-1 p-3 sm:p-2 bg-gradient-to-br from-pink-400 to-rose-500 text-white rounded-xl hover:shadow-lg hover:-translate-y-1 active:translate-y-0 transition-all min-h-[44px] sm:min-h-auto flex items-center justify-center"
                             title="Instagram"
                           >
                             <Instagram className="w-4 h-4" />
@@ -414,7 +443,7 @@ export default function Index() {
                             onClick={() =>
                               window.open(`https://facebook.com/${business.facebook}`, "_blank")
                             }
-                            className="p-3 sm:p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 active:scale-95 transition-all min-h-[44px] sm:min-h-auto flex items-center justify-center"
+                            className="flex-1 p-3 sm:p-2 bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-xl hover:shadow-lg hover:-translate-y-1 active:translate-y-0 transition-all min-h-[44px] sm:min-h-auto flex items-center justify-center"
                             title="Facebook"
                           >
                             <Facebook className="w-4 h-4" />
@@ -425,7 +454,7 @@ export default function Index() {
                       {/* Maps Button */}
                       <button
                         onClick={() => window.open(business.mapUrl, "_blank")}
-                        className={`w-full flex items-center justify-center gap-2 py-3 px-4 text-white rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 mb-4 hover:brightness-110 active:scale-95 bg-[hsl(var(--theme-accent))] hover:bg-[hsl(var(--theme-dark-variant))] min-h-[44px] sm:min-h-auto`}
+                        className={`w-full flex items-center justify-center gap-2 py-3 px-4 text-white rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 mb-5 hover:shadow-lg hover:-translate-y-1 active:translate-y-0 bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] min-h-[44px] sm:min-h-auto`}
                       >
                         <MapIcon className="w-4 h-4" />
                         Ruta en Google Maps
@@ -437,7 +466,7 @@ export default function Index() {
                           {business.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full inline-flex items-center gap-1"
+                              className="text-xs bg-gradient-to-r from-[hsl(var(--theme-accent))]/10 to-[hsl(var(--theme-accent-alt))]/10 text-[hsl(var(--theme-primary))] px-3 py-1.5 rounded-full font-semibold inline-flex items-center gap-1 border border-[hsl(var(--theme-accent))]/20"
                             >
                               <Tag className="w-3 h-3" />
                               {tag}
@@ -449,8 +478,10 @@ export default function Index() {
                   </div>
                 ))
               ) : (
-                <div className="col-span-full py-12 text-center">
-                  <p className="text-gray-500 text-lg">No hay negocios en esta categoría.</p>
+                <div className="col-span-full py-16 text-center">
+                  <p className="text-gray-500 text-lg font-semibold">
+                    No hay negocios disponibles en esta categoría.
+                  </p>
                 </div>
               )}
             </div>
