@@ -210,19 +210,31 @@ export default function Index() {
                 <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-600 pointer-events-none" />
               </div>
 
-              {/* Switch Compacto */}
-              <button
-                onClick={() => setIsTourism(!isTourism)}
-                className="relative inline-flex h-8 w-14 items-center rounded-full bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] shadow-sm flex-shrink-0"
-              >
-                <span
-                  className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform duration-300 flex items-center justify-center text-xs ${
-                    isTourism ? "translate-x-1" : "translate-x-7"
-                  }`}
-                >
-                  {isTourism ? "⛰️" : "🏪"}
-                </span>
-              </button>
+              {/* Toggle Switch */}
+                <div className="flex items-center gap-1 sm:gap-3">
+                  <button
+                    onClick={() => setIsTourism(!isTourism)}
+                    className={`relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full transition-all duration-300 flex-shrink-0 shadow-sm ${
+                      isTourism
+                        ? "bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))]"
+                        : "bg-gradient-to-r from-[hsl(var(--theme-accent-alt))] to-[hsl(var(--theme-accent))]"
+                    }`}
+                    aria-label="Alternar entre vista de turismo y negocios"
+                  >
+                    <span
+                      className={`inline-block h-6 w-6 sm:h-8 sm:w-8 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-xs sm:text-base shadow-sm ${
+                        isTourism ? "translate-x-1" : "translate-x-7 sm:translate-x-11"
+                      }`}
+                    >
+                      {isTourism ? "⛰️" : "🏪"}
+                    </span>
+                  </button>
+
+                  {/* Texto dinámico: oculto en pantallas muy pequeñas, visible desde tablets en adelante */}
+                  <div className="text-[10px] sm:text-sm font-bold text-[hsl(var(--theme-primary))] hidden sm:block min-w-[70px] text-center">
+                    {isTourism ? "Turismo" : "Negocios"}
+                  </div>
+                </div>
 
             </div>
           </div>
