@@ -209,7 +209,6 @@ export default function Index() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-2 py-3">
           <div className="flex items-center justify-between gap-1"> {/* justify-between reparte el espacio */}
-
             {/* Logo: flex-shrink para que no empuje a los demás */}
             <div className="flex-shrink flex items-center gap-1 min-w-0">
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] flex-shrink-0 flex items-center justify-center text-sm">
@@ -222,7 +221,6 @@ export default function Index() {
 
             {/* Controles: Sin flex-1 para que no se expandan solos */}
             <div className="flex items-center gap-1.5 flex-shrink-0">
-              
               {/* Selector de Ciudad con ancho fijo en móvil */}
               <div className="relative">
                 <select
@@ -330,7 +328,13 @@ export default function Index() {
 
               {/* Botón de Mapa Dinámico */}
               <button
-                onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${sitio.coordenadas}`, "_blank")}
+                onClick={() => {
+                  // 1. Enviamos la alerta a Analytics
+                  trackRutaClick(sitio.nombre, sitio.categoria);
+                  
+                  // 2. Abrimos el mapa (usando la URL profesional de Google Maps)
+                  window.open(`https://www.google.com/maps/dir/?api=1&destination=${sitio.coordenadas}`, "_blank");
+                }}
                 className="w-full py-3 px-4 rounded-xl font-bold text-white transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 text-sm sm:text-base"
               >
                 <MapIcon className="w-4 h-4" />
@@ -512,3 +516,33 @@ export default function Index() {
     </div>
   );
 }
+// Función para rastrear suscripción
+const trackSuscripcion = (email: string) => {
+  if (window.gtag) {
+    window.gtag('event', 'generate_lead', {
+      'method': 'footer_form',
+      'city_context': selectedCity
+    });
+  }
+  // Aquí iría tu lógica de guardar en la base de datos PostgreSQL
+  console.log("Email guardado:", email);
+};
+
+// Componente visual (agrégalo al final de tu <main>)
+<section className="mt-16 bg-white/50 backdrop-blur-sm rounded-3xl p-8 border-2 border-dashed border-[hsl(var(--theme-accent))]/30 text-center">
+  <h3 className="text-2xl font-black text-[hsl(var(--theme-primary))] mb-2">¡Sé el primero en saber!</h3>
+  <p className="text-gray-600 mb-6">Estamos en fase piloto. Déjanos tu correo para recibir ofertas exclusivas de Tingo María.</p>
+  <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+    <input 
+      type="email" 
+      placeholder="tu@correo.com" 
+      className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[hsl(var(--theme-accent))] outline-none transition-all"
+    />
+    <button 
+      onClick={() => trackSuscripcion("usuario@ejemplo.com")} // Aquí capturarías el valor real del input
+      className="px-6 py-3 bg-[hsl(var(--theme-primary))] text-white font-bold rounded-xl hover:scale-105 transition-all"
+    >
+      Avisarme
+    </button>
+  </div>
+</section>
