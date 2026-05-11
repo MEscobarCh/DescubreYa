@@ -180,25 +180,28 @@ export default function Index() {
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--theme-bg-gradient-start))] to-[hsl(var(--theme-bg-gradient-end))]">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-3 md:py-5"> {/* Bajamos px-4 a px-2 y py-5 a py-3 */}
-          <div className="flex items-center justify-between gap-1 sm:gap-6"> {/* Gap mínimo en móvil */}
-            {/* Logo */}
-              <div className="flex-shrink-0 flex items-center gap-1.5">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] flex items-center justify-center text-white text-sm">
-                  🌍
-                </div>
-                <h1 className="text-lg sm:text-2xl font-black tracking-tighter text-[hsl(var(--theme-primary))]">
-                  ¡Descubre<span className="...">YA</span>!
-                </h1>
+        <div className="max-w-7xl mx-auto px-2 py-3">
+          <div className="flex items-center justify-between gap-1"> {/* justify-between reparte el espacio */}
+
+            {/* Logo: flex-shrink para que no empuje a los demás */}
+            <div className="flex-shrink flex items-center gap-1 min-w-0">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] flex-shrink-0 flex items-center justify-center text-sm">
+                🌍
               </div>
+              <h1 className="text-sm sm:text-xl font-black truncate text-[hsl(var(--theme-primary))]">
+                ¡Descubre<span className="text-[hsl(var(--theme-accent))]">YA</span>!
+              </h1>
             </div>
 
-            {/* City Selector */}
-              <div className="relative flex-shrink"> 
+            {/* Controles: Sin flex-1 para que no se expandan solos */}
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              
+              {/* Selector de Ciudad con ancho fijo en móvil */}
+              <div className="relative">
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className="appearance-none w-[110px] sm:w-48 px-2 py-2 pr-6 border-2 border-gray-200 rounded-lg bg-white text-[hsl(var(--theme-primary))] font-bold text-[10px] sm:text-base focus:outline-none transition-all"
+                  className="appearance-none w-[105px] sm:w-44 px-2 py-1.5 pr-6 border-2 border-gray-200 rounded-lg bg-white text-[hsl(var(--theme-primary))] font-bold text-[10px] sm:text-sm focus:outline-none"
                 >
                   {CITIES.map((city) => (
                     <option key={city} value={city}>{city}</option>
@@ -207,30 +210,21 @@ export default function Index() {
                 <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-600 pointer-events-none" />
               </div>
 
-              {/* Toggle Switch */}
+              {/* Switch Compacto */}
               <button
                 onClick={() => setIsTourism(!isTourism)}
-                className={`relative inline-flex h-8 w-14 sm:h-12 sm:w-28 items-center rounded-full transition-all duration-300 flex-shrink-0 shadow-sm ${
-                  isTourism ? "bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))]" : "bg-gradient-to-r from-[hsl(var(--theme-accent-alt))] to-[hsl(var(--theme-accent))]"
-                }`}
+                className="relative inline-flex h-8 w-14 items-center rounded-full bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] shadow-sm flex-shrink-0"
               >
                 <span
-                  className={`inline-block h-6 w-6 sm:h-10 sm:w-10 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-xs shadow-sm ${
-                    isTourism ? "translate-x-1" : "translate-x-7 sm:translate-x-16"
+                  className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform duration-300 flex items-center justify-center text-xs ${
+                    isTourism ? "translate-x-1" : "translate-x-7"
                   }`}
                 >
                   {isTourism ? "⛰️" : "🏪"}
                 </span>
               </button>
 
-                <div className="text-xs sm:text-sm font-bold text-[hsl(var(--theme-primary))] hidden sm:block min-w-20 text-center">
-                  {isTourism ? "Turismo" : "Negocios"}
-                </div>
-              </div>
             </div>
-
-            {/* Spacer */}
-            <div className="hidden md:flex-shrink-0 md:w-32" />
           </div>
         </div>
       </header>
