@@ -101,20 +101,42 @@ export default function Index() {
     }
   };
 
-  const trackSuscripcion = () => {
-    if (!emailInput.includes("@")) {
-      alert("Por favor, ingresa un correo válido.");
-      return;
+  const trackSuscripcion = async () => {
+  if (!emailInput.includes("@")) {
+    alert("Por favor, ingresa un correo válido.");
+    return;
+  }
+
+  try {
+    // 1. Enviamos el dato a nuestro backend
+    const response = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email: emailInput, 
+        ciudad: selectedCity 
+      }),
+    });
+
+    if (response.ok) {
+      // 2. Si el servidor responde OK, avisamos a Analytics
+      if (window.gtag) {
+        window.gtag('event', 'generate_lead', {
+          'method': 'footer_form',
+          'city_context': selectedCity
+        });
+      }
+      
+      alert(`¡Viento en popa! Te avisaremos de las novedades en ${selectedCity} ⛵`);
+      setEmailInput("");
+    } else {
+      throw new Error('Error al guardar');
     }
-    if (window.gtag) {
-      window.gtag('event', 'generate_lead', {
-        'method': 'footer_form',
-        'city_context': selectedCity
-      });
-    }
-    alert(`¡Gracias! Te avisaremos de las novedades en ${selectedCity}`);
-    setEmailInput("");
-  };
+  } catch (error) {
+    console.error("Error:", error);
+    alert("No pudimos guardar tu correo. Inténtalo de nuevo.");
+  }
+};
 
   const filteredBusinesses = BUSINESSES.filter((b) => b.category === selectedCategory);
 
