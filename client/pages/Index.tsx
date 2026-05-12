@@ -525,6 +525,25 @@ export default function Index() {
             </div>
           </section>
         )}
+        
+        <section className="mt-16 bg-white/50 backdrop-blur-sm rounded-3xl p-8 border-2 border-dashed border-[hsl(var(--theme-accent))]/30 text-center">
+          <h3 className="text-2xl font-black text-[hsl(var(--theme-primary))] mb-2">¡Sé el primero en saber!</h3>
+          <p className="text-gray-600 mb-6">Estamos en fase piloto. Déjanos tu correo para recibir ofertas exclusivas de Tingo María.</p>
+          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <input 
+              type="email" 
+              placeholder="tu@correo.com" 
+              className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[hsl(var(--theme-accent))] outline-none transition-all"
+            />
+            <button 
+              onClick={() => trackSuscripcion("usuario@ejemplo.com")} // Aquí capturarías el valor real del input
+              className="px-6 py-3 bg-[hsl(var(--theme-primary))] text-white font-bold rounded-xl hover:scale-105 transition-all"
+            >
+              Avisarme
+            </button>
+          </div>
+        </section>
+
       </main>
     </div>
   );
@@ -541,22 +560,3 @@ const trackSuscripcion = (email: string) => {
   // Aquí iría tu lógica de guardar en la base de datos PostgreSQL
   console.log("Email guardado:", email);
 };
-
-// Componente visual (agrégalo al final de tu <main>)
-<section className="mt-16 bg-white/50 backdrop-blur-sm rounded-3xl p-8 border-2 border-dashed border-[hsl(var(--theme-accent))]/30 text-center">
-  <h3 className="text-2xl font-black text-[hsl(var(--theme-primary))] mb-2">¡Sé el primero en saber!</h3>
-  <p className="text-gray-600 mb-6">Estamos en fase piloto. Déjanos tu correo para recibir ofertas exclusivas de Tingo María.</p>
-  <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-    <input 
-      type="email" 
-      placeholder="tu@correo.com" 
-      className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[hsl(var(--theme-accent))] outline-none transition-all"
-    />
-    <button 
-      onClick={() => trackSuscripcion("usuario@ejemplo.com")} // Aquí capturarías el valor real del input
-      className="px-6 py-3 bg-[hsl(var(--theme-primary))] text-white font-bold rounded-xl hover:scale-105 transition-all"
-    >
-      Avisarme
-    </button>
-  </div>
-</section>
