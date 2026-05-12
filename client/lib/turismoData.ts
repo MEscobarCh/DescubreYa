@@ -99,7 +99,7 @@ export const sitiosTuristicos = [
     ciudad: "Huánuco",
     nombre: "Puente Calicanto",
     categoria: "Histórico",
-    imagen: "/images/turismo/calicanto.webp",
+    imagen: "/images/turismo/puente_calicanto.webp",
     descripcion: "Majestuosa obra del siglo XIX construida con cal y canto sobre el río Huallaga.",
     dificultad: "Fácil",
     coordenadas: "-9.932468,-76.236616"
