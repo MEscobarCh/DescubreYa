@@ -35,7 +35,7 @@ export const sitiosTuristicos = [
     descripcion: "Impresionante sistema de cuevas hogar de guácharos y formaciones rocosas únicas.",
     dificultad: "Fácil",
     precioEntrada: "S/ 15.00",
-    coordenadas: "-9.329097247585798,-76.02683018874892"
+    coordenadas: "-9.329111,-76.026833"
   },
   {
     id: 2,
@@ -45,7 +45,7 @@ export const sitiosTuristicos = [
     descripcion: "El mejor punto para observar la ciudad de Tingo María y la silueta de la Bella Durmiente.",
     dificultad: "Fácil",
     precioEntrada: "Gratis",
-    coordenadas: "-9.289642811481917,-75.99739071943851"
+    coordenadas: "-9.289639,-75.997389"
   },
   {
     id: 3,
@@ -55,7 +55,7 @@ export const sitiosTuristicos = [
     descripcion: "Hermosas caídas de agua cristalina perfectas para un refrescante baño en la selva.",
     dificultad: "Moderada",
     precioEntrada: "S/ 5.00",
-    coordenadas: "-9.348384583743066,-75.96885660875995"
+    coordenadas: "-9.349723,-75.968348"
   },
   {
     id: 4,
