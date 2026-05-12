@@ -16,7 +16,7 @@ import {
 import { applyThemeToDOM } from "@/lib/cityThemes";
 import { sitiosTuristicos } from "@/lib/turismoData";
 
-const CITIES = ["Tingo María", "Huánuco", "La Unión", "Tarapoto", "Cusco", "Lima"];
+const CITIES = ["Tingo María", "Huánuco", "Tarapoto", "Cusco", "Lima"];
 
 // Tipado para Google Analytics en TypeScript
 declare global {
