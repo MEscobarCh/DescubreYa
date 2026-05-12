@@ -221,10 +221,14 @@ export default function Index() {
                       <Zap className="w-3 h-3" /> {sitio.difficulty || sitio.dificultad}
                     </div>
                     <button
-                      onClick={() => {
-                        trackRutaClick(sitio.nombre, sitio.categoria);
-                        window.open(`https://www.google.com/maps/dir/?api=1&destination=${sitio.coordenadas}`, "_blank");
-                      }}
+                      // Dentro de tu botón "Trazar Ruta" en Index.tsx
+                        onClick={() => {
+                          trackRutaClick(sitio.nombre, sitio.categoria);
+                          
+                          // URL Profesional para abrir coordenadas en Google Maps
+                          const mapUrl = `https://www.google.com/maps/search/?api=1&query=${sitio.coordenadas}`;
+                          window.open(mapUrl, "_blank");
+                        }}
                       className="w-full py-3 bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg transition-all active:scale-95"
                     >
                       <MapIcon className="w-4 h-4" /> Trazar Ruta

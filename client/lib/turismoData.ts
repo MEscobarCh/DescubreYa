@@ -22,55 +22,57 @@ export interface SitioTuristico {
   imagen: string;
 }
 
-export const sitiosTuristicos: SitioTuristico[] = [
+// lib/turismoData.ts
+
+export const sitiosTuristicos = [
   {
     id: 1,
     nombre: "Cueva de las Lechuzas",
-    categoria: "Aventura",
-    descripcion: "Impresionante gruta caliza en el Parque Nacional Tingo María, hogar de guácharos y formaciones milenarias.",
+    categoria: "Maravilla Natural",
+    imagen: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=600&fit=crop",
+    descripcion: "Impresionante sistema de cuevas hogar de guácharos y formaciones rocosas únicas.",
     dificultad: "Fácil",
-    coordenadas: "-9.3245,-75.9876",
     precioEntrada: "S/ 15.00",
-    imagen: "/images/turismo/cueva.webp"
+    coordenadas: "-9.329097247585798,-76.02683018874892"
   },
   {
     id: 2,
-    nombre: "Catarata Velo de la Ninfa",
-    categoria: "Aventura",
-    descripcion: "Ruta de trekking y escalada por el cauce de la quebrada que lleva a una hermosa caída de agua.",
-    dificultad: "Difícil",
-    coordenadas: "-9.3521,-75.9142",
+    nombre: "Mirador de la Cruz",
+    categoria: "Vista Panorámica",
+    imagen: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+    descripcion: "El mejor punto para observar la ciudad de Tingo María y la silueta de la Bella Durmiente.",
+    dificultad: "Fácil",
     precioEntrada: "Gratis",
-    imagen: "/images/turismo/catarata.webp"
+    coordenadas: "-9.289642811481917,-75.99739071943851"
   },
   {
     id: 3,
-    nombre: "Laguna de los Milagros",
-    categoria: "Relax",
-    descripcion: "Espejo de agua rodeado de selva, ideal para paseos en bote, pesca deportiva y picnic.",
-    dificultad: "Fácil",
-    coordenadas: "-9.2435,-76.0123",
+    nombre: "Catarata de Santa Carmen",
+    categoria: "Aventura",
+    imagen: "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&h=600&fit=crop",
+    descripcion: "Hermosas caídas de agua cristalina perfectas para un refrescante baño en la selva.",
+    dificultad: "Moderada",
     precioEntrada: "S/ 5.00",
-    imagen: "/images/turismo/laguna.webp"
+    coordenadas: "-9.348384583743066,-75.96885660875995"
   },
   {
     id: 4,
-    nombre: "Cueva de las Pavas",
-    categoria: "Relax",
-    descripcion: "Balneario natural de aguas frescas y cristalinas, famoso por sus leyendas y entorno acogedor.",
+    nombre: "Laguna de los Milagros",
+    categoria: "Naturaleza",
+    imagen: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=600&fit=crop",
+    descripcion: "Lugar místico ideal para paseos en bote y conexión espiritual con la naturaleza.",
     dificultad: "Fácil",
-    coordenadas: "-9.3621,-75.9842",
-    precioEntrada: "S/ 3.00",
-    imagen: "/images/turismo/pavas.webp"
+    precioEntrada: "S/ 10.00",
+    coordenadas: "-9.144612174624013,-75.99545179189995"
   },
   {
     id: 5,
-    nombre: "Mirador del Cerro",
-    categoria: "Cultura",
-    descripcion: "Punto estratégico para observar toda la ciudad de Tingo María y la silueta de la Bella Durmiente.",
-    dificultad: "Moderada",
-    coordenadas: "-9.2980,-76.0012",
+    nombre: "Balneario de las Pavas",
+    categoria: "Recreación",
+    imagen: "https://images.unsplash.com/photo-1552632391-70bc08deaca3?w=800&h=600&fit=crop",
+    descripcion: "Tradicional punto de reunión local para disfrutar de las frescas aguas del río.",
+    dificultad: "Fácil",
     precioEntrada: "Gratis",
-    imagen: "/images/turismo/mirador.webp"
+    coordenadas: "-9.374169747666473,-75.96131434126399"
   }
 ];
