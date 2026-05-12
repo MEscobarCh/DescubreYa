@@ -220,19 +220,21 @@ export default function Index() {
                     <div className={`mb-5 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-bold ${getDifficultyColor(sitio.difficulty || sitio.dificultad)}`}>
                       <Zap className="w-3 h-3" /> {sitio.difficulty || sitio.dificultad}
                     </div>
-                    <button
-                      // Dentro de tu botón "Trazar Ruta" en Index.tsx
-                        onClick={() => {
-                          trackRutaClick(sitio.nombre, sitio.categoria);
-                          
-                          // URL Profesional para abrir coordenadas en Google Maps
-                          const mapUrl = `https://www.google.com/maps/search/?api=1&query=${sitio.coordenadas}`;
-                          window.open(mapUrl, "_blank");
-                        }}
-                      className="w-full py-3 bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg transition-all active:scale-95"
-                    >
-                      <MapIcon className="w-4 h-4" /> Trazar Ruta
-                    </button>
+                      <button
+                          onClick={() => {
+                            // 1. Ejecutamos el rastreo para Analytics
+                            trackRutaClick(sitio.nombre, sitio.categoria);
+                            
+                            // 2. Aplicamos la lógica de tu snippet: usamos la API oficial de búsqueda
+                            // sitio.coordenadas ya tiene el formato "-9.xxxx,-75.xxxx"
+                            const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${sitio.coordenadas}`;
+                            
+                            window.open(googleMapsUrl, "_blank");
+                          }}
+                          className="w-full py-3 bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg transition-all active:scale-95"
+                        >
+                          <MapIcon className="w-4 h-4" /> Trazar Ruta
+                      </button>
                   </div>
                 </div>
               ))}
