@@ -205,7 +205,9 @@ export default function Index() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {sitiosTuristicos.map((sitio) => (
+              {sitiosTuristicos
+                .filter((sitio) => sitio.ciudad === selectedCity) // <--- ESTE ES EL FILTRO CLAVE
+                .map((sitio) =>(
                 <div key={sitio.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100">
                   <div className="relative h-52 overflow-hidden">
                     <img src={sitio.imagen} alt={sitio.nombre} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />

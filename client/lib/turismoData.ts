@@ -29,6 +29,7 @@ export interface SitioTuristico {
 export const sitiosTuristicos = [
   {
     id: 1,
+    ciudad: "Tingo María",
     nombre: "Cueva de las Lechuzas",
     categoria: "Maravilla Natural",
     imagen: "/images/turismo/cueva.webp",
@@ -39,6 +40,7 @@ export const sitiosTuristicos = [
   },
   {
     id: 2,
+    ciudad: "Tingo María",
     nombre: "Mirador de la Cruz",
     categoria: "Vista Panorámica",
     imagen: "/images/turismo/mirador.webp",
@@ -49,6 +51,7 @@ export const sitiosTuristicos = [
   },
   {
     id: 3,
+    ciudad: "Tingo María",
     nombre: "Catarata de Santa Carmen",
     categoria: "Aventura",
     imagen: "/images/turismo/catarata.webp",
@@ -59,6 +62,7 @@ export const sitiosTuristicos = [
   },
   {
     id: 4,
+    ciudad: "Tingo María",
     nombre: "Laguna de los Milagros",
     categoria: "Naturaleza",
     imagen: "/images/turismo/laguna.webp",
@@ -69,6 +73,7 @@ export const sitiosTuristicos = [
   },
   {
     id: 5,
+    ciudad: "Tingo María",
     nombre: "Balneario de las Pavas",
     categoria: "Recreación",
     imagen: "/images/turismo/pavas.webp",
@@ -76,5 +81,57 @@ export const sitiosTuristicos = [
     dificultad: "Fácil",
     precioEntrada: "Gratis",
     coordenadas: "-9.374169747666473,-75.96131434126399"
+  },
+
+  // --- HUÁNUCO ---
+  {
+    id: 6,
+    ciudad: "Huánuco",
+    nombre: "Kotosh (Manos Cruzadas)",
+    categoria: "Arqueológico",
+    imagen: "/images/turismo/kotosh.webp",
+    descripcion: "Uno de los templos más antiguos de América, famoso por su escultura de las Manos Cruzadas.",
+    dificultad: "Fácil",
+    coordenadas: "-9.930438,-76.279822"
+  },
+  {
+    id: 7,
+    ciudad: "Huánuco",
+    nombre: "Puente Calicanto",
+    categoria: "Histórico",
+    imagen: "/images/turismo/calicanto.webp",
+    descripcion: "Majestuosa obra del siglo XIX construida con cal y canto sobre el río Huallaga.",
+    dificultad: "Fácil",
+    coordenadas: "-9.932468,-76.236616"
+  },
+  {
+    id: 8,
+    ciudad: "Huánuco",
+    nombre: "Plaza de Armas",
+    categoria: "Cultural",
+    imagen: "/images/turismo/plaza_huanuco.webp",
+    descripcion: "El corazón de la ciudad, con su pileta de piedra granito y la moderna Catedral.",
+    dificultad: "Fácil",
+    coordenadas: "-9.930607,-76.240417"
+  },
+  {
+    id: 9,
+    ciudad: "Huánuco",
+    nombre: "Pilco Mozo",
+    categoria: "Mirador Natural",
+    imagen: "/images/turismo/pilco_mozo.webp",
+    descripcion: "Formación pétrea que asemeja a un hombre dormido, guardián eterno de la ciudad.",
+    dificultad: "Moderada",
+    coordenadas: "-9.948256,-76.216390"
+  },
+  {
+    id: 10,
+    ciudad: "Huánuco",
+    nombre: "Tomayquichua",
+    categoria: "Tradicional",
+    imagen: "/images/turismo/tomayquichua.webp",
+    descripcion: "Pintoresco pueblo cuna de 'La Perricholi', famoso por sus paisajes y chicherías.",
+    dificultad: "Fácil",
+    coordenadas: "-10.057766,-76.195655"
   }
 ];
