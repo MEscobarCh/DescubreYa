@@ -70,7 +70,11 @@ export default function Index() {
 
   // Control de Tema y Google Analytics
   useEffect(() => {
+    // 1. Aplicar el tema visual
     applyThemeToDOM(selectedCity);
+
+    // 2. ACTUALIZAR EL TÍTULO DE LA PESTAÑA DINÁMICAMENTE
+    document.title = `¡DescubreYA! - ${selectedCity}`;
 
     const gaId = import.meta.env.VITE_GOOGLE_ANALYTICS_ID;
     if (gaId && !window.gtag) {
@@ -233,7 +237,9 @@ export default function Index() {
         <section className="mt-20 bg-white/40 backdrop-blur-md rounded-[2.5rem] p-8 md:p-12 border-2 border-dashed border-[hsl(var(--theme-accent))]/20 text-center">
           <div className="max-w-2xl mx-auto space-y-4">
             <h3 className="text-2xl md:text-4xl font-black text-[hsl(var(--theme-primary))]">¡Únete al Piloto! 🚀</h3>
-            <p className="text-gray-600 text-sm md:text-base">Estamos construyendo la plataforma definitiva para {selectedCity}. Déjanos tu correo y sé el primero en recibir beneficios exclusivos.</p>
+            <p className="text-gray-600 mb-6">
+              Estamos en fase piloto. Déjanos tu correo para ser el primero en recibir ofertas exclusivas apenas estemos navegando <strong>a viento en popa</strong>.
+            </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <input 
                 type="email" 
