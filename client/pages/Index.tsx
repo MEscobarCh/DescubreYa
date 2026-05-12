@@ -270,7 +270,7 @@ export default function Index() {
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <input 
                 type="email" 
-                placeholder="Conocer más del proyecto" 
+                placeholder="Ingresa tu correo" 
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
                 className="flex-1 px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-[hsl(var(--theme-accent))] outline-none transition-all text-sm font-semibold shadow-inner"
@@ -279,7 +279,7 @@ export default function Index() {
                 onClick={trackSuscripcion}
                 className="px-8 py-4 bg-[hsl(var(--theme-primary))] text-white font-bold rounded-2xl hover:bg-[hsl(var(--theme-accent))] transition-all shadow-lg hover:-translate-y-1 active:translate-y-0"
               >
-                Avisarme
+                Conocer más del proyecto
               </button>
             </div>
           </div>
