@@ -1,25 +1,18 @@
-import { db } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
-  if (request.method !== 'POST') {
-    return response.status(405).json({ error: 'Método no permitido' });
-  }
+  if (request.method !== 'POST') return response.status(405).end();
 
   const { email, ciudad } = request.body;
-
-  if (!email || !ciudad) {
-    return response.status(400).json({ error: 'Faltan datos' });
-  }
+  // Usamos la variable de entorno que Vercel creó automáticamente
+  const sql = neon(process.env.POSTGRES_URL!); 
 
   try {
-    const client = await db.connect();
-    await client.sql`
-      INSERT INTO suscripciones (email, ciudad)
-      VALUES (${email}, ${ciudad});
-    `;
-    return response.status(200).json({ message: 'Suscripción exitosa' });
+    await sql`INSERT INTO suscripciones (email, ciudad) VALUES (${email}, ${ciudad})`;
+    return response.status(200).json({ message: '¡Viento en popa!' });
   } catch (error) {
-    return response.status(500).json({ error: 'Error en el servidor' });
+    console.error(error);
+    return response.status(500).json({ error: 'Error de conexión' });
   }
 }

@@ -13,6 +13,9 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "@vercel/node": "^5.8.0",
+    "@vercel/postgres": "^0.10.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "zod": "^3.25.76"
