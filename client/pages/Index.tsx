@@ -209,9 +209,6 @@ export default function Index() {
                 <div key={sitio.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100">
                   <div className="relative h-52 overflow-hidden">
                     <img src={sitio.imagen} alt={sitio.nombre} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-black text-[hsl(var(--theme-primary))] shadow-sm">
-                      {sitio.precioEntrada}
-                    </div>
                   </div>
                   <div className="p-5">
                     <span className="text-[10px] font-bold text-[hsl(var(--theme-accent))] uppercase tracking-widest">{sitio.categoria}</span>
