@@ -109,7 +109,7 @@ export const sitiosTuristicos = [
     ciudad: "Huánuco",
     nombre: "Plaza de Armas",
     categoria: "Cultural",
-    imagen: "/images/turismo/plaza_huanuco.webp",
+    imagen: "/images/turismo/plaza_armas_huanuco.webp",
     descripcion: "El corazón de la ciudad, con su pileta de piedra granito y la moderna Catedral.",
     dificultad: "Fácil",
     coordenadas: "-9.930607,-76.240417"
@@ -119,7 +119,7 @@ export const sitiosTuristicos = [
     ciudad: "Huánuco",
     nombre: "Pilco Mozo",
     categoria: "Mirador Natural",
-    imagen: "/images/turismo/pilco_mozo.webp",
+    imagen: "/images/turismo/pillco_mozo.webp",
     descripcion: "Formación pétrea que asemeja a un hombre dormido, guardián eterno de la ciudad.",
     dificultad: "Moderada",
     coordenadas: "-9.948256,-76.216390"
