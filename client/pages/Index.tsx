@@ -270,7 +270,7 @@ export default function Index() {
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <input 
                 type="email" 
-                placeholder="Ingresa tu correo" 
+                placeholder="Conocer más del proyecto" 
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
                 className="flex-1 px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-[hsl(var(--theme-accent))] outline-none transition-all text-sm font-semibold shadow-inner"
