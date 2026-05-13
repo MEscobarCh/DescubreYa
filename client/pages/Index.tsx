@@ -12,6 +12,7 @@ import {
   Tag,
   Star,
   Zap,
+  Store as StoreIcon
 } from "lucide-react";
 import { applyThemeToDOM } from "@/lib/cityThemes";
 import { sitiosTuristicos } from "@/lib/turismoData";
@@ -173,20 +174,32 @@ export default function Index() {
                 <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-600 pointer-events-none" />
               </div>
 
-              {/* Switch Turismo/Negocios */}
-              <div className="flex items-center gap-1 sm:gap-2">
-                <button
-                  onClick={() => setIsTourism(!isTourism)}
-                  className="relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full bg-gradient-to-r from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] transition-all duration-300 shadow-sm flex-shrink-0"
-                >
-                  <span className={`inline-block h-6 w-6 sm:h-8 sm:w-8 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-xs ${isTourism ? "translate-x-1" : "translate-x-7 sm:translate-x-11"}`}>
-                    {isTourism ? "⛰️" : "🏪"}
-                  </span>
-                </button>
-                <span className="text-[10px] sm:text-xs font-bold text-[hsl(var(--theme-primary))] hidden sm:block min-w-[60px]">
-                  {isTourism ? "Turismo" : "Negocios"}
-                </span>
-              </div>
+              {/* Switch Turismo/Negocios con Colores de Estado */}
+<div className="flex items-center gap-3">
+  <button
+    onClick={() => setIsTourism(!isTourism)}
+    className={`relative inline-flex h-10 w-20 items-center rounded-full transition-all duration-500 shadow-md flex-shrink-0 ${
+      isTourism 
+        ? "bg-gradient-to-r from-emerald-400 to-green-600" // Verde Selva (Turismo)
+        : "bg-gradient-to-r from-orange-400 to-red-500"    // Naranja Vibrante (Negocios)
+    }`}
+  >
+    <span 
+      className={`inline-block h-8 w-8 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-lg shadow-lg ${
+        isTourism ? "translate-x-1" : "translate-x-11"
+      }`}
+    >
+      {isTourism ? "⛰️" : "🏪"}
+    </span>
+  </button>
+
+  {/* Etiqueta de texto para reforzar la obviedad */}
+  <span className={`text-sm font-black uppercase tracking-tighter transition-colors duration-300 ${
+    isTourism ? "text-emerald-600" : "text-orange-600"
+  }`}>
+    {isTourism ? "Modo Turismo" : "Modo Negocios"}
+  </span>
+</div>
             </div>
           </div>
         </div>
