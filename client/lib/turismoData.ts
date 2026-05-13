@@ -251,12 +251,12 @@ export const sitiosTuristicos = [
   {
     id: 24,
     ciudad: "Cusco",
-    nombre: "Valle Sagrado de los Incas",
-    categoria: "Cultura",
-    imagen: "/images/turismo/cusco/valle_sagrado.webp",
-    descripcion: "Recorrido por pueblos ancestrales, mercados artesanales y sitios arqueológicos entre montañas.",
+    nombre: "Pisac",
+    categoria: "Arqueológico",
+    imagen: "/images/turismo/cusco/pisac.webp",
+    descripcion: "Espectacular complejo arqueológico con andenes incas y el mercado artesanal más famoso de la región.",
     dificultad: "Fácil",
-    coordenadas: "-13.331704,-72.086319"
+    coordenadas: "-13.422000,-71.849000"
   },
   {
     id: 25,
