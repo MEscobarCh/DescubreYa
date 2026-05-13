@@ -311,9 +311,11 @@ export default function Index() {
 
           {/* Botones de Contacto */}
           <div className="flex items-center gap-4">
-            {/* WhatsApp */}
+            {/* WhatsApp con Mensaje Predefinido Dinámico */}
             <a 
-              href="https://wa.me/51995830154" 
+              href={`https://wa.me/51995830154?text=${encodeURIComponent(
+                `Hola, te escribo desde ¡DescubreYA! 🌍 Tengo una consulta sobre la ciudad de ${selectedCity}.`
+              )}`} 
               target="_blank" 
               rel="noopener noreferrer"
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border-2 transition-all hover:shadow-md active:scale-95 ${theme.accent.split(' ')[1]} ${theme.accent.split(' ')[0]}`}
