@@ -149,9 +149,9 @@ export const sitiosTuristicos = [
   {
     id: 14,
     ciudad: "Tarapoto",
-    nombre: "Cataratas de Huacamillo",
+    nombre: "Cataratas de huacamaillo",
     categoria: "Aventura",
-    imagen: "/images/turismo/tarapoto/huacamillo.webp",
+    imagen: "/images/turismo/tarapoto/huacamaillo.webp",
     descripcion: "Sistema de cascadas naturales con refrescantes pozas para nadar en medio de la selva.",
     dificultad: "Moderada",
     coordenadas: "-6.401197,-76.328447"
