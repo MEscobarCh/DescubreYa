@@ -295,6 +295,51 @@ export default function Index() {
           </div>
         </section>
       </main>
+      {/* Footer con Redes Sociales - ¡DescubreYA! */}
+      <footer className="mt-auto py-10 border-t border-gray-100 bg-white/60 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
+          
+          {/* Información del Proyecto */}
+          <div className="text-center md:text-left">
+            <h4 className={`text-lg font-black tracking-tight ${theme.accent.split(' ')[0]}`}>
+              ¡DescubreYA!
+            </h4>
+            <p className="text-xs text-gray-500 font-medium mt-1">
+              Conectando lo mejor del Perú, ciudad por ciudad. ⛵
+            </p>
+          </div>
+
+          {/* Botones de Contacto */}
+          <div className="flex items-center gap-4">
+            {/* WhatsApp */}
+            <a 
+              href="https://wa.me/51995830154" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border-2 transition-all hover:shadow-md active:scale-95 ${theme.accent.split(' ')[1]} ${theme.accent.split(' ')[0]}`}
+            >
+              <MessageCircle className="w-5 h-5" />
+              <span className="text-sm font-bold">WhatsApp</span>
+            </a>
+
+            {/* Facebook */}
+            <a 
+              href="https://www.facebook.com/profile.php?id=61589431358800" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={`flex items-center gap-2 px-5 py-2.5 text-white rounded-xl bg-gradient-to-r shadow-lg transition-all hover:-translate-y-1 active:translate-y-0 ${theme.button}`}
+            >
+              <Facebook className="w-5 h-5" />
+              <span className="text-sm font-bold">Facebook</span>
+            </a>
+          </div>
+
+          {/* Copyright */}
+          <div className="text-xs text-gray-400 font-bold">
+            © 2026 ¡DescubreYA! - {selectedCity}
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
