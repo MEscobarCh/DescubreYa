@@ -140,66 +140,73 @@ export default function Index() {
 };
 
   const filteredBusinesses = BUSINESSES.filter((b) => b.category === selectedCategory);
-
+<div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] flex-shrink-0 flex items-center justify-center text-sm">
+                🌍
+              </div>
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--theme-bg-gradient-start))] to-[hsl(var(--theme-bg-gradient-end))] transition-colors duration-500">
       
-      {/* Header Compacto Optimizado */}
+      {/* Header Adaptativo - ¡DescubreYA! */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-2 py-3">
-          <div className="flex items-center justify-between gap-1">
+        <div className="max-w-7xl mx-auto px-4 py-2 sm:py-3">
+          
+          {/* Contenedor Principal: Columna en móvil, Fila en desktop */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-1">
             
-            {/* Logo */}
-            <div className="flex-shrink flex items-center gap-1 min-w-0">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] flex-shrink-0 flex items-center justify-center text-sm">
+            {/* 1. Logo: Centrado en móvil, a la izquierda en desktop */}
+            <div className="flex items-center gap-2 justify-center w-full sm:w-auto">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[hsl(var(--theme-accent))] to-[hsl(var(--theme-accent-alt))] flex-shrink-0 flex items-center justify-center text-sm shadow-sm">
                 🌍
               </div>
-              <h1 className="text-sm sm:text-xl font-black truncate text-[hsl(var(--theme-primary))]">
+              <h1 className="text-xl sm:text-2xl font-black text-[hsl(var(--theme-primary))] tracking-tight">
                 ¡Descubre<span className="text-[hsl(var(--theme-accent))]">YA</span>!
               </h1>
             </div>
 
-            {/* Controles Centrales */}
-            <div className="flex items-center gap-1.5 flex-shrink-0">
+            {/* 2. Controles: Agrupados y centrados debajo del logo en móvil */}
+            <div className="flex items-center justify-center gap-3 w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0 border-gray-50">
+              
+              {/* Selector de Ciudad */}
               <div className="relative">
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className="appearance-none w-[105px] sm:w-44 px-2 py-1.5 pr-6 border-2 border-gray-200 rounded-lg bg-white text-[hsl(var(--theme-primary))] font-bold text-[10px] sm:text-sm focus:outline-none"
+                  className="appearance-none w-[115px] sm:w-44 px-3 py-1.5 pr-8 border-2 border-gray-200 rounded-xl bg-white text-[hsl(var(--theme-primary))] font-bold text-[11px] sm:text-sm focus:outline-none focus:border-[hsl(var(--theme-accent))] transition-colors"
                 >
                   {CITIES.map((city) => (
                     <option key={city} value={city}>{city}</option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-600 pointer-events-none" />
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
 
-              {/* Switch Turismo/Negocios con Colores de Estado */}
-<div className="flex items-center gap-3">
-  <button
-    onClick={() => setIsTourism(!isTourism)}
-    className={`relative inline-flex h-10 w-20 items-center rounded-full transition-all duration-500 shadow-md flex-shrink-0 ${
-      isTourism 
-        ? "bg-gradient-to-r from-emerald-400 to-green-600" // Verde Selva (Turismo)
-        : "bg-gradient-to-r from-orange-400 to-red-500"    // Naranja Vibrante (Negocios)
-    }`}
-  >
-    <span 
-      className={`inline-block h-8 w-8 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-lg shadow-lg ${
-        isTourism ? "translate-x-1" : "translate-x-11"
-      }`}
-    >
-      {isTourism ? "⛰️" : "🏪"}
-    </span>
-  </button>
+              {/* Switch Turismo/Ruta Local */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsTourism(!isTourism)}
+                  className={`relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full transition-all duration-500 shadow-md flex-shrink-0 ${
+                    isTourism 
+                      ? "bg-gradient-to-r from-emerald-400 to-green-600" 
+                      : "bg-gradient-to-r from-orange-400 to-red-500"
+                  }`}
+                >
+                  <span 
+                    className={`inline-block h-6 w-6 sm:h-8 sm:w-8 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-sm shadow-lg ${
+                      isTourism ? "translate-x-1" : "translate-x-7 sm:translate-x-11"
+                    }`}
+                  >
+                    {isTourism ? "⛰️" : "🏪"}
+                  </span>
+                </button>
 
-  {/* Etiqueta de texto para reforzar la obviedad */}
-  <span className={`text-sm font-black uppercase tracking-tighter transition-colors duration-300 ${
-    isTourism ? "text-emerald-600" : "text-orange-600"
-  }`}>
-    {isTourism ? "Modo Turismo" : "Modo Negocios"}
-  </span>
-</div>
+                {/* Etiqueta dinámica: Solo visible si hay espacio o en desktop */}
+                <span className={`text-[10px] sm:text-sm font-black uppercase tracking-tighter transition-colors duration-300 ${
+                  isTourism ? "text-emerald-600" : "text-orange-600"
+                }`}>
+                  {isTourism ? "Turismo" : "Ruta Local"}
+                </span>
+              </div>
+
             </div>
           </div>
         </div>
