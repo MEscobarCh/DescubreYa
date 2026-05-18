@@ -17,10 +17,11 @@ import {
 } from "lucide-react";
 import { applyThemeToDOM } from "@/lib/cityThemes";
 import { sitiosTuristicos } from "@/lib/turismoData";
+import { BUSINESSES } from "@/lib/negociosData";
 
-const CITIES = ["Tingo María", "Huánuco", "Tarapoto", "Cusco", "Lima"];
+// Piloto enfocado exclusivamente en 4 ciudades controladas
+const CITIES = ["Tingo María", "Huánuco", "Tarapoto", "Cusco"];
 
-// Tipado para Google Analytics
 declare global {
   interface Window {
     dataLayer: any[];
@@ -28,7 +29,7 @@ declare global {
   }
 }
 
-// 1. Objeto de Temas Maestro (Centralizado)
+// 1. Objeto de Temas Maestro (Centralizado sin Lima)
 const CITY_THEMES: Record<string, { turismo: string; rutaLocal: string; accent: string; button: string; bg: string }> = {
   "Tingo María": {
     turismo: "from-emerald-400 to-green-600",
@@ -57,24 +58,16 @@ const CITY_THEMES: Record<string, { turismo: string; rutaLocal: string; accent: 
     accent: "text-amber-600 border-amber-400",
     button: "from-amber-500 to-orange-600",
     bg: "from-amber-50/50 to-white"
-  },
-  "Lima": {
-    turismo: "from-slate-400 to-slate-600",
-    rutaLocal: "from-slate-600 to-slate-800",
-    accent: "text-slate-600 border-slate-400",
-    button: "from-slate-500 to-slate-600",
-    bg: "from-slate-50/50 to-white"
   }
 };
 
+// 2. Categorías Optimizadas (Propuesta A)
 const BUSINESS_CATEGORIES = [
   { id: 1, name: "Restaurantes", icon: "🍽️" },
   { id: 2, name: "Hoteles", icon: "🏨" },
-  { id: 3, name: "Billar", icon: "🎱" },
-  { id: 4, name: "Videojuegos", icon: "🎮" },
-  { id: 5, name: "Deportes", icon: "⚽" },
-  { id: 6, name: "Bebidas", icon: "🍷" },
-  { id: 7, name: "Libros", icon: "📚" },
+  { id: 3, name: "Panaderías y Cafés", icon: "☕" },
+  { id: 4, name: "Bares y Discotecas", icon: "🍹" },
+  { id: 5, name: "Deporte y Recreación", icon: "⚽" },
 ];
 
 const getDifficultyColor = (difficulty: string) => {
@@ -92,8 +85,12 @@ export default function Index() {
   const [selectedCategory, setSelectedCategory] = useState("Restaurantes");
   const [emailInput, setEmailInput] = useState("");
 
-  // Constante de tema para simplificar el código
   const theme = CITY_THEMES[selectedCity] || CITY_THEMES["Tingo María"];
+
+  // Filtrado de negocios en tiempo real por ciudad y categoría modular
+  const filteredBusinesses = BUSINESSES.filter(
+    (b) => b.ciudad === selectedCity && b.category === selectedCategory
+  );
 
   useEffect(() => {
     applyThemeToDOM(selectedCity);
@@ -231,7 +228,7 @@ export default function Index() {
                     <button
                       onClick={() => {
                         trackRutaClick(sitio.nombre, sitio.categoria);
-                        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${sitio.coordenadas}`;
+                        const googleMapsUrl = `http://googleusercontent.com/maps.google.com/${sitio.coordenadas}`;
                         window.open(googleMapsUrl, "_blank");
                       }}
                       className={`w-full py-3 bg-gradient-to-r text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg transition-all active:scale-95 ${theme.button}`}
@@ -250,23 +247,92 @@ export default function Index() {
                 <Star className={`w-6 h-6 ${theme.accent.split(' ')[0]}`} />
                 <h2 className="text-3xl sm:text-5xl font-black text-[hsl(var(--theme-primary))]">Ruta Local</h2>
               </div>
+              <p className="text-gray-600 max-w-2xl text-sm sm:text-lg">Descubre comercios, servicios y el motor económico de {selectedCity}.</p>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+
+            {/* Grid de Categorías Optimizada a 5 Columnas Simétricas */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
               {BUSINESS_CATEGORIES.map((cat) => (
                 <button 
                   key={cat.id} 
                   onClick={() => setSelectedCategory(cat.name)} 
                   className={`p-4 rounded-2xl flex flex-col items-center gap-2 border-2 transition-all ${
                     selectedCategory === cat.name 
-                      ? `bg-gradient-to-br ${theme.button} text-white border-transparent shadow-lg` 
-                      : `bg-white border-gray-100 hover:${theme.accent.split(' ')[1]}`
+                      ? `bg-gradient-to-br ${theme.button} text-white border-transparent shadow-lg scale-105` 
+                      : `bg-white border-gray-100 hover:${theme.accent.split(' ')[1]} text-slate-700`
                   }`}
                 >
                   <span className="text-2xl">{cat.icon}</span>
-                  <span className="text-[10px] font-bold">{cat.name}</span>
+                  <span className="text-[10px] font-bold text-center">{cat.name}</span>
                 </button>
               ))}
             </div>
+
+            {/* Listado de Negocios Filtrados */}
+            {filteredBusinesses.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredBusinesses.map((negocio) => (
+                  <div key={negocio.id} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 flex flex-col justify-between p-5 hover:shadow-2xl transition-all duration-500">
+                    <div>
+                      {/* Contenedor de Imagen Limpio sin Badge de Estado Erróneo */}
+                      <div className="relative h-48 rounded-xl overflow-hidden mb-4">
+                        <img src={negocio.image} alt={negocio.name} loading="lazy" className="w-full h-full object-cover" />
+                      </div>
+                      <h3 className="text-xl font-black text-slate-900 mb-1">{negocio.name}</h3>
+                      
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {negocio.tags.map((tag, idx) => (
+                          <span key={idx} className="bg-slate-50 text-slate-600 text-[9px] font-bold px-2 py-0.5 rounded-md border border-slate-100">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Botones de Acción */}
+                    <div className="space-y-2 pt-4 border-t border-gray-50">
+                      <div className="flex gap-2">
+                        {/* WhatsApp con Mensaje Predefinido */}
+                        <a 
+                          href={`https://wa.me/${negocio.whatsapp}?text=${encodeURIComponent(
+                            `Hola ${negocio.name}, los encontré mediante ¡DescubreYA! 🌍 Estoy consultando sobre sus servicios en ${selectedCity}.`
+                          )}`}
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95"
+                        >
+                          <MessageCircle className="w-4 h-4" /> WhatsApp
+                        </a>
+                        
+                        {/* Ubicación */}
+                        <a 
+                          href={negocio.mapUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className={`flex-1 py-2.5 bg-gradient-to-r text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 ${theme.button}`}
+                        >
+                          <MapIcon className="w-4 h-4" /> Ubicar
+                        </a>
+                      </div>
+
+                      {/* Teléfono Fijo/Celular */}
+                      <a 
+                        href={`tel:${negocio.phone}`}
+                        className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-slate-200"
+                      >
+                        <Phone className="w-4 h-4" /> {negocio.phone}
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* Estado Vacío de Respaldo */
+              <div className="text-center py-12 bg-white/50 backdrop-blur-sm rounded-3xl border border-gray-100">
+                <p className="text-gray-500 text-sm font-bold">Próximamente más negocios en esta categoría para {selectedCity} 🏪</p>
+              </div>
+            )}
           </section>
         )}
 
@@ -295,6 +361,7 @@ export default function Index() {
           </div>
         </section>
       </main>
+
       {/* Footer con Redes Sociales - ¡DescubreYA! */}
       <footer className="mt-auto py-10 border-t border-gray-100 bg-white/60 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
