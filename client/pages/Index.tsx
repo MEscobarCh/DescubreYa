@@ -110,6 +110,17 @@ export default function Index() {
     }
   }, [selectedCity]);
 
+  const trackNegocioClick = (negocioNombre: string, tipoAccion: 'whatsapp' | 'ubicar' | 'telefono') => {
+    if (window.gtag) {
+      window.gtag('event', 'click_contacto_negocio', {
+        'business_name': negocioNombre,
+        'action_type': tipoAccion,
+        'category': selectedCategory,
+        'city': selectedCity
+      });
+    }
+  };
+
   const trackRutaClick = (sitioNombre: string, categoria: string) => {
     if (window.gtag) {
       window.gtag('event', 'click_trazar_ruta', {
@@ -228,8 +239,7 @@ export default function Index() {
                     <button
                       onClick={() => {
                         trackRutaClick(sitio.nombre, sitio.categoria);
-                        const googleMapsUrl = `http://googleusercontent.com/maps.google.com/${sitio.coordenadas}`;
-                        window.open(googleMapsUrl, "_blank");
+                        window.open(sitio.mapUrl, "_blank");
                       }}
                       className={`w-full py-3 bg-gradient-to-r text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg transition-all active:scale-95 ${theme.button}`}
                     >
@@ -300,6 +310,7 @@ export default function Index() {
                           )}`}
                           target="_blank" 
                           rel="noopener noreferrer"
+                          onClick={() => trackNegocioClick(negocio.name, 'whatsapp')}
                           className="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95"
                         >
                           <MessageCircle className="w-4 h-4" /> WhatsApp
@@ -310,6 +321,7 @@ export default function Index() {
                           href={negocio.mapUrl} 
                           target="_blank" 
                           rel="noopener noreferrer"
+                          onClick={() => trackNegocioClick(negocio.name, 'ubicar')}
                           className={`flex-1 py-2.5 bg-gradient-to-r text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 ${theme.button}`}
                         >
                           <MapIcon className="w-4 h-4" /> Ubicar
@@ -319,6 +331,7 @@ export default function Index() {
                       {/* Teléfono Fijo/Celular */}
                       <a 
                         href={`tel:${negocio.phone}`}
+                        onClick={() => trackNegocioClick(negocio.name, 'telefono')}
                         className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-slate-200"
                       >
                         <Phone className="w-4 h-4" /> {negocio.phone}
