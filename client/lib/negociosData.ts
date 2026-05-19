@@ -22,7 +22,7 @@ export const BUSINESSES: Business[] = [
     id: 1,
     ciudad: "Tingo María",
     category: "Restaurantes",
-    name: "El Encanto De La Selva",
+    name: "El Encanto De La Selvaaa",
     image: "/images/negocio/tingo_maria/restaurantes/encanto_de_la_selva.webp",
     tags: ["Comida Típica", "Tacacho con Cecina", "Juane"],
     whatsapp: "51946884196",
