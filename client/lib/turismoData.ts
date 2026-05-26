@@ -41,7 +41,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     imagen: "/images/turismo/tingo_maria/catarata.webp",
     descripcion: "Hermosas caídas de agua cristalina perfectas para un refrescante baño en la selva.",
     dificultad: "Moderada",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.349723,-75.968348"
+    mapUrl: "https://maps.app.goo.gl/FeZaYJhVEnZustRc9"
   },
   {
     id: 4,
@@ -51,7 +51,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     imagen: "/images/turismo/tingo_maria/laguna.webp",
     descripcion: "Lugar místico ideal para paseos en bote y conexión espiritual con la naturaleza.",
     dificultad: "Fácil",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.144612174624013,-75.99545179189995"
+    mapUrl: "https://maps.app.goo.gl/dbgyZA4wV7f1ZuXi8"
   },
   {
     id: 5,
@@ -61,7 +61,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     imagen: "/images/turismo/tingo_maria/pavas.webp",
     descripcion: "Tradicional punto de reunión local para disfrutar de las frescas aguas del río.",
     dificultad: "Fácil",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.374169747666473,-75.96131434126399"
+    mapUrl: "https://maps.app.goo.gl/vDfD2uRpA9rDX9yC7"
   },
   {
     id: 6,
@@ -71,7 +71,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     imagen: "/images/turismo/tingo_maria/parque_nacional.webp",
     descripcion: "Área natural protegida que alberga la emblemática cadena montañosa de la Bella Durmiente.",
     dificultad: "Moderada",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.308611,-76.001389"
+    mapUrl: "https://maps.app.goo.gl/9oBsy5jcsi4a92AL8"
   },
   {
     id: 7,
@@ -81,7 +81,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     imagen: "/images/turismo/tingo_maria/gloriapata.webp",
     descripcion: "Caída de agua de más de 50 metros rodeada de densa vegetación en el corazón de la selva.",
     dificultad: "Difícil",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.359306,-75.960040"
+    mapUrl: "https://maps.app.goo.gl/nqJF6gbLLhaCPJab7"
   },
   {
     id: 8,
@@ -91,7 +91,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     imagen: "/images/turismo/tingo_maria/jardin_botanico.webp",
     descripcion: "Colección de plantas medicinales, orquídeas y especies tropicales de la Amazonía peruana.",
     dificultad: "Fácil",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.296944,-75.998611"
+    mapUrl: "https://maps.app.goo.gl/ypXLfjXh5jFFSZMG6"
   },
   {
     id: 9,
@@ -101,7 +101,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     imagen: "/images/turismo/tingo_maria/serpentario.webp",
     descripcion: "Centro de conservación donde se puede apreciar diversas especies de serpientes y reptiles de la selva.",
     dificultad: "Fácil",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.308889,-75.997222"
+    mapUrl: "https://maps.app.goo.gl/ptVRTJgsz6RW3qpq8"
   },
   {
     id: 10,
@@ -111,7 +111,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     imagen: "/images/turismo/tingo_maria/velo_novia.webp",
     descripcion: "Cascada de aguas blancas con una caída elegante que asemeja el velo de una novia.",
     dificultad: "Moderada",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.302500,-75.962500"
+    mapUrl: "https://maps.app.goo.gl/TZKnj7922zbYAx3R7"
   },
 
   // --- HUÁNUCO ---
