@@ -2,15 +2,16 @@
 
 export interface SitioTuristico {
   id: number;
+  ciudad: string;
   nombre: string;
-  categoria: "Aventura" | "Naturaleza" | "Relax" | "Cultura";
+  categoria: string;
   descripcion: string;
   dificultad: "Fácil" | "Moderada" | "Difícil";
-  coordenadas: string;
   imagen: string;
+  mapUrl: string;
 }
 
-export const sitiosTuristicos = [
+export const sitiosTuristicos: SitioTuristico[] = [
   // --- TINGO MARÍA ---
   {
     id: 1,
@@ -20,7 +21,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/cueva.webp",
     descripcion: "Impresionante sistema de cuevas hogar de guácharos y formaciones rocosas únicas.",
     dificultad: "Fácil",
-    coordenadas: "-9.329111,-76.026833"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.329111,-76.026833"
   },
   {
     id: 2,
@@ -30,7 +31,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/mirador.webp",
     descripcion: "El mejor punto para observar la ciudad de Tingo María y la silueta de la Bella Durmiente.",
     dificultad: "Fácil",
-    coordenadas: "-9.289639,-75.997389"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.289639,-75.997389"
   },
   {
     id: 3,
@@ -40,7 +41,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/catarata.webp",
     descripcion: "Hermosas caídas de agua cristalina perfectas para un refrescante baño en la selva.",
     dificultad: "Moderada",
-    coordenadas: "-9.349723,-75.968348"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.349723,-75.968348"
   },
   {
     id: 4,
@@ -50,7 +51,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/laguna.webp",
     descripcion: "Lugar místico ideal para paseos en bote y conexión espiritual con la naturaleza.",
     dificultad: "Fácil",
-    coordenadas: "-9.144612174624013,-75.99545179189995"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.144612174624013,-75.99545179189995"
   },
   {
     id: 5,
@@ -60,7 +61,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/pavas.webp",
     descripcion: "Tradicional punto de reunión local para disfrutar de las frescas aguas del río.",
     dificultad: "Fácil",
-    coordenadas: "-9.374169747666473,-75.96131434126399"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.374169747666473,-75.96131434126399"
   },
   {
     id: 6,
@@ -70,7 +71,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/parque_nacional.webp",
     descripcion: "Área natural protegida que alberga la emblemática cadena montañosa de la Bella Durmiente.",
     dificultad: "Moderada",
-    coordenadas: "-9.308611,-76.001389"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.308611,-76.001389"
   },
   {
     id: 7,
@@ -80,7 +81,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/gloriapata.webp",
     descripcion: "Caída de agua de más de 50 metros rodeada de densa vegetación en el corazón de la selva.",
     dificultad: "Difícil",
-    coordenadas: "-9.359306,-75.960040"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.359306,-75.960040"
   },
   {
     id: 8,
@@ -90,7 +91,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/jardin_botanico.webp",
     descripcion: "Colección de plantas medicinales, orquídeas y especies tropicales de la Amazonía peruana.",
     dificultad: "Fácil",
-    coordenadas: "-9.296944,-75.998611"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.296944,-75.998611"
   },
   {
     id: 9,
@@ -100,7 +101,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/serpentario.webp",
     descripcion: "Centro de conservación donde se puede apreciar diversas especies de serpientes y reptiles de la selva.",
     dificultad: "Fácil",
-    coordenadas: "-9.308889,-75.997222"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.308889,-75.997222"
   },
   {
     id: 10,
@@ -110,8 +111,9 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tingo_maria/velo_novia.webp",
     descripcion: "Cascada de aguas blancas con una caída elegante que asemeja el velo de una novia.",
     dificultad: "Moderada",
-    coordenadas: "-9.302500,-75.962500"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.302500,-75.962500"
   },
+
   // --- HUÁNUCO ---
   {
     id: 11,
@@ -121,7 +123,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/kotosh.webp",
     descripcion: "Uno de los templos más antiguos de América, famoso por su escultura de las Manos Cruzadas.",
     dificultad: "Fácil",
-    coordenadas: "-9.930438,-76.279822"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.930438,-76.279822"
   },
   {
     id: 12,
@@ -131,7 +133,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/puente_calicanto.webp",
     descripcion: "Majestuosa obra del siglo XIX construida con cal y canto sobre el río Huallaga.",
     dificultad: "Fácil",
-    coordenadas: "-9.932468,-76.236616"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.932468,-76.236616"
   },
   {
     id: 13,
@@ -141,7 +143,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/plaza_armas_huanuco.webp",
     descripcion: "El corazón de la ciudad, con su pileta de piedra granito y la moderna Catedral.",
     dificultad: "Fácil",
-    coordenadas: "-9.930607,-76.240417"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.930607,-76.240417"
   },
   {
     id: 14,
@@ -151,7 +153,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/pillco_mozo.webp",
     descripcion: "Formación pétrea que asemeja a un hombre dormido, guardián eterno de la ciudad.",
     dificultad: "Moderada",
-    coordenadas: "-9.948256,-76.216390"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.948256,-76.216390"
   },
   {
     id: 15,
@@ -161,7 +163,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/tomayquichua.webp",
     descripcion: "Pintoresco pueblo cuna de 'La Perricholi', famoso por sus paisajes y chicherías.",
     dificultad: "Fácil",
-    coordenadas: "-10.057766,-76.195655"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-10.057766,-76.195655"
   },
   {
     id: 16,
@@ -171,7 +173,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/huanuco_pampa.webp",
     descripcion: "Antiguo centro administrativo inca con un impresionante ushnu piramidal y kallankas.",
     dificultad: "Moderada",
-    coordenadas: "-9.866667,-76.816667"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.866667,-76.816667"
   },
   {
     id: 17,
@@ -181,7 +183,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/catedral.webp",
     descripcion: "Imponente templo de estilo neoclásico ubicado en la Plaza de Armas con hermosos vitrales.",
     dificultad: "Fácil",
-    coordenadas: "-9.931111,-76.240833"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.931111,-76.240833"
   },
   {
     id: 18,
@@ -191,7 +193,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/malecon_huallaga.webp",
     descripcion: "Paseo ribereño ideal para caminatas y ciclismo con vistas al majestuoso río Huallaga.",
     dificultad: "Fácil",
-    coordenadas: "-9.934167,-76.232500"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.934167,-76.232500"
   },
   {
     id: 19,
@@ -201,7 +203,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/pichgacocha.webp",
     descripcion: "Sistema de cinco lagunas altoandinas de aguas cristalinas rodeadas de ichu y fauna silvestre.",
     dificultad: "Difícil",
-    coordenadas: "-9.978056,-76.063333"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.978056,-76.063333"
   },
   {
     id: 20,
@@ -211,7 +213,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/huanuco/museo_regional.webp",
     descripcion: "Exhibe piezas prehispánicas de las culturas Yarowilca, Inca y colonial de la región.",
     dificultad: "Fácil",
-    coordenadas: "-9.930556,-76.240000"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.930556,-76.240000"
   },
 
   // --- TARAPOTO ---
@@ -223,7 +225,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/ahuashiyacu.webp",
     descripcion: "Impresionante caída de agua de 40 metros rodeada de exuberante vegetación selvática.",
     dificultad: "Fácil",
-    coordenadas: "-6.487455,-76.359743"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.487455,-76.359743"
   },
   {
     id: 22,
@@ -233,7 +235,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/laguna_sauce.webp",
     descripcion: "Hermosa laguna de aguas azuladas, ideal para paseos en bote y observación de aves.",
     dificultad: "Fácil",
-    coordenadas: "-6.690857,-76.216965"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.690857,-76.216965"
   },
   {
     id: 23,
@@ -243,7 +245,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/castillo_lamas.webp",
     descripcion: "Construcción estilo medieval con impresionantes vistas panorámicas del valle.",
     dificultad: "Fácil",
-    coordenadas: "-6.503722,-76.522346"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.503722,-76.522346"
   },
   {
     id: 24,
@@ -253,7 +255,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/huacamaillo.webp",
     descripcion: "Sistema de cascadas naturales con refrescantes pozas para nadar en medio de la selva.",
     dificultad: "Moderada",
-    coordenadas: "-6.401197,-76.328447"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.401197,-76.328447"
   },
   {
     id: 25,
@@ -263,7 +265,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/mirador_escalera.webp",
     descripcion: "Espectacular mirador con vista de 360° de Tarapoto y la Cordillera Escalera.",
     dificultad: "Moderada",
-    coordenadas: "-6.472986,-76.331307"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.472986,-76.331307"
   },
   {
     id: 26,
@@ -273,7 +275,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/banos_termales.webp",
     descripcion: "Aguas termales medicinales de origen volcánico, perfectas para el descanso y bienestar.",
     dificultad: "Fácil",
-    coordenadas: "-6.450538,-76.350402"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.450538,-76.350402"
   },
   {
     id: 27,
@@ -283,7 +285,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/cordillera_azul.webp",
     descripcion: "Área natural protegida con una biodiversidad única de flora y fauna amazónica.",
     dificultad: "Difícil",
-    coordenadas: "-7.114772,-76.053524"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-7.114772,-76.053524"
   },
   {
     id: 28,
@@ -293,7 +295,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/petroglifos_polish.webp",
     descripcion: "Misterioso arte rupestre ancestral tallado en piedra por culturas precolombinas.",
     dificultad: "Fácil",
-    coordenadas: "-6.574378,-76.427563"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.574378,-76.427563"
   },
   {
     id: 29,
@@ -303,7 +305,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/plaza_tarapoto.webp",
     descripcion: "El vibrante centro de la ciudad con su pileta central y rodeado de palmeras.",
     dificultad: "Fácil",
-    coordenadas: "-6.488698,-76.359784"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.488698,-76.359784"
   },
   {
     id: 30,
@@ -313,7 +315,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/tarapoto/tununtunumba.webp",
     descripcion: "Espectacular cascada de tres niveles con pozas color esmeralda en la profundidad de la selva.",
     dificultad: "Difícil",
-    coordenadas: "-6.534856,-76.342178"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.534856,-76.342178"
   },
 
   // --- CUSCO ---
@@ -325,7 +327,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/machu_picchu.webp",
     descripcion: "Icónica ciudadela inca reconocida como Maravilla del Mundo y Patrimonio de la Humanidad.",
     dificultad: "Moderada",
-    coordenadas: "-13.163141,-72.544963"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.163141,-72.544963"
   },
   {
     id: 32,
@@ -335,7 +337,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/plaza_armas_cusco.webp",
     descripcion: "El vibrante corazón histórico de la ciudad, rodeado de iglesias coloniales y portales de piedra.",
     dificultad: "Fácil",
-    coordenadas: "-13.516675,-71.980354"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.516675,-71.980354"
   },
   {
     id: 33,
@@ -345,7 +347,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/sacsayhuaman.webp",
     descripcion: "Fortaleza ceremonial con enormes muros de piedras talladas que desafían la ingeniería moderna.",
     dificultad: "Fácil",
-    coordenadas: "-13.509102,-71.982353"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.509102,-71.982353"
   },
   {
     id: 34,
@@ -355,7 +357,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/pisac.webp",
     descripcion: "Espectacular complejo arqueológico con andenes incas y el mercado artesanal más famoso de la región.",
     dificultad: "Fácil",
-    coordenadas: "-13.422000,-71.849000"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.422000,-71.849000"
   },
   {
     id: 35,
@@ -365,7 +367,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/vinicunca.webp",
     descripcion: "Espectacular montaña con franjas multicolores creadas por la sedimentación de minerales.",
     dificultad: "Difícil",
-    coordenadas: "-13.870218,-71.303509"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.870218,-71.303509"
   },
   {
     id: 36,
@@ -375,7 +377,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/laguna_humantay.webp",
     descripcion: "Laguna glacial de intenso color turquesa al pie del nevado Humantay.",
     dificultad: "Moderada",
-    coordenadas: "-13.282745,-72.616182"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.282745,-72.616182"
   },
   {
     id: 37,
@@ -385,7 +387,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/moray.webp",
     descripcion: "Increíbles andenes circulares incas que funcionaban como laboratorio agrícola experimental.",
     dificultad: "Fácil",
-    coordenadas: "-13.329500,-72.210472"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.329500,-72.210472"
   },
   {
     id: 38,
@@ -395,7 +397,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/salineras_maras.webp",
     descripcion: "Miles de pozos de sal incrustados en la ladera de la montaña, explotados desde la época inca.",
     dificultad: "Fácil",
-    coordenadas: "-13.301421,-72.155459"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.301421,-72.155459"
   },
   {
     id: 39,
@@ -405,7 +407,7 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/qenqo.webp",
     descripcion: "Santuario inca tallado en roca viva con canales zigzagueantes para rituales sagrados.",
     dificultad: "Fácil",
-    coordenadas: "-13.508638,-71.971850"
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.508638,-71.971850"
   },
   {
     id: 40,
@@ -415,6 +417,6 @@ export const sitiosTuristicos = [
     imagen: "/images/turismo/cusco/bosque_nublado.webp",
     descripcion: "Reserva de neblina con exuberante biodiversidad, hogar del oso de anteojos y orquídeas únicas.",
     dificultad: "Moderada",
-    coordenadas: "-13.175150,-72.537540"
-  },
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.175150,-72.537540"
+  }
 ];
