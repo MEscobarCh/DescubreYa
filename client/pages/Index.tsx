@@ -228,8 +228,7 @@ export default function Index() {
                     <button
                       onClick={() => {
                         trackRutaClick(sitio.nombre, sitio.categoria);
-                        const googleMapsUrl = `http://googleusercontent.com/maps.google.com/${sitio.coordenadas}`;
-                        window.open(googleMapsUrl, "_blank");
+                        window.open(sitio.mapUrl, "_blank");
                       }}
                       className={`w-full py-3 bg-gradient-to-r text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg transition-all active:scale-95 ${theme.button}`}
                     >
