@@ -21,7 +21,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     imagen: "/images/turismo/tingo_maria/cueva.webp",
     descripcion: "Impresionante sistema de cuevas hogar de guácharos y formaciones rocosas únicas.",
     dificultad: "Fácil",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.329111,-76.026833"
+    mapUrl: "https://maps.app.goo.gl/PKf9ry9RZeE8V5Dd8"
   },
   {
     id: 2,
