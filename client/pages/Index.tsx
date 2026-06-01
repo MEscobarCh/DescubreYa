@@ -21,6 +21,8 @@ import { BUSINESSES } from "@/lib/negociosData";
 import { useAuthStore } from "@/store/authStore";
 import { GoogleLogin } from '@react-oauth/google';
 import { User as UserIcon, LogOut, Mail, Lock, UserPlus } from "lucide-react";
+import { FavoriteButton } from "../components/ui/FavoriteButton";
+import { Link } from 'react-router-dom';
 
 // Piloto enfocado exclusivamente en 4 ciudades controladas
 const CITIES = ["Tingo María", "Huánuco", "Tarapoto", "Cusco"];
@@ -84,7 +86,28 @@ const getDifficultyColor = (difficulty: string) => {
 
 export default function Index() {
   // --- ESTADOS DE AUTENTICACIÓN ---
-  const { user, login, logout } = useAuthStore();
+  // 1. Actualizamos la llamada al store
+  const { user, token, login, logout, setFavorites } = useAuthStore();
+
+  // 2. Agregamos el efecto de descarga automática
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (user && token) {
+        try {
+          const res = await fetch('/api/favorites', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setFavorites(data);
+          }
+        } catch (error) {
+          console.error('Error al descargar favoritos:', error);
+        }
+      }
+    };
+    fetchFavorites();
+  }, [user, token, setFavorites]);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [authName, setAuthName] = useState('');
@@ -282,10 +305,14 @@ export default function Index() {
                     <span className="text-xs font-bold text-slate-800">{user.name.split(' ')[0]}</span>
                     <span className={`text-[9px] uppercase font-black ${theme.accent.split(' ')[0]}`}>{selectedCity}</span>
                   </div>
-                  {/* Avatar estático con la inicial */}
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm bg-gradient-to-r ${theme.button}`}>
+                  {/* Avatar interactivo que lleva al perfil */}
+                  <Link 
+                    to="/perfil"
+                    title="Ir a Mi Itinerario"
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm bg-gradient-to-r hover:scale-110 hover:shadow-md transition-all active:scale-95 cursor-pointer ${theme.button}`}
+                  >
                     {user.name.charAt(0).toUpperCase()}
-                  </div>
+                  </Link>
                   <button onClick={logout} className="p-1.5 text-gray-400 hover:text-red-500 transition-colors" title="Cerrar sesión">
                     <LogOut className="w-4 h-4" />
                   </button>
@@ -353,6 +380,8 @@ export default function Index() {
                 <div key={sitio.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100">
                   <div className="relative h-52 overflow-hidden">
                     <img src={sitio.imagen} alt={sitio.nombre} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    {/* Botón de favoritos inyectado aquí */}
+                    <FavoriteButton itemId={sitio.id} itemType="turismo" />
                   </div>
                   <div className="p-5">
                     <span className={`text-[10px] font-bold uppercase tracking-widest ${theme.accent.split(' ')[0]}`}>{sitio.categoria}</span>
@@ -448,6 +477,8 @@ export default function Index() {
                       <div>
                         <div className="relative h-48 rounded-xl overflow-hidden mb-4">
                           <img src={negocio.image} alt={negocio.name} loading="lazy" className="w-full h-full object-cover" />
+                          {/* Botón de favoritos inyectado aquí */}
+                          <FavoriteButton itemId={negocio.id} itemType="negocio" />
                         </div>
                         <h3 className="text-xl font-black text-slate-900 mb-1">{negocio.name}</h3>
                         <div className="flex flex-wrap gap-1.5 mb-4">
