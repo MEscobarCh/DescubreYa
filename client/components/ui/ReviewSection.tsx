@@ -166,20 +166,20 @@ export function ReviewSection({ placeId }: { placeId: string }) {
               <div className="flex items-center gap-3">
                 {/* 👇 NUEVO: Botones Editar/Eliminar si es el dueño 👇 */}
                 {user && user.id === review.user_id && (
-                  <div className="flex items-center gap-3 mr-2 border-r border-gray-100 pr-3">
+                  <div className="flex items-center gap-2 sm:gap-3 mr-1 sm:mr-2 border-r border-gray-100 pr-2 sm:pr-3">
                     <button 
                       onClick={() => {
                         setRating(review.rating);
                         setComment(review.comment);
-                        setIsEditing(true); // <-- Abre el formulario
+                        setIsEditing(true);
                       }}
-                      className="text-[11px] font-bold text-blue-500 hover:text-blue-700 transition-colors"
+                      className="text-[10px] sm:text-[11px] font-bold text-blue-500 hover:text-blue-700 transition-colors whitespace-nowrap"
                     >
                       Editar
                     </button>
                     <button 
                       onClick={handleDelete}
-                      className="text-[11px] font-bold text-red-500 hover:text-red-700 transition-colors"
+                      className="text-[10px] sm:text-[11px] font-bold text-red-500 hover:text-red-700 transition-colors whitespace-nowrap"
                     >
                       Borrar
                     </button>
