@@ -12,7 +12,7 @@ export interface SitioTuristico {
 }
 
 export const sitiosTuristicos: SitioTuristico[] = [
-  // --- TINGO MARÍA ---
+  // --- TINGO MARÍA (IDs 1 al 1000) ---
   {
     id: 1,
     ciudad: "Tingo María",
@@ -114,9 +114,9 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://maps.app.goo.gl/TZKnj7922zbYAx3R7"
   },
 
-  // --- HUÁNUCO ---
+  // --- HUÁNUCO (IDs 1001 al 2000) ---
   {
-    id: 11,
+    id: 1001,
     ciudad: "Huánuco",
     nombre: "Kotosh (Manos Cruzadas)",
     categoria: "Arqueológico",
@@ -126,7 +126,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.930438,-76.279822"
   },
   {
-    id: 12,
+    id: 1002,
     ciudad: "Huánuco",
     nombre: "Puente Calicanto",
     categoria: "Histórico",
@@ -136,7 +136,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.932468,-76.236616"
   },
   {
-    id: 13,
+    id: 1003,
     ciudad: "Huánuco",
     nombre: "Plaza de Armas",
     categoria: "Cultural",
@@ -146,7 +146,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.930607,-76.240417"
   },
   {
-    id: 14,
+    id: 1004,
     ciudad: "Huánuco",
     nombre: "Pilco Mozo",
     categoria: "Mirador Natural",
@@ -156,7 +156,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.948256,-76.216390"
   },
   {
-    id: 15,
+    id: 1005,
     ciudad: "Huánuco",
     nombre: "Tomayquichua",
     categoria: "Tradicional",
@@ -166,7 +166,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-10.057766,-76.195655"
   },
   {
-    id: 16,
+    id: 1006,
     ciudad: "Huánuco",
     nombre: "Complejo Arqueológico de Huánuco Pampa",
     categoria: "Arqueológico",
@@ -176,7 +176,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.866667,-76.816667"
   },
   {
-    id: 17,
+    id: 1007,
     ciudad: "Huánuco",
     nombre: "Catedral de Huánuco",
     categoria: "Cultura",
@@ -186,7 +186,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.931111,-76.240833"
   },
   {
-    id: 18,
+    id: 1008,
     ciudad: "Huánuco",
     nombre: "Malecón del Río Huallaga",
     categoria: "Recreación",
@@ -196,7 +196,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.934167,-76.232500"
   },
   {
-    id: 19,
+    id: 1009,
     ciudad: "Huánuco",
     nombre: "Laguna de Pichgacocha",
     categoria: "Naturaleza",
@@ -206,7 +206,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.978056,-76.063333"
   },
   {
-    id: 20,
+    id: 1010,
     ciudad: "Huánuco",
     nombre: "Museo Regional de Huánuco",
     categoria: "Cultura",
@@ -216,9 +216,9 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-9.930556,-76.240000"
   },
 
-  // --- TARAPOTO ---
+  // --- TARAPOTO (IDs 2001 al 3000) ---
   {
-    id: 21,
+    id: 2001,
     ciudad: "Tarapoto",
     nombre: "Cascadas de Ahuashiyacu",
     categoria: "Aventura",
@@ -228,7 +228,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.487455,-76.359743"
   },
   {
-    id: 22,
+    id: 2002,
     ciudad: "Tarapoto",
     nombre: "Laguna Azul (Sauce)",
     categoria: "Naturaleza",
@@ -238,7 +238,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.690857,-76.216965"
   },
   {
-    id: 23,
+    id: 2003,
     ciudad: "Tarapoto",
     nombre: "Castillo de Lamas",
     categoria: "Cultura",
@@ -248,7 +248,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.503722,-76.522346"
   },
   {
-    id: 24,
+    id: 2004,
     ciudad: "Tarapoto",
     nombre: "Cataratas de huacamaillo",
     categoria: "Aventura",
@@ -258,7 +258,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.401197,-76.328447"
   },
   {
-    id: 25,
+    id: 2005,
     ciudad: "Tarapoto",
     nombre: "Mirador del Cerro Escalera",
     categoria: "Vista Panorámica",
@@ -268,7 +268,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.472986,-76.331307"
   },
   {
-    id: 26,
+    id: 2006,
     ciudad: "Tarapoto",
     nombre: "Baños Termales de San Mateo",
     categoria: "Relax",
@@ -278,7 +278,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.450538,-76.350402"
   },
   {
-    id: 27,
+    id: 2007,
     ciudad: "Tarapoto",
     nombre: "Reserva Nacional Cordillera Azul",
     categoria: "Naturaleza",
@@ -288,7 +288,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-7.114772,-76.053524"
   },
   {
-    id: 28,
+    id: 2008,
     ciudad: "Tarapoto",
     nombre: "Petroglifos de Polish",
     categoria: "Cultura",
@@ -298,7 +298,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.574378,-76.427563"
   },
   {
-    id: 29,
+    id: 2009,
     ciudad: "Tarapoto",
     nombre: "Plaza de Armas de Tarapoto",
     categoria: "Cultural",
@@ -308,7 +308,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.488698,-76.359784"
   },
   {
-    id: 30,
+    id: 2010,
     ciudad: "Tarapoto",
     nombre: "Catarata de Tununtunumba",
     categoria: "Aventura",
@@ -318,9 +318,9 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-6.534856,-76.342178"
   },
 
-  // --- CUSCO ---
+  // --- CUSCO (IDs 3001 al 4000) ---
   {
-    id: 31,
+    id: 3001,
     ciudad: "Cusco",
     nombre: "Machu Picchu",
     categoria: "Cultura",
@@ -330,7 +330,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.163141,-72.544963"
   },
   {
-    id: 32,
+    id: 3002,
     ciudad: "Cusco",
     nombre: "Plaza de Armas del Cusco",
     categoria: "Cultura",
@@ -340,7 +340,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.516675,-71.980354"
   },
   {
-    id: 33,
+    id: 3003,
     ciudad: "Cusco",
     nombre: "Sacsayhuamán",
     categoria: "Arqueológico",
@@ -350,7 +350,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.509102,-71.982353"
   },
   {
-    id: 34,
+    id: 3004,
     ciudad: "Cusco",
     nombre: "Pisac",
     categoria: "Arqueológico",
@@ -360,7 +360,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.422000,-71.849000"
   },
   {
-    id: 35,
+    id: 3005,
     ciudad: "Cusco",
     nombre: "Montaña de 7 Colores (Vinicunca)",
     categoria: "Aventura",
@@ -370,7 +370,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.870218,-71.303509"
   },
   {
-    id: 36,
+    id: 3006,
     ciudad: "Cusco",
     nombre: "Laguna Humantay",
     categoria: "Naturaleza",
@@ -380,7 +380,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.282745,-72.616182"
   },
   {
-    id: 37,
+    id: 3007,
     ciudad: "Cusco",
     nombre: "Moray",
     categoria: "Arqueológico",
@@ -390,7 +390,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.329500,-72.210472"
   },
   {
-    id: 38,
+    id: 3008,
     ciudad: "Cusco",
     nombre: "Salineras de Maras",
     categoria: "Cultural",
@@ -400,7 +400,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.301421,-72.155459"
   },
   {
-    id: 39,
+    id: 3009,
     ciudad: "Cusco",
     nombre: "Qenqo",
     categoria: "Arqueológico",
@@ -410,7 +410,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://www.google.com/maps/search/?api=1&query=-13.508638,-71.971850"
   },
   {
-    id: 40,
+    id: 3010,
     ciudad: "Cusco",
     nombre: "Bosque Nublado de Machu Picchu",
     categoria: "Naturaleza",
