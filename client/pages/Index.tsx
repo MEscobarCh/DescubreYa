@@ -18,6 +18,9 @@ import {
 import { applyThemeToDOM } from "@/lib/cityThemes";
 import { sitiosTuristicos } from "@/lib/turismoData";
 import { BUSINESSES } from "@/lib/negociosData";
+import { useAuthStore } from "@/store/authStore";
+import { GoogleLogin } from '@react-oauth/google';
+import { User as UserIcon, LogOut, Mail, Lock, UserPlus } from "lucide-react";
 
 // Piloto enfocado exclusivamente en 4 ciudades controladas
 const CITIES = ["Tingo María", "Huánuco", "Tarapoto", "Cusco"];
@@ -80,6 +83,15 @@ const getDifficultyColor = (difficulty: string) => {
 };
 
 export default function Index() {
+  // --- ESTADOS DE AUTENTICACIÓN ---
+  const { user, login, logout } = useAuthStore();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [authName, setAuthName] = useState('');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+
   const [isTourism, setIsTourism] = useState(true);
   const [selectedCity, setSelectedCity] = useState("Tingo María");
   const [selectedCategory, setSelectedCategory] = useState("Restaurantes");
@@ -170,6 +182,78 @@ export default function Index() {
     }
   };
 
+  // --- MANEJADORES DE AUTENTICACIÓN ---
+  const handleTraditionalAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    try {
+      const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
+      const body = authMode === 'login'
+        ? { email: authEmail, password: authPassword }
+        : { name: authName, email: authEmail, password: authPassword };
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      
+      const data = await res.json();
+
+      if (res.ok) {
+        login(data.user, data.token);
+        setIsAuthModalOpen(false);
+      } else {
+        alert(data.error || 'Error en la autenticación');
+      }
+    } catch (error) {
+      alert('Error de conexión');
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    try {
+      const base64Url = credentialResponse.credential.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      const payload = JSON.parse(jsonPayload);
+
+      const res = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: payload.email,
+          name: payload.name,
+        })
+      });
+
+      // --- NUEVA LÓGICA DE DETECCIÓN ---
+      const textResponse = await res.text(); // Leemos la respuesta cruda primero
+      
+      if (!textResponse) {
+        console.error("El servidor devolvió una respuesta vacía.");
+        alert("Error: El servidor no respondió. Revisa la consola de tu terminal.");
+        return;
+      }
+
+      const data = JSON.parse(textResponse); // Ahora sí la convertimos a JSON
+
+      if (res.ok) {
+        login(data.user, data.token);
+        setIsAuthModalOpen(false);
+      } else {
+        alert(data.error || 'Error con Google');
+      }
+    } catch (error) {
+      console.error('Google Auth Error:', error);
+      alert('Error procesando el login con Google. Revisa la consola F12.');
+    }
+  };
+
   return (
     <div className={`min-h-screen bg-gradient-to-br ${theme.bg} transition-colors duration-500`}>
       
@@ -188,8 +272,35 @@ export default function Index() {
               </h1>
             </div>
 
-            {/* Controles */}
+            {/* Controles y Autenticación */}
             <div className="flex items-center justify-center gap-3 w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0 border-gray-50">
+              
+              {/* Usuario / Botón de Login */}
+              {user ? (
+                <div className="flex items-center gap-2 mr-2 border-r pr-3 border-gray-200">
+                  <div className="flex flex-col items-end hidden sm:flex">
+                    <span className="text-xs font-bold text-slate-800">{user.name.split(' ')[0]}</span>
+                    <span className={`text-[9px] uppercase font-black ${theme.accent.split(' ')[0]}`}>{selectedCity}</span>
+                  </div>
+                  {/* Avatar estático con la inicial */}
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm bg-gradient-to-r ${theme.button}`}>
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <button onClick={logout} className="p-1.5 text-gray-400 hover:text-red-500 transition-colors" title="Cerrar sesión">
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <button 
+                  onClick={() => setIsAuthModalOpen(true)}
+                  className={`flex items-center justify-center gap-1.5 h-8 sm:h-10 px-4 sm:px-5 rounded-full text-xs sm:text-sm font-bold text-white bg-gradient-to-r shadow-sm hover:shadow-md transition-all active:scale-95 mr-1 sm:mr-2 ${theme.button}`}
+                >
+                  <UserIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  Ingresar
+                </button>
+              )}
+
+              {/* Selector de Ciudad */}
               <div className="relative">
                 <select
                   value={selectedCity}
@@ -203,6 +314,7 @@ export default function Index() {
                 <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
 
+              {/* Toggle Turismo/Ruta Local */}
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsTourism(!isTourism)}
@@ -218,6 +330,7 @@ export default function Index() {
                   {isTourism ? "Turismo" : "Ruta Local"}
                 </span>
               </div>
+
             </div>
           </div>
         </div>
@@ -468,6 +581,121 @@ export default function Index() {
           </div>
         </div>
       </footer>
+
+      {/* --- MODAL DE AUTENTICACIÓN --- */}
+      {isAuthModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 transition-all">
+          <div className="bg-white rounded-[2rem] w-full max-w-md overflow-hidden shadow-2xl ring-1 ring-white/20 animate-in zoom-in-95 duration-300">
+            
+            {/* Cabecera del Modal con Gradiente Dinámico */}
+            <div className={`relative p-8 text-center text-white bg-gradient-to-br ${theme.button} overflow-hidden`}>
+              {/* Patrón decorativo sutil de fondo */}
+              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4 backdrop-blur-sm shadow-inner border border-white/30">
+                  {authMode === 'login' ? <UserIcon className="w-8 h-8 text-white drop-shadow-sm" /> : <UserPlus className="w-8 h-8 text-white drop-shadow-sm" />}
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-black mb-2 tracking-tight drop-shadow-md">
+                  {authMode === 'login' ? '¡Hola de nuevo!' : 'Únete a la aventura'}
+                </h2>
+                <p className="text-sm font-medium text-white/90 drop-shadow-sm">
+                  {authMode === 'login' ? 'Ingresa para guardar tus rutas favoritas.' : 'Crea tu cuenta y descubre lo mejor de tu ciudad.'}
+                </p>
+              </div>
+
+              {/* Botón Cerrar (reubicado para mayor limpieza) */}
+              <button 
+                onClick={() => setIsAuthModalOpen(false)}
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-black/10 text-white hover:bg-black/20 transition-colors z-20"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Cuerpo del Formulario */}
+            <div className="p-6 sm:p-8 bg-white">
+              {/* Botón de Google centrado */}
+              <div className="flex justify-center mb-6 hover:scale-[1.02] transition-transform">
+                <GoogleLogin 
+                  onSuccess={handleGoogleSuccess} 
+                  onError={() => alert('No se pudo conectar con Google')}
+                  useOneTap
+                  theme="filled_blue"
+                  shape="pill"
+                />
+              </div>
+
+              <div className="relative flex items-center justify-center my-8">
+                <div className="absolute border-t border-gray-100 w-full"></div>
+                <span className="relative bg-white px-4 text-[10px] text-gray-400 font-black uppercase tracking-widest">O con correo</span>
+              </div>
+
+              {/* Formulario Tradicional */}
+              <form onSubmit={handleTraditionalAuth} className="space-y-4">
+                {authMode === 'register' && (
+                  <div className="relative">
+                    <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input 
+                      type="text" 
+                      required 
+                      value={authName}
+                      onChange={(e) => setAuthName(e.target.value)}
+                      className={`w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 bg-gray-50/50 hover:bg-white focus:bg-white focus:border-${theme.accent.split(' ')[1].replace('border-', '')} outline-none transition-all text-sm font-medium text-gray-700`}
+                      placeholder="Tu nombre completo"
+                    />
+                  </div>
+                )}
+                
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input 
+                    type="email" 
+                    required 
+                    value={authEmail}
+                    onChange={(e) => setAuthEmail(e.target.value)}
+                    className={`w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 bg-gray-50/50 hover:bg-white focus:bg-white focus:border-${theme.accent.split(' ')[1].replace('border-', '')} outline-none transition-all text-sm font-medium text-gray-700`}
+                    placeholder="tu@correo.com"
+                  />
+                </div>
+                
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input 
+                    type="password" 
+                    required 
+                    value={authPassword}
+                    onChange={(e) => setAuthPassword(e.target.value)}
+                    className={`w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 bg-gray-50/50 hover:bg-white focus:bg-white focus:border-${theme.accent.split(' ')[1].replace('border-', '')} outline-none transition-all text-sm font-medium text-gray-700`}
+                    placeholder="••••••••"
+                  />
+                </div>
+
+                <button 
+                  type="submit" 
+                  disabled={authLoading}
+                  className={`w-full py-4 mt-2 rounded-2xl text-white font-black text-sm tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-[0.98] flex justify-center bg-gradient-to-r ${theme.button} ${authLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                >
+                  {authLoading ? 'PROCESANDO...' : (authMode === 'login' ? 'INICIAR SESIÓN' : 'CREAR CUENTA')}
+                </button>
+              </form>
+
+              {/* Selector de Modo (Login/Registro) */}
+              <p className="text-center mt-8 text-sm text-gray-500 font-medium">
+                {authMode === 'login' ? '¿Aún no tienes cuenta?' : '¿Ya eres parte de la aventura?'}
+                <button 
+                  type="button"
+                  onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
+                  className={`ml-1.5 font-black transition-colors ${theme.accent.split(' ')[0]} hover:underline`}
+                >
+                  {authMode === 'login' ? 'Regístrate aquí' : 'Inicia Sesión'}
+                </button>
+              </p>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 }

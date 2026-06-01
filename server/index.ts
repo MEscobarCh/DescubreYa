@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import authRoutes from "./routes/auth"; // 1. IMPORTANTE: Debe estar aquí arriba
 
 export function createServer() {
   const app = express();
@@ -18,6 +19,9 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // 2. IMPORTANTE: La ruta debe estar conectada AQUÍ, ANTES del "return app;"
+  app.use("/api/auth", authRoutes);
 
   return app;
 }
