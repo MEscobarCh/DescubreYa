@@ -1,102 +1,3 @@
-│   │   │   package.json
-│   │   │   README.md
-│   │   │
-│   │   ├───es6
-│   │   │   │   index.js
-│   │   │   │
-│   │   │   ├───cartesian
-│   │   │   │       Area.js
-│   │   │   │       Bar.js
-│   │   │   │       Brush.js
-│   │   │   │       CartesianAxis.js
-│   │   │   │       CartesianGrid.js
-│   │   │   │       ErrorBar.js
-│   │   │   │       getEquidistantTicks.js
-│   │   │   │       getTicks.js
-│   │   │   │       Line.js
-│   │   │   │       ReferenceArea.js
-│   │   │   │       ReferenceDot.js
-│   │   │   │       ReferenceLine.js
-│   │   │   │       Scatter.js
-│   │   │   │       XAxis.js
-│   │   │   │       YAxis.js
-│   │   │   │       ZAxis.js
-│   │   │   │
-│   │   │   ├───chart
-│   │   │   │       AccessibilityManager.js
-│   │   │   │       AreaChart.js
-│   │   │   │       BarChart.js
-│   │   │   │       ComposedChart.js
-│   │   │   │       FunnelChart.js
-│   │   │   │       generateCategoricalChart.js
-│   │   │   │       LineChart.js
-│   │   │   │       PieChart.js
-│   │   │   │       RadarChart.js
-│   │   │   │       RadialBarChart.js
-│   │   │   │       Sankey.js
-│   │   │   │       ScatterChart.js
-│   │   │   │       SunburstChart.js
-│   │   │   │       Treemap.js
-│   │   │   │       types.js
-│   │   │   │
-│   │   │   ├───component
-│   │   │   │       Cell.js
-│   │   │   │       Cursor.js
-│   │   │   │       Customized.js
-│   │   │   │       DefaultLegendContent.js
-│   │   │   │       DefaultTooltipContent.js
-│   │   │   │       Label.js
-│   │   │   │       LabelList.js
-│   │   │   │       Legend.js
-│   │   │   │       ResponsiveContainer.js
-│   │   │   │       Text.js
-│   │   │   │       Tooltip.js
-│   │   │   │       TooltipBoundingBox.js
-│   │   │   │
-│   │   │   ├───container
-│   │   │   │       Layer.js
-│   │   │   │       Surface.js
-│   │   │   │
-│   │   │   ├───context
-│   │   │   │       chartLayoutContext.js
-│   │   │   │
-│   │   │   ├───numberAxis
-│   │   │   │       Funnel.js
-│   │   │   │
-│   │   │   ├───polar
-│   │   │   │       Pie.js
-│   │   │   │       PolarAngleAxis.js
-│   │   │   │       PolarGrid.js
-│   │   │   │       PolarRadiusAxis.js
-│   │   │   │       Radar.js
-│   │   │   │       RadialBar.js
-│   │   │   │       types.js
-│   │   │   │
-│   │   │   ├───shape
-│   │   │   │       Cross.js
-│   │   │   │       Curve.js
-│   │   │   │       Dot.js
-│   │   │   │       Polygon.js
-│   │   │   │       Rectangle.js
-│   │   │   │       Sector.js
-│   │   │   │       Symbols.js
-│   │   │   │       Trapezoid.js
-│   │   │   │
-│   │   │   └───util
-│   │   │       │   ActiveShapeUtils.js
-│   │   │       │   BarUtils.js
-│   │   │       │   calculateViewBox.js
-│   │   │       │   CartesianUtils.js
-│   │   │       │   ChartUtils.js
-│   │   │       │   Constants.js
-│   │   │       │   CssPrefixUtils.js
-│   │   │       │   DataUtils.js
-│   │   │       │   DetectReferenceElementsDomain.js
-│   │   │       │   DOMUtils.js
-│   │   │       │   Events.js
-│   │   │       │   FunnelUtils.js
-│   │   │       │   getEveryNthWithCondition.js
-│   │   │       │   getLegendProps.js
 │   │   │       │   Global.js
 │   │   │       │   IfOverflowMatches.js
 │   │   │       │   isDomainSpecifiedByUser.js
@@ -767,6 +668,13 @@
 │   │               readme.md
 │   │
 │   ├───run-parallel
+│   │       index.js
+│   │       LICENSE
+│   │       package.json
+│   │       README.md
+│   │
+│   ├───safe-buffer
+│   │       index.d.ts
 │   │       index.js
 │   │       LICENSE
 │   │       package.json
@@ -8973,26 +8881,118 @@
 │   │   robots.txt
 │   │
 │   └───images
+│       ├───negocio
+│       │   └───tingo_maria
+│       │       ├───bares_discotecas
+│       │       │       el_carbon_resto.webp
+│       │       │       kabana.webp
+│       │       │       la_choza_resto.webp
+│       │       │       la_estacion.webp
+│       │       │       shushupe_bar.webp
+│       │       │       trapiche.webp
+│       │       │
+│       │       ├───deporte_recreacion
+│       │       │       el_compadre.webp
+│       │       │       el_peruano.webp
+│       │       │       force.webp
+│       │       │       jefftaro.webp
+│       │       │       larejaa.webp
+│       │       │       potokar.webp
+│       │       │
+│       │       ├───hoteles
+│       │       │       caruzo.webp
+│       │       │       el_ensueno.webp
+│       │       │       green_paradise.webp
+│       │       │       madera_verde.webp
+│       │       │       oro_verde.webp
+│       │       │       shushupe.webp
+│       │       │
+│       │       ├───panaderias_cafes
+│       │       │       arabica.webp
+│       │       │       bella_selva.webp
+│       │       │       fenix.webp
+│       │       │       miski.webp
+│       │       │       puro_aroma.webp
+│       │       │       rica_fruta.webp
+│       │       │
+│       │       └───restaurantes
+│       │               el_carbon.webp
+│       │               encanto_de_la_selva.webp
+│       │               fuegoy.webp
+│       │               meychan.webp
+│       │               super_dorado.webp
+│       │               tinto_y_madero.webp
+│       │
 │       └───turismo
-│               catarata.webp
-│               cueva.webp
-│               img_tingo_maria.webp
-│               kotosh.webp
-│               laguna.webp
-│               mirador.webp
-│               pavas.webp
-│               pillco_mozo.webp
-│               plaza_armas_huanuco.webp
-│               puente_calicanto.webp
-│               tingo.webp
-│               tomayquichua.webp
+│           ├───cusco
+│           │       bosque_nublado.webp
+│           │       laguna_humantay.webp
+│           │       machu_picchu.webp
+│           │       moray.webp
+│           │       pisac.webp
+│           │       plaza_armas_cusco.webp
+│           │       qenqo.webp
+│           │       sacsayhuaman.webp
+│           │       salineras_maras.webp
+│           │       vinicunca.webp
+│           │
+│           ├───huanuco
+│           │       catedral.webp
+│           │       huanuco_pampa.webp
+│           │       kotosh.webp
+│           │       malecon_huallaga.webp
+│           │       museo_regional.webp
+│           │       pichgacocha.webp
+│           │       pillco_mozo.webp
+│           │       plaza_armas_huanuco.webp
+│           │       puente_calicanto.webp
+│           │       tomayquichua.webp
+│           │
+│           ├───tarapoto
+│           │       ahuashiyacu.webp
+│           │       banos_termales.webp
+│           │       castillo_lamas.webp
+│           │       cordillera_azul.webp
+│           │       huacamaillo.webp
+│           │       laguna_sauce.webp
+│           │       mirador_escalera.webp
+│           │       petroglifos_polish.webp
+│           │       plaza_tarapoto.webp
+│           │       tununtunumba.webp
+│           │
+│           └───tingo_maria
+│                   Cascada el encanto de las sirenas.webp
+│                   cascada_deseos.webp
+│                   cascada_sirenas.webp
+│                   catarata.webp
+│                   catarata_sol_naciente.webp
+│                   cueva.webp
+│                   cueva_chullachaqui.webp
+│                   cueva_huayna_capac.webp
+│                   cueva_mil_encantos.webp
+│                   cueva_pumas.webp
+│                   gloriapata.webp
+│                   img_tingo_maria.webp
+│                   jacuzzi_manco_capac.webp
+│                   jardin_botanico.webp
+│                   laguna.webp
+│                   mirador.webp
+│                   parque_nacional.webp
+│                   pavas.webp
+│                   playa_tulumayo.webp
+│                   serpentario.webp
+│                   tingo.webp
+│                   velo_ninfas.webp
+│                   velo_novia.webp
 │
 ├───server
 │   │   index.ts
 │   │   node-build.ts
 │   │
 │   └───routes
+│           auth.ts
 │           demo.ts
+│           favorites.ts
 │
 └───shared
         api.ts
