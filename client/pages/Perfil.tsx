@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapIcon, Mountain, Store as StoreIcon, HeartOff } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
@@ -6,9 +6,30 @@ import { sitiosTuristicos } from '@/lib/turismoData';
 import { BUSINESSES } from '@/lib/negociosData';
 import { FavoriteButton } from '../components/ui/FavoriteButton';
 
+
 export default function Perfil() {
   const navigate = useNavigate();
-  const { user, favorites } = useAuthStore();
+  const { user, token, favorites, setFavorites } = useAuthStore();
+
+  // Forzar la descarga de favoritos al entrar al perfil
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (user && token) {
+        try {
+          const res = await fetch('/api/favorites', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setFavorites(data);
+          }
+        } catch (error) {
+          console.error('Error al descargar favoritos:', error);
+        }
+      }
+    };
+    fetchFavorites();
+  }, [user, token, setFavorites]);
   const [activeTab, setActiveTab] = useState<'turismo' | 'negocio'>('turismo');
 
   // Si alguien intenta entrar sin iniciar sesión, lo devolvemos al inicio
