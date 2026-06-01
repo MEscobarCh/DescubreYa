@@ -331,7 +331,7 @@ export default function Index() {
 
                     {/* El Menú Flotante */}
                     {isMenuOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-50 border border-gray-100 transform opacity-100 scale-100 transition-all duration-200">
+                      <div className="absolute right-[-10px] sm:right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 z-[100] border border-gray-100 origin-top-right transform transition-all duration-200">
                         <div className="px-4 py-3 border-b border-gray-50">
                           <p className="text-sm font-semibold text-gray-800 truncate">
                             {user.name}
