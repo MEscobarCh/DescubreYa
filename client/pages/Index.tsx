@@ -323,13 +323,16 @@ export default function Index() {
                     {/* Botón Principal (El Avatar) */}
                     <button
                       onClick={() => setIsMenuOpen(!isMenuOpen)}
-                      className="flex items-center gap-1.5 p-1 pr-2 rounded-full bg-white hover:bg-slate-50 border border-transparent hover:border-slate-200 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 group shadow-sm hover:shadow-md"
+                      className="flex items-center gap-2 p-1.5 pr-3 rounded-full bg-white border border-gray-200 hover:bg-slate-50 hover:border-slate-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 group shadow-sm hover:shadow-md"
                       aria-expanded={isMenuOpen}
                       aria-haspopup="true"
                     >
                       <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-r ${theme.button}`}>
                         {user.name.charAt(0).toUpperCase()}
                       </div>
+                      <span className="hidden sm:block text-sm font-bold text-slate-700 group-hover:text-slate-900">
+                        {user.name.split(' ')[0]}
+                      </span>
                       <ChevronDown 
                         className={`w-4 h-4 text-slate-500 group-hover:text-slate-700 transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} 
                       />
