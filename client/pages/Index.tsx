@@ -23,6 +23,8 @@ import { GoogleLogin } from '@react-oauth/google';
 import { User as UserIcon, LogOut, Mail, Lock, UserPlus } from "lucide-react";
 import { FavoriteButton } from "../components/ui/FavoriteButton";
 import { Link } from 'react-router-dom';
+import { ReviewSection } from '@/components/ui/ReviewSection';
+import { useReviewStore } from "@/store/reviewStore"
 
 // Piloto enfocado exclusivamente en 4 ciudades controladas
 const CITIES = ["Tingo María", "Huánuco", "Tarapoto", "Cusco"];
@@ -88,6 +90,7 @@ export default function Index() {
   // --- ESTADOS DE AUTENTICACIÓN ---
   // 1. Actualizamos la llamada al store
   const { user, token, login, logout, setFavorites } = useAuthStore();
+  const { globalRatings, fetchAllRatings } = useReviewStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -102,6 +105,7 @@ export default function Index() {
   }, []);
   // 2. Agregamos el efecto de descarga automática
   useEffect(() => {
+    fetchAllRatings();
     const fetchFavorites = async () => {
       if (user && token) {
         try {
@@ -130,6 +134,8 @@ export default function Index() {
   const [selectedCity, setSelectedCity] = useState("Tingo María");
   const [selectedCategory, setSelectedCategory] = useState("Restaurantes");
   const [emailInput, setEmailInput] = useState("");
+
+  const [activeReviewItem, setActiveReviewItem] = useState<{id: string, name: string} | null>(null);
 
   // --- ESTADOS DE PAGINACIÓN ---
   const [currentPageTourism, setCurrentPageTourism] = useState(1);
@@ -426,6 +432,17 @@ export default function Index() {
                 <div key={sitio.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100">
                   <div className="relative h-52 overflow-hidden">
                     <img src={sitio.imagen} alt={sitio.nombre} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    
+                    {/* 👇 NUEVA INSIGNIA DE ESTRELLAS FLOTANTE 👇 */}
+                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-sm z-10">
+                      <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
+                      <span className="text-xs font-black text-slate-800">
+                        {/* Muestra el rating si existe en tus datos, o 4.8 por defecto */}
+                        {globalRatings[sitio.id]?.average?.toFixed(1) || '0.0'}
+                      </span>
+                    </div>
+                    {/* 👆 FIN INSIGNIA 👆 */}
+
                     {/* Botón de favoritos inyectado aquí */}
                     <FavoriteButton itemId={sitio.id} itemType="turismo" />
                   </div>
@@ -436,15 +453,24 @@ export default function Index() {
                     <div className={`mb-5 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-bold ${getDifficultyColor(sitio.difficulty || sitio.dificultad)}`}>
                       <Zap className="w-3 h-3" /> {sitio.difficulty || sitio.dificultad}
                     </div>
-                    <button
-                      onClick={() => {
-                        trackRutaClick(sitio.nombre, sitio.categoria);
-                        window.open(sitio.mapUrl, "_blank");
-                      }}
-                      className={`w-full py-3 bg-gradient-to-r text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg transition-all active:scale-95 ${theme.button}`}
-                    >
-                      <MapIcon className="w-4 h-4" /> Trazar Ruta
-                    </button>
+                    {/* Botones de acción divididos */}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          trackRutaClick(sitio.nombre, sitio.categoria);
+                          window.open(sitio.mapUrl, "_blank");
+                        }}
+                        className={`flex-1 py-3 bg-gradient-to-r text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1 hover:shadow-lg transition-all active:scale-95 ${theme.button}`}
+                      >
+                        <MapIcon className="w-4 h-4" /> Ruta
+                      </button>
+                      <button
+                        onClick={() => setActiveReviewItem({ id: sitio.id.toString(), name: sitio.nombre })}
+                        className="flex-1 py-3 bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200 rounded-xl font-bold text-xs flex items-center justify-center gap-1 transition-all active:scale-95"
+                      >
+                        <Star className="w-4 h-4 fill-current" /> Reseñas
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -523,6 +549,17 @@ export default function Index() {
                       <div>
                         <div className="relative h-48 rounded-xl overflow-hidden mb-4">
                           <img src={negocio.image} alt={negocio.name} loading="lazy" className="w-full h-full object-cover" />
+                          
+                          {/* 👇 NUEVA INSIGNIA DE ESTRELLAS FLOTANTE 👇 */}
+                          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-sm z-10">
+                            <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
+                            <span className="text-xs font-black text-slate-800">
+                              {/* Muestra el rating si existe en tus datos, o 4.5 por defecto */}
+                              {globalRatings[negocio.id]?.average?.toFixed(1) || '0.0'}
+                            </span>
+                          </div>
+                          {/* 👆 FIN INSIGNIA 👆 */}
+
                           {/* Botón de favoritos inyectado aquí */}
                           <FavoriteButton itemId={negocio.id} itemType="negocio" />
                         </div>
@@ -544,9 +581,18 @@ export default function Index() {
                             <MapIcon className="w-4 h-4" /> Ubicar
                           </a>
                         </div>
-                        <a href={`tel:${negocio.phone}`} className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-slate-200">
-                          <Phone className="w-4 h-4" /> {negocio.phone}
-                        </a>
+                        {/* Fila inferior: Teléfono y Reseñas */}
+                        <div className="flex gap-2 mt-2">
+                          <a href={`tel:${negocio.phone}`} className="flex-1 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-slate-200">
+                            <Phone className="w-4 h-4" /> {negocio.phone}
+                          </a>
+                          <button 
+                            onClick={() => setActiveReviewItem({ id: negocio.id.toString(), name: negocio.name })} 
+                            className="flex-1 py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-amber-200"
+                          >
+                            <Star className="w-4 h-4 fill-current" /> Reseñas
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -658,6 +704,31 @@ export default function Index() {
           </div>
         </div>
       </footer>
+
+      {/* 👇 NUEVO: MODAL DE RESEÑAS 👇 */}
+      {activeReviewItem && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 transition-all">
+          <div className="bg-white rounded-[2rem] w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl animate-in zoom-in-95 duration-300">
+            {/* Cabecera del modal */}
+            <div className="flex justify-between items-center p-6 border-b border-gray-100">
+              <h3 className="text-2xl font-black text-gray-800 tracking-tight pr-4">
+                {activeReviewItem.name}
+              </h3>
+              <button 
+                onClick={() => setActiveReviewItem(null)}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-red-500 transition-colors flex-shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+            {/* Contenido (El componente que hicimos) */}
+            <div className="overflow-y-auto p-2 sm:p-6 custom-scrollbar">
+              <ReviewSection placeId={activeReviewItem.id} />
+            </div>
+          </div>
+        </div>
+      )}
+      {/* 👆 FIN MODAL DE RESEÑAS 👆 */}
 
       {/* --- MODAL DE AUTENTICACIÓN --- */}
       {isAuthModalOpen && (

@@ -4,6 +4,7 @@ import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import authRoutes from "./routes/auth"; 
 import favoritesRoutes from "./routes/favorites";
+import reviewsRoutes from './routes/reviews';
 
 export function createServer() {
   const app = express();
@@ -24,6 +25,7 @@ export function createServer() {
   // 2. IMPORTANTE: La ruta debe estar conectada AQUÍ, ANTES del "return app;"
   app.use("/api/auth", authRoutes);
   app.use("/api/favorites", favoritesRoutes);
+  app.use('/api/reviews', reviewsRoutes);
 
   return app;
 }
