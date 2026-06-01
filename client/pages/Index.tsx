@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   MapPin,
   Phone,
@@ -88,7 +88,18 @@ export default function Index() {
   // --- ESTADOS DE AUTENTICACIÓN ---
   // 1. Actualizamos la llamada al store
   const { user, token, login, logout, setFavorites } = useAuthStore();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   // 2. Agregamos el efecto de descarga automática
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -301,21 +312,56 @@ export default function Index() {
               {/* Usuario / Botón de Login */}
               {user ? (
                 <div className="flex items-center gap-2 mr-2 border-r pr-3 border-gray-200">
-                  <div className="flex flex-col items-end hidden sm:flex">
-                    <span className="text-xs font-bold text-slate-800">{user.name.split(' ')[0]}</span>
-                    <span className={`text-[9px] uppercase font-black ${theme.accent.split(' ')[0]}`}>{selectedCity}</span>
+                  {/* 👇 NUEVO: MENÚ DESPLEGABLE AVANZADO 👇 */}
+                  <div className="relative" ref={menuRef}>
+                    {/* Botón Principal (El Avatar) */}
+                    <button
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                      className="flex items-center gap-1.5 p-1 pr-2 rounded-full bg-white hover:bg-slate-50 border border-transparent hover:border-slate-200 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 group shadow-sm hover:shadow-md"
+                      aria-expanded={isMenuOpen}
+                      aria-haspopup="true"
+                    >
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-r ${theme.button}`}>
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <ChevronDown 
+                        className={`w-4 h-4 text-slate-500 group-hover:text-slate-700 transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} 
+                      />
+                    </button>
+
+                    {/* El Menú Flotante */}
+                    {isMenuOpen && (
+                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-50 border border-gray-100 transform opacity-100 scale-100 transition-all duration-200">
+                        <div className="px-4 py-3 border-b border-gray-50">
+                          <p className="text-sm font-semibold text-gray-800 truncate">
+                            {user.name}
+                          </p>
+                          <p className="text-xs text-gray-500 truncate">
+                            {user.email || 'Usuario verificado'}
+                          </p>
+                        </div>
+                        <div className="mt-2">
+                          <Link
+                            to="/perfil"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-50 transition-colors font-medium"
+                          >
+                            👤 Mi Itinerario
+                          </Link>
+                          <button
+                            onClick={() => {
+                              setIsMenuOpen(false);
+                              logout();
+                            }}
+                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors mt-1 font-medium"
+                          >
+                            🚪 Cerrar Sesión
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {/* Avatar interactivo que lleva al perfil */}
-                  <Link 
-                    to="/perfil"
-                    title="Ir a Mi Itinerario"
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm bg-gradient-to-r hover:scale-110 hover:shadow-md transition-all active:scale-95 cursor-pointer ${theme.button}`}
-                  >
-                    {user.name.charAt(0).toUpperCase()}
-                  </Link>
-                  <button onClick={logout} className="p-1.5 text-gray-400 hover:text-red-500 transition-colors" title="Cerrar sesión">
-                    <LogOut className="w-4 h-4" />
-                  </button>
+                  {/* 👆 FIN MENÚ DESPLEGABLE 👆 */}
                 </div>
               ) : (
                 <button 
