@@ -522,7 +522,7 @@ export default function Index() {
                 <Star className={`w-6 h-6 ${theme.accent.split(' ')[0]}`} />
                 <h2 className="text-3xl sm:text-5xl font-black text-[hsl(var(--theme-primary))]">Ruta Local</h2>
               </div>
-              <p className="text-gray-600 max-w-2xl text-sm sm:text-lg">Descubre comercios, servicios y el motor económico de {selectedCity}.</p>
+              <p className="text-gray-600 max-w-2xl text-sm sm:text-lg">Descubre comercios, servicios y que mas hacer en {selectedCity}.</p>
             </div>
 
             {/* Grid de Categorías Optimizada a 5 Columnas Simétricas */}
