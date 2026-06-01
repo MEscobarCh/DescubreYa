@@ -113,6 +113,106 @@ export const sitiosTuristicos: SitioTuristico[] = [
     dificultad: "Moderada",
     mapUrl: "https://maps.app.goo.gl/TZKnj7922zbYAx3R7"
   },
+  {
+    id: 11,
+    ciudad: "Tingo María",
+    nombre: "Cueva Huayna Cápac",
+    categoria: "Aventura",
+    imagen: "/images/turismo/tingo_maria/cueva_huayna_capac.webp",
+    descripcion: "Misteriosa caverna con impresionantes formaciones de estalactitas y estalagmitas, ideal para los amantes de la espeleología.",
+    dificultad: "Moderada",
+    mapUrl: "https://maps.app.goo.gl/YZBHdrq5Y1aep5Js5"
+  },
+  {
+    id: 12,
+    ciudad: "Tingo María",
+    nombre: "Cueva Mil Encantos",
+    categoria: "Aventura",
+    imagen: "/images/turismo/tingo_maria/cueva_mil_encantos.webp",
+    descripcion: "Un recorrido subterráneo fascinante lleno de pasadizos naturales y una atmósfera mística en medio de la selva.",
+    dificultad: "Moderada",
+    mapUrl: "https://maps.app.goo.gl/RiAxBme9rTJhQ1SP7"
+  },
+  {
+    id: 13,
+    ciudad: "Tingo María",
+    nombre: "Cueva del Chullachaqui",
+    categoria: "Aventura",
+    imagen: "/images/turismo/tingo_maria/cueva_chullachaqui.webp",
+    descripcion: "Lugar rodeado de mitos y leyendas locales sobre el guardián del bosque. Ofrece una experiencia de exploración única.",
+    dificultad: "Difícil",
+    mapUrl: "https://maps.app.goo.gl/9JSywpqqLuru8vCs8"
+  },
+  {
+    id: 14,
+    ciudad: "Tingo María",
+    nombre: "Cascada El Encanto de las Sirenas",
+    categoria: "Naturaleza",
+    imagen: "/images/turismo/tingo_maria/cascada_sirenas.webp",
+    descripcion: "Hermosa y relajante caída de agua que forma una poza natural perfecta para nadar y desconectar.",
+    dificultad: "Fácil",
+    mapUrl: "https://maps.app.goo.gl/TBH4qyKyXDE8hvnn6"
+  },
+  {
+    id: 15,
+    ciudad: "Tingo María",
+    nombre: "Jacuzzi Manco Cápac",
+    categoria: "Relax",
+    imagen: "/images/turismo/tingo_maria/jacuzzi_manco_capac.webp",
+    descripcion: "Formaciones rocosas en el cauce del río que crean pozas naturales burbujeantes al estilo de un jacuzzi.",
+    dificultad: "Fácil",
+    mapUrl: "https://maps.app.goo.gl/B2XPWaub4YCe3ZFW7"
+  },
+  {
+    id: 16,
+    ciudad: "Tingo María",
+    nombre: "Cascada de los Deseos",
+    categoria: "Naturaleza",
+    imagen: "/images/turismo/tingo_maria/cascada_deseos.webp",
+    descripcion: "Encantadora cascada escondida en la vegetación. La tradición local dice que si pides un deseo al bañarte, se cumple.",
+    dificultad: "Moderada",
+    mapUrl: "https://maps.app.goo.gl/kAEfnno475TTwhqM9"
+  },
+  {
+    id: 17,
+    ciudad: "Tingo María",
+    nombre: "Cueva de los Pumas",
+    categoria: "Aventura",
+    imagen: "/images/turismo/tingo_maria/cueva_pumas.webp",
+    descripcion: "Caverna profunda y desafiante que requiere espíritu aventurero. Su nombre proviene de antiguas leyendas felinas.",
+    dificultad: "Difícil",
+    mapUrl: "https://maps.app.goo.gl/xwnwnqFS344ivcun8"
+  },
+  {
+    id: 18,
+    ciudad: "Tingo María",
+    nombre: "Cascada Velo de las Ninfas",
+    categoria: "Aventura",
+    imagen: "/images/turismo/tingo_maria/velo_ninfas.webp",
+    descripcion: "Ruta espectacular para practicar barranquismo y escalar a través de una serie de hermosas caídas de agua.",
+    dificultad: "Difícil",
+    mapUrl: "https://maps.app.goo.gl/DVuqRbeqK2KaZQZ46"
+  },
+  {
+    id: 19,
+    ciudad: "Tingo María",
+    nombre: "Catarata Sol Naciente",
+    categoria: "Naturaleza",
+    imagen: "/images/turismo/tingo_maria/catarata_sol_naciente.webp",
+    descripcion: "Hermosa caída de agua rodeada de exuberante selva, perfecta para refrescarse tras una caminata y disfrutar de la naturaleza en su estado puro.",
+    dificultad: "Moderada",
+    mapUrl: "https://maps.app.goo.gl/a6ki49GCjitPX95U7"
+  },
+  {
+    id: 20,
+    ciudad: "Tingo María",
+    nombre: "Playa Tulumayo",
+    categoria: "Recreación",
+    imagen: "/images/turismo/tingo_maria/playa_tulumayo.webp",
+    descripcion: "Hermosa ribera de aguas cristalinas y frescas, ideal para disfrutar de un día de sol, nadar y relajarse en familia.",
+    dificultad: "Fácil",
+    mapUrl: "https://maps.app.goo.gl/Cev4KGekHvkQHFae7"
+  },
 
   // --- HUÁNUCO (IDs 1001 al 2000) ---
   {

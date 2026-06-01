@@ -85,11 +85,35 @@ export default function Index() {
   const [selectedCategory, setSelectedCategory] = useState("Restaurantes");
   const [emailInput, setEmailInput] = useState("");
 
+  // --- ESTADOS DE PAGINACIÓN ---
+  const [currentPageTourism, setCurrentPageTourism] = useState(1);
+  const [currentPageBusiness, setCurrentPageBusiness] = useState(1);
+  const ITEMS_PER_PAGE = 8; // Múltiplo de 4 para preservar la simetría de la cuadrícula
+
   const theme = CITY_THEMES[selectedCity] || CITY_THEMES["Tingo María"];
 
-  // Filtrado de negocios en tiempo real por ciudad y categoría modular
+  // --- REINICIO DE PAGINACIÓN ---
+  useEffect(() => {
+    setCurrentPageTourism(1);
+    setCurrentPageBusiness(1);
+  }, [selectedCity, selectedCategory, isTourism]);
+
+  // --- LÓGICA DE DATOS: TURISMO ---
+  const filteredTourism = sitiosTuristicos.filter((sitio) => sitio.ciudad === selectedCity);
+  const totalTourismPages = Math.ceil(filteredTourism.length / ITEMS_PER_PAGE);
+  const paginatedTourism = filteredTourism.slice(
+    (currentPageTourism - 1) * ITEMS_PER_PAGE,
+    currentPageTourism * ITEMS_PER_PAGE
+  );
+
+  // --- LÓGICA DE DATOS: RUTA LOCAL ---
   const filteredBusinesses = BUSINESSES.filter(
     (b) => b.ciudad === selectedCity && b.category === selectedCategory
+  );
+  const totalBusinessPages = Math.ceil(filteredBusinesses.length / ITEMS_PER_PAGE);
+  const paginatedBusinesses = filteredBusinesses.slice(
+    (currentPageBusiness - 1) * ITEMS_PER_PAGE,
+    currentPageBusiness * ITEMS_PER_PAGE
   );
 
   useEffect(() => {
@@ -210,10 +234,9 @@ export default function Index() {
               <p className="text-gray-600 max-w-2xl text-sm sm:text-lg">Descubre destinos increíbles y aventuras que no olvidarás.</p>
             </div>
 
+            {/* Listado Paginado de Turismo */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {sitiosTuristicos
-                .filter((sitio) => sitio.ciudad === selectedCity)
-                .map((sitio) => (
+              {paginatedTourism.map((sitio) => (
                 <div key={sitio.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100">
                   <div className="relative h-52 overflow-hidden">
                     <img src={sitio.imagen} alt={sitio.nombre} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -238,6 +261,42 @@ export default function Index() {
                 </div>
               ))}
             </div>
+
+            {/* Controles de Paginación para Turismo */}
+            {totalTourismPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
+                <button
+                  onClick={() => setCurrentPageTourism(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPageTourism === 1}
+                  className={`px-4 py-2 rounded-xl font-bold transition-all text-sm ${currentPageTourism === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : `bg-white border-2 hover:shadow-md ${theme.accent.split(' ')[0]} ${theme.accent.split(' ')[1]}`}`}
+                >
+                  Anterior
+                </button>
+                
+                {/* Generador de Botones Numerados */}
+                {Array.from({ length: totalTourismPages }, (_, i) => i + 1).map((pageNum) => (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPageTourism(pageNum)}
+                    className={`w-10 h-10 rounded-xl font-bold transition-all text-sm flex items-center justify-center ${
+                      currentPageTourism === pageNum 
+                        ? `bg-gradient-to-r text-white shadow-md ${theme.button}` 
+                        : `bg-white border-2 hover:shadow-md ${theme.accent.split(' ')[0]} ${theme.accent.split(' ')[1]}`
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => setCurrentPageTourism(prev => Math.min(prev + 1, totalTourismPages))}
+                  disabled={currentPageTourism === totalTourismPages}
+                  className={`px-4 py-2 rounded-xl font-bold transition-all text-sm ${currentPageTourism === totalTourismPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : `bg-white border-2 hover:shadow-md ${theme.accent.split(' ')[0]} ${theme.accent.split(' ')[1]}`}`}
+                >
+                  Siguiente
+                </button>
+              </div>
+            )}
           </section>
         ) : (
           <section className="space-y-10 animate-in fade-in duration-700">
@@ -267,67 +326,68 @@ export default function Index() {
               ))}
             </div>
 
-            {/* Listado de Negocios Filtrados */}
-            {filteredBusinesses.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredBusinesses.map((negocio) => (
-                  <div key={negocio.id} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 flex flex-col justify-between p-5 hover:shadow-2xl transition-all duration-500">
-                    <div>
-                      {/* Contenedor de Imagen Limpio sin Badge de Estado Erróneo */}
-                      <div className="relative h-48 rounded-xl overflow-hidden mb-4">
-                        <img src={negocio.image} alt={negocio.name} loading="lazy" className="w-full h-full object-cover" />
+            {/* Listado de Negocios Filtrados (Paginado) */}
+            {paginatedBusinesses.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {paginatedBusinesses.map((negocio) => (
+                    <div key={negocio.id} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 flex flex-col justify-between p-5 hover:shadow-2xl transition-all duration-500">
+                      <div>
+                        <div className="relative h-48 rounded-xl overflow-hidden mb-4">
+                          <img src={negocio.image} alt={negocio.name} loading="lazy" className="w-full h-full object-cover" />
+                        </div>
+                        <h3 className="text-xl font-black text-slate-900 mb-1">{negocio.name}</h3>
+                        <div className="flex flex-wrap gap-1.5 mb-4">
+                          {negocio.tags.map((tag, idx) => (
+                            <span key={idx} className="bg-slate-50 text-slate-600 text-[9px] font-bold px-2 py-0.5 rounded-md border border-slate-100">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      <h3 className="text-xl font-black text-slate-900 mb-1">{negocio.name}</h3>
-                      
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {negocio.tags.map((tag, idx) => (
-                          <span key={idx} className="bg-slate-50 text-slate-600 text-[9px] font-bold px-2 py-0.5 rounded-md border border-slate-100">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Botones de Acción */}
-                    <div className="space-y-2 pt-4 border-t border-gray-50">
-                      <div className="flex gap-2">
-                        {/* WhatsApp con Mensaje Predefinido */}
-                        <a 
-                          href={`https://wa.me/${negocio.whatsapp}?text=${encodeURIComponent(
-                            `Hola ${negocio.name}, los encontré mediante ¡DescubreYA! 🌍 Estoy consultando sobre sus servicios en ${selectedCity}.`
-                          )}`}
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95"
-                        >
-                          <MessageCircle className="w-4 h-4" /> WhatsApp
-                        </a>
-                        
-                        {/* Ubicación */}
-                        <a 
-                          href={negocio.mapUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className={`flex-1 py-2.5 bg-gradient-to-r text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 ${theme.button}`}
-                        >
-                          <MapIcon className="w-4 h-4" /> Ubicar
+                      <div className="space-y-2 pt-4 border-t border-gray-50">
+                        <div className="flex gap-2">
+                          <a href={`https://wa.me/${negocio.whatsapp}?text=${encodeURIComponent(`Hola ${negocio.name}, los encontré mediante ¡DescubreYA! 🌍 Estoy consultando sobre sus servicios en ${selectedCity}.`)}`} target="_blank" rel="noopener noreferrer" className="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95">
+                            <MessageCircle className="w-4 h-4" /> WhatsApp
+                          </a>
+                          <a href={negocio.mapUrl} target="_blank" rel="noopener noreferrer" className={`flex-1 py-2.5 bg-gradient-to-r text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 ${theme.button}`}>
+                            <MapIcon className="w-4 h-4" /> Ubicar
+                          </a>
+                        </div>
+                        <a href={`tel:${negocio.phone}`} className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-slate-200">
+                          <Phone className="w-4 h-4" /> {negocio.phone}
                         </a>
                       </div>
-
-                      {/* Teléfono Fijo/Celular */}
-                      <a 
-                        href={`tel:${negocio.phone}`}
-                        className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-slate-200"
-                      >
-                        <Phone className="w-4 h-4" /> {negocio.phone}
-                      </a>
                     </div>
+                  ))}
+                </div>
+
+                {/* Controles de Paginación para Ruta Local */}
+                {totalBusinessPages > 1 && (
+                  <div className="flex justify-center items-center gap-3 mt-10">
+                    <button
+                      onClick={() => setCurrentPageBusiness(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPageBusiness === 1}
+                      className={`px-5 py-2.5 rounded-xl font-bold transition-all text-sm ${currentPageBusiness === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : `bg-white border-2 hover:shadow-md ${theme.accent.split(' ')[0]} ${theme.accent.split(' ')[1]}`}`}
+                    >
+                      Anterior
+                    </button>
+                    
+                    <span className="text-sm font-bold text-gray-600 min-w-[100px] text-center">
+                      Página {currentPageBusiness} de {totalBusinessPages}
+                    </span>
+
+                    <button
+                      onClick={() => setCurrentPageBusiness(prev => Math.min(prev + 1, totalBusinessPages))}
+                      disabled={currentPageBusiness === totalBusinessPages}
+                      className={`px-5 py-2.5 rounded-xl font-bold transition-all text-sm ${currentPageBusiness === totalBusinessPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : `bg-white border-2 hover:shadow-md ${theme.accent.split(' ')[0]} ${theme.accent.split(' ')[1]}`}`}
+                    >
+                      Siguiente
+                    </button>
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             ) : (
-              /* Estado Vacío de Respaldo */
               <div className="text-center py-12 bg-white/50 backdrop-blur-sm rounded-3xl border border-gray-100">
                 <p className="text-gray-500 text-sm font-bold">Próximamente más negocios en esta categoría para {selectedCity} 🏪</p>
               </div>
