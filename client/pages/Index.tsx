@@ -385,16 +385,18 @@ export default function Index() {
       {/* Header Adaptativo */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-2 sm:py-3">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-1">
+          
+          {/* Contenedor Principal: flex-wrap permite que los elementos salten a la siguiente línea si no caben */}
+          <div className="flex flex-wrap items-center justify-between sm:justify-start gap-y-3">
             
-            {/* Logo convertido a botón de inicio */}
+            {/* 1. LOGO */}
             <button 
               onClick={() => {
-                setIsTourism(true); // Vuelve a la pestaña de Turismo
-                setCurrentPageTourism(1); // Regresa a la página 1 de resultados
-                window.scrollTo({ top: 0, behavior: 'smooth' }); // Deslizamiento suave hacia arriba
+                setIsTourism(true);
+                setCurrentPageTourism(1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="flex items-center gap-2 justify-center w-full sm:w-auto hover:scale-105 active:scale-95 transition-transform duration-300 focus:outline-none cursor-pointer"
+              className="flex items-center gap-2 hover:scale-105 active:scale-95 transition-transform duration-300 focus:outline-none cursor-pointer"
             >
               <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${theme.button} flex-shrink-0 flex items-center justify-center text-sm shadow-sm`}>
                 🌍
@@ -404,77 +406,62 @@ export default function Index() {
               </h1>
             </button>
 
-            {/* Controles y Autenticación */}
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-3 sm:gap-3 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0 border-gray-50">
-              
-              {/* Usuario / Botón de Login */}
-              {user ? (
-                <div className="flex items-center gap-2 mr-2 border-r pr-3 border-gray-200">
-                  {/* 👇 NUEVO: MENÚ DESPLEGABLE AVANZADO 👇 */}
-                  <div className="relative" ref={menuRef}>
-                    {/* Botón Principal (El Avatar) */}
-                    <button
-                      onClick={() => setIsMenuOpen(!isMenuOpen)}
-                      className="flex items-center gap-2 p-1.5 pr-3 rounded-full bg-white border border-gray-200 hover:bg-slate-50 hover:border-slate-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 group shadow-sm hover:shadow-md"
-                      aria-expanded={isMenuOpen}
-                      aria-haspopup="true"
-                    >
-                      <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-r ${theme.button}`}>
-                        {user.name.charAt(0).toUpperCase()}
-                      </div>
-                      <span className="hidden sm:block text-sm font-bold text-slate-700 group-hover:text-slate-900">
-                        {user.name.split(' ')[0]}
-                      </span>
-                      <ChevronDown 
-                        className={`w-4 h-4 text-slate-500 group-hover:text-slate-700 transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} 
-                      />
-                    </button>
+            {/* 2. ESPACIADOR (Solo PC): Empuja los controles hacia la derecha */}
+            <div className="hidden sm:block flex-grow"></div>
 
-                    {/* El Menú Flotante */}
-                    {isMenuOpen && (
-                      <div className="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 z-[100] border border-gray-100 origin-top-right transform transition-all duration-200">
-                        <div className="px-4 py-3 border-b border-gray-50">
-                          <p className="text-sm font-semibold text-gray-800 truncate">
-                            {user.name}
-                          </p>
-                          <p className="text-xs text-gray-500 truncate">
-                            {user.email || 'Usuario verificado'}
-                          </p>
-                        </div>
-                        <div className="mt-2">
-                          <Link
-                            to="/perfil"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-50 transition-colors font-medium"
-                          >
-                            👤 Mi Itinerario
-                          </Link>
-                          <button
-                            onClick={() => {
-                              setIsMenuOpen(false);
-                              logout();
-                            }}
-                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors mt-1 font-medium"
-                          >
-                            🚪 Cerrar Sesión
-                          </button>
-                        </div>
+            {/* 3. AUTENTICACIÓN: En móvil se pega a la derecha del Logo, en PC a la derecha del espaciador */}
+            <div className="flex-shrink-0">
+              {user ? (
+                <div className="relative" ref={menuRef}>
+                  <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="flex items-center gap-2 p-1.5 pr-3 rounded-full bg-white border border-gray-200 hover:bg-slate-50 hover:border-slate-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 group shadow-sm hover:shadow-md"
+                    aria-expanded={isMenuOpen}
+                    aria-haspopup="true"
+                  >
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-r ${theme.button}`}>
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="hidden sm:block text-sm font-bold text-slate-700 group-hover:text-slate-900">
+                      {user.name.split(' ')[0]}
+                    </span>
+                    <ChevronDown 
+                      className={`w-4 h-4 text-slate-500 group-hover:text-slate-700 transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} 
+                    />
+                  </button>
+
+                  {/* Menú Flotante (Ajustado para no salirse de la pantalla en móvil) */}
+                  {isMenuOpen && (
+                    <div className="absolute right-0 sm:left-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 z-[100] border border-gray-100 origin-top-right transform transition-all duration-200">
+                      <div className="px-4 py-3 border-b border-gray-50">
+                        <p className="text-sm font-semibold text-gray-800 truncate">{user.name}</p>
+                        <p className="text-xs text-gray-500 truncate">{user.email || 'Usuario verificado'}</p>
                       </div>
-                    )}
-                  </div>
-                  {/* 👆 FIN MENÚ DESPLEGABLE 👆 */}
+                      <div className="mt-2">
+                        <Link to="/perfil" onClick={() => setIsMenuOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-50 transition-colors font-medium">
+                          👤 Mi Itinerario
+                        </Link>
+                        <button onClick={() => { setIsMenuOpen(false); logout(); }} className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors mt-1 font-medium">
+                          🚪 Cerrar Sesión
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <button 
                   onClick={() => setIsAuthModalOpen(true)}
-                  className={`flex items-center justify-center gap-1.5 h-8 sm:h-10 px-4 sm:px-5 rounded-full text-xs sm:text-sm font-bold text-white bg-gradient-to-r shadow-sm hover:shadow-md transition-all active:scale-95 mr-1 sm:mr-2 ${theme.button}`}
+                  className={`flex items-center justify-center gap-1.5 h-8 sm:h-10 px-4 sm:px-5 rounded-full text-xs sm:text-sm font-bold text-white bg-gradient-to-r shadow-sm hover:shadow-md transition-all active:scale-95 ${theme.button}`}
                 >
                   <UserIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   Ingresar
                 </button>
               )}
+            </div>
 
-              {/* Selector de Ciudad */}
+            {/* 4. CONTROLES SECUNDARIOS: En móvil (w-full) saltan a la 2da línea. En PC (w-auto) se quedan arriba. */}
+            <div className="w-full sm:w-auto flex flex-wrap items-center justify-center gap-x-2 gap-y-2 sm:gap-3 border-t sm:border-t-0 sm:border-l sm:pl-3 pt-3 sm:pt-0 border-gray-100">
+              
               <div className="relative">
                 <select
                   value={selectedCity}
@@ -487,8 +474,7 @@ export default function Index() {
                 </select>
                 <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
-              
-              {/* 👇 NUEVO: WIDGET DE CLIMA 👇 */}
+
               {weather && (
                 <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-xl shadow-sm transition-all hover:shadow-md animate-in fade-in duration-500">
                   {renderWeatherIcon(weather.code)}
@@ -497,15 +483,11 @@ export default function Index() {
                   </span>
                 </div>
               )}
-              {/* 👆 FIN WIDGET DE CLIMA 👆 */}
 
-              {/* Toggle Turismo/Ruta Local */}
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <button
                   onClick={() => setIsTourism(!isTourism)}
-                  className={`relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full transition-all duration-500 shadow-md flex-shrink-0 bg-gradient-to-r ${
-                    isTourism ? theme.turismo : theme.rutaLocal
-                  }`}
+                  className={`relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full transition-all duration-500 shadow-md flex-shrink-0 bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
                 >
                   <span className={`inline-block h-6 w-6 sm:h-8 sm:w-8 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-sm shadow-lg ${isTourism ? "translate-x-1" : "translate-x-7 sm:translate-x-11"}`}>
                     {isTourism ? "⛰️" : "🏪"}
@@ -515,8 +497,8 @@ export default function Index() {
                   {isTourism ? "Turismo" : "Ruta Local"}
                 </span>
               </div>
-
             </div>
+
           </div>
         </div>
       </header>
