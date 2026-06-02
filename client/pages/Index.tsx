@@ -500,7 +500,7 @@ export default function Index() {
               {/* 👆 FIN WIDGET DE CLIMA 👆 */}
 
               {/* Toggle Turismo/Ruta Local */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <button
                   onClick={() => setIsTourism(!isTourism)}
                   className={`relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full transition-all duration-500 shadow-md flex-shrink-0 bg-gradient-to-r ${
