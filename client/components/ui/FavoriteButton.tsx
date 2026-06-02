@@ -2,12 +2,12 @@ import { Heart } from 'lucide-react';
 import { useAuthStore } from "../../store/authStore";
 import { useState } from 'react';
 
-export const FavoriteButton = ({ itemId, itemType }: { itemId: number, itemType: string }) => {
+export const FavoriteButton = ({ itemId, itemType }: { itemId: number | string, itemType: string }) => {
   const { user, token, favorites, toggleFavoriteState } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Verificamos si este lugar exacto ya está en la memoria global
-  const isFavorite = favorites.some(f => f.item_id === itemId && f.item_type === itemType);
+  // Verificamos si este lugar exacto ya está en la memoria global convirtiendo a texto
+  const isFavorite = favorites.some(f => f.item_id === itemId.toString() && f.item_type === itemType);
 
   const handleToggle = async (e: React.MouseEvent) => {
     e.stopPropagation(); // Evita que la tarjeta haga otra acción al hacer clic en el corazón
@@ -29,7 +29,7 @@ export const FavoriteButton = ({ itemId, itemType }: { itemId: number, itemType:
       });
 
       if (res.ok) {
-        toggleFavoriteState(itemId, itemType); // Actualiza la UI al instante
+        toggleFavoriteState(itemId.toString(), itemType); // Actualiza la UI al instante
       } else {
         console.error("Error al guardar favorito en la base de datos");
       }

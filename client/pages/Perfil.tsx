@@ -38,13 +38,13 @@ export default function Perfil() {
     return null;
   }
 
-  // Filtramos la data real cruzándola con los IDs guardados en Zustand
+// Filtramos la data real cruzándola con los IDs guardados en Zustand
   const misLugaresTuristicos = sitiosTuristicos.filter(sitio => 
-    favorites.some(f => f.item_type === 'turismo' && f.item_id === sitio.id)
+    favorites.some(f => f.item_type === 'turismo' && f.item_id === sitio.id.toString())
   );
 
   const misNegocios = BUSINESSES.filter(negocio => 
-    favorites.some(f => f.item_type === 'negocio' && f.item_id === negocio.id)
+    favorites.some(f => f.item_type === 'negocio' && f.item_id === negocio.id.toString())
   );
 
   return (
