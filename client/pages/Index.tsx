@@ -14,7 +14,10 @@ import {
   Zap,
   Store as StoreIcon,
   Globe as GlobeIcon,
-  Search
+  Search,
+  Sun,
+  Cloud,
+  CloudRain,
 } from "lucide-react";
 import { applyThemeToDOM } from "@/lib/cityThemes";
 import { sitiosTuristicos } from "@/lib/turismoData";
@@ -67,6 +70,14 @@ const CITY_THEMES: Record<string, { turismo: string; rutaLocal: string; accent: 
     button: "from-amber-500 to-orange-600",
     bg: "from-amber-50/50 to-white"
   }
+};
+
+// 3. Coordenadas para el Clima
+const CITY_COORDINATES: Record<string, { lat: number; lon: number }> = {
+  "Tingo María": { lat: -9.2977, lon: -76.0052 },
+  "Huánuco": { lat: -9.9306, lon: -76.2422 },
+  "Tarapoto": { lat: -6.4878, lon: -76.3597 },
+  "Cusco": { lat: -13.5226, lon: -71.9673 }
 };
 
 // 2. Categorías Optimizadas (Propuesta A)
@@ -168,6 +179,7 @@ export default function Index() {
   const [searchTourism, setSearchTourism] = useState("");
   const [tourismDifficulty, setTourismDifficulty] = useState<string | null>(null); // null = mostrar todos
   const [searchBusiness, setSearchBusiness] = useState("");
+  const [weather, setWeather] = useState<{ temp: number; code: number } | null>(null);
   // --- ESTADOS DE PAGINACIÓN ---
   const [currentPageTourism, setCurrentPageTourism] = useState(1);
   const [currentPageBusiness, setCurrentPageBusiness] = useState(1);
@@ -228,6 +240,36 @@ export default function Index() {
       window.gtag('config', gaId);
     }
   }, [selectedCity]);
+
+  // --- LÓGICA DEL CLIMA ---
+  useEffect(() => {
+    const fetchWeather = async () => {
+      const coords = CITY_COORDINATES[selectedCity];
+      if (!coords) return;
+      
+      try {
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current_weather=true`);
+        const data = await res.json();
+        if (data.current_weather) {
+          setWeather({
+            temp: Math.round(data.current_weather.temperature),
+            code: data.current_weather.weathercode
+          });
+        }
+      } catch (error) {
+        console.error("Error obteniendo el clima:", error);
+      }
+    };
+
+    fetchWeather();
+  }, [selectedCity]);
+
+  // Función para traducir el código del clima a un ícono visual
+  const renderWeatherIcon = (code: number) => {
+    if (code <= 2) return <Sun className="w-4 h-4 text-amber-500 fill-current" />; // Despejado / Parcial
+    if (code <= 48) return <Cloud className="w-4 h-4 text-gray-400 fill-current" />; // Nublado / Niebla
+    return <CloudRain className="w-4 h-4 text-blue-500 fill-current" />; // Lluvia
+  };
 
   const trackRutaClick = (sitioNombre: string, categoria: string) => {
     if (window.gtag) {
@@ -445,6 +487,17 @@ export default function Index() {
                 </select>
                 <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
+              
+              {/* 👇 NUEVO: WIDGET DE CLIMA 👇 */}
+              {weather && (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-xl shadow-sm transition-all hover:shadow-md animate-in fade-in duration-500">
+                  {renderWeatherIcon(weather.code)}
+                  <span className="text-[11px] sm:text-sm font-black text-slate-700">
+                    {weather.temp}°C
+                  </span>
+                </div>
+              )}
+              {/* 👆 FIN WIDGET DE CLIMA 👆 */}
 
               {/* Toggle Turismo/Ruta Local */}
               <div className="flex items-center gap-2">
