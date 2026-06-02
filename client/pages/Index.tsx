@@ -479,7 +479,7 @@ export default function Index() {
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className={`appearance-none w-[115px] sm:w-44 px-3 py-1.5 pr-8 border-2 rounded-xl bg-white text-[hsl(var(--theme-primary))] font-bold text-[11px] sm:text-sm focus:outline-none transition-all ${theme.accent.split(' ')[1]}`}
+                  className={`appearance-none w-[100px] sm:w-44 px-2 sm:px-3 py-1.5 pr-6 sm:pr-8 border-2 rounded-xl bg-white text-[hsl(var(--theme-primary))] font-bold text-[10px] sm:text-sm focus:outline-none transition-all ${theme.accent.split(' ')[1]}`}
                 >
                   {CITIES.map((city) => (
                     <option key={city} value={city}>{city}</option>
@@ -511,7 +511,7 @@ export default function Index() {
                     {isTourism ? "⛰️" : "🏪"}
                   </span>
                 </button>
-                <span className={`text-[10px] sm:text-sm font-black uppercase tracking-tighter transition-colors duration-500 ${theme.accent.split(' ')[0]}`}>
+                <span className={`whitespace-nowrap text-[10px] sm:text-sm font-black uppercase tracking-tighter transition-colors duration-500 ${theme.accent.split(' ')[0]}`}>
                   {isTourism ? "Turismo" : "Ruta Local"}
                 </span>
               </div>
