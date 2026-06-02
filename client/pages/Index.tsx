@@ -13,7 +13,8 @@ import {
   Star,
   Zap,
   Store as StoreIcon,
-  Globe as GlobeIcon
+  Globe as GlobeIcon,
+  Search
 } from "lucide-react";
 import { applyThemeToDOM } from "@/lib/cityThemes";
 import { sitiosTuristicos } from "@/lib/turismoData";
@@ -162,9 +163,11 @@ export default function Index() {
     localStorage.setItem('categoriaGuardada', selectedCategory);
   }, [selectedCategory]);
   const [emailInput, setEmailInput] = useState("");
-
   const [activeReviewItem, setActiveReviewItem] = useState<{id: string, name: string} | null>(null);
-
+// --- ESTADOS DE BÚSQUEDA Y FILTROS ---
+  const [searchTourism, setSearchTourism] = useState("");
+  const [tourismDifficulty, setTourismDifficulty] = useState<string | null>(null); // null = mostrar todos
+  const [searchBusiness, setSearchBusiness] = useState("");
   // --- ESTADOS DE PAGINACIÓN ---
   const [currentPageTourism, setCurrentPageTourism] = useState(1);
   const [currentPageBusiness, setCurrentPageBusiness] = useState(1);
@@ -176,10 +179,17 @@ export default function Index() {
   useEffect(() => {
     setCurrentPageTourism(1);
     setCurrentPageBusiness(1);
-  }, [selectedCity, selectedCategory, isTourism]);
+  }, [selectedCity, selectedCategory, isTourism, searchTourism, tourismDifficulty, searchBusiness]);
 
   // --- LÓGICA DE DATOS: TURISMO ---
-  const filteredTourism = sitiosTuristicos.filter((sitio) => sitio.ciudad === selectedCity);
+  const filteredTourism = sitiosTuristicos.filter((sitio) => {
+    const matchCity = sitio.ciudad === selectedCity;
+    const matchSearch = sitio.nombre.toLowerCase().includes(searchTourism.toLowerCase());
+    const matchDifficulty = tourismDifficulty ? sitio.dificultad === tourismDifficulty : true;
+    
+    return matchCity && matchSearch && matchDifficulty;
+  });
+  
   const totalTourismPages = Math.ceil(filteredTourism.length / ITEMS_PER_PAGE);
   const paginatedTourism = filteredTourism.slice(
     (currentPageTourism - 1) * ITEMS_PER_PAGE,
@@ -187,9 +197,14 @@ export default function Index() {
   );
 
   // --- LÓGICA DE DATOS: RUTA LOCAL ---
-  const filteredBusinesses = BUSINESSES.filter(
-    (b) => b.ciudad === selectedCity && b.category === selectedCategory
-  );
+  const filteredBusinesses = BUSINESSES.filter((b) => {
+    const matchCity = b.ciudad === selectedCity;
+    const matchCategory = b.category === selectedCategory;
+    const matchSearch = b.name.toLowerCase().includes(searchBusiness.toLowerCase());
+    
+    return matchCity && matchCategory && matchSearch;
+  });
+  
   const totalBusinessPages = Math.ceil(filteredBusinesses.length / ITEMS_PER_PAGE);
   const paginatedBusinesses = filteredBusinesses.slice(
     (currentPageBusiness - 1) * ITEMS_PER_PAGE,
@@ -456,13 +471,65 @@ export default function Index() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {isTourism ? (
           <section className="space-y-8 animate-in fade-in duration-700">
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Mountain className={`w-6 h-6 ${theme.accent.split(' ')[0]}`} />
-                <h2 className="text-3xl sm:text-5xl font-black text-[hsl(var(--theme-primary))]">Explora {selectedCity}</h2>
+            {/* 👇 NUEVO: BUSCADOR Y FILTROS TURISMO 👇 */}
+            <div className="flex flex-col xl:flex-row gap-4 py-4">
+              {/* Barra de búsqueda */}
+              <div className="relative flex-1 max-w-xl">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder={`Buscar lugares en ${selectedCity}...`}
+                  value={searchTourism}
+                  onChange={(e) => setSearchTourism(e.target.value)}
+                  className={`w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 focus:border-${theme.accent.split(' ')[1].replace('border-', '')} outline-none transition-all shadow-sm text-sm font-medium text-slate-700 bg-white`}
+                />
               </div>
-              <p className="text-gray-600 max-w-2xl text-sm sm:text-lg">Descubre destinos increíbles y aventuras que no olvidarás.</p>
+              
+              {/* Pastillas (Pills) de Dificultad */}
+              <div className="flex gap-2 overflow-x-auto hide-scrollbar items-center pb-2 xl:pb-0">
+                <button
+                  onClick={() => setTourismDifficulty(null)}
+                  className={`px-4 py-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap border-2 ${
+                    tourismDifficulty === null
+                      ? `bg-slate-800 text-white border-slate-800 shadow-md`
+                      : `bg-white text-slate-600 border-gray-100 hover:border-slate-300`
+                  }`}
+                >
+                  Todas
+                </button>
+                <button
+                  onClick={() => setTourismDifficulty("Acceso Fácil")}
+                  className={`px-4 py-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 border-2 ${
+                    tourismDifficulty === "Acceso Fácil"
+                      ? `bg-emerald-500 text-white border-emerald-500 shadow-md`
+                      : `bg-white text-emerald-700 border-emerald-100 hover:border-emerald-300`
+                  }`}
+                >
+                  <Zap className="w-3 h-3" /> Acceso Fácil
+                </button>
+                <button
+                  onClick={() => setTourismDifficulty("Caminata Moderada")}
+                  className={`px-4 py-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 border-2 ${
+                    tourismDifficulty === "Caminata Moderada"
+                      ? `bg-amber-500 text-white border-amber-500 shadow-md`
+                      : `bg-white text-amber-700 border-amber-100 hover:border-amber-300`
+                  }`}
+                >
+                  <Zap className="w-3 h-3" /> Caminata Moderada
+                </button>
+                <button
+                  onClick={() => setTourismDifficulty("Ruta Exigente")}
+                  className={`px-4 py-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 border-2 ${
+                    tourismDifficulty === "Ruta Exigente"
+                      ? `bg-red-500 text-white border-red-500 shadow-md`
+                      : `bg-white text-red-700 border-red-100 hover:border-red-300`
+                  }`}
+                >
+                  <Zap className="w-3 h-3" /> Ruta Exigente
+                </button>
+              </div>
             </div>
+            {/* 👆 FIN BUSCADOR TURISMO 👆 */}
 
             {/* Listado Paginado de Turismo */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -577,6 +644,19 @@ export default function Index() {
                 </button>
               ))}
             </div>
+
+            {/* 👇 NUEVO: BUSCADOR NEGOCIOS 👇 */}
+            <div className="relative max-w-md mt-4 mb-2">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder={`Buscar en ${selectedCategory}...`}
+                value={searchBusiness}
+                onChange={(e) => setSearchBusiness(e.target.value)}
+                className={`w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 focus:border-${theme.accent.split(' ')[1].replace('border-', '')} outline-none transition-all shadow-sm text-sm font-medium text-slate-700 bg-white`}
+              />
+            </div>
+            {/* 👆 FIN BUSCADOR NEGOCIOS 👆 */}
 
             {/* Listado de Negocios Filtrados (Paginado) */}
             {paginatedBusinesses.length > 0 ? (
