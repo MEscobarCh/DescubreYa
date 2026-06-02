@@ -79,10 +79,14 @@ const BUSINESS_CATEGORIES = [
 
 const getDifficultyColor = (difficulty: string) => {
   switch (difficulty) {
-    case "Fácil": return "bg-emerald-100 text-emerald-700";
-    case "Moderada": return "bg-amber-100 text-amber-700";
-    case "Difícil": return "bg-orange-100 text-orange-700";
-    default: return "bg-gray-100 text-gray-700";
+    case "Acceso Fácil": 
+      return "bg-emerald-100 text-emerald-700"; // Verde
+    case "Caminata Moderada": 
+      return "bg-amber-100 text-amber-700"; // Ámbar
+    case "Ruta Exigente": 
+      return "bg-red-100 text-red-700"; // Rojo (¡Contraste perfecto!)
+    default: 
+      return "bg-gray-100 text-gray-700";
   }
 };
 
@@ -484,8 +488,8 @@ export default function Index() {
                     <span className={`text-[10px] font-bold uppercase tracking-widest ${theme.accent.split(' ')[0]}`}>{sitio.categoria}</span>
                     <h3 className="text-lg font-black text-[hsl(var(--theme-primary))] mt-1 mb-2">{sitio.nombre}</h3>
                     <p className="text-xs text-gray-600 line-clamp-2 mb-4">{sitio.descripcion}</p>
-                    <div className={`mb-5 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-bold ${getDifficultyColor(sitio.difficulty || sitio.dificultad)}`}>
-                      <Zap className="w-3 h-3" /> {sitio.difficulty || sitio.dificultad}
+                    <div className={`mb-5 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-bold tracking-wide ${getDifficultyColor(sitio.dificultad)}`}>
+                      <Zap className="w-3 h-3" /> {sitio.dificultad}
                     </div>
                     {/* Botones de acción divididos */}
                     <div className="flex gap-2">
