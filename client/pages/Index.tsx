@@ -422,8 +422,8 @@ export default function Index() {
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-r ${theme.button}`}>
                       {user.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="block max-w-[75px] sm:max-w-none truncate text-xs sm:text-sm font-bold text-slate-700 group-hover:text-slate-900">
-                      {user.name.split(' ')[0]}
+                    <span className="block max-w-[85px] sm:max-w-none truncate text-xs sm:text-sm font-bold text-slate-700 group-hover:text-slate-900">
+                      {user.name.split(' ')[0]} {user.name.split(' ').length > 1 ? `${user.name.split(' ')[1].charAt(0)}.` : ''}
                     </span>
                     <ChevronDown 
                       className={`w-4 h-4 text-slate-500 group-hover:text-slate-700 transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} 
