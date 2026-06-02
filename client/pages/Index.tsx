@@ -180,6 +180,8 @@ export default function Index() {
   const [tourismDifficulty, setTourismDifficulty] = useState<string | null>(null); // null = mostrar todos
   const [searchBusiness, setSearchBusiness] = useState("");
   const [weather, setWeather] = useState<{ temp: number; code: number } | null>(null);
+  const [hourlyForecast, setHourlyForecast] = useState<{ time: string; temp: number; code: number }[]>([]);
+  const [isWeatherOpen, setIsWeatherOpen] = useState(false);
   // --- ESTADOS DE PAGINACIÓN ---
   const [currentPageTourism, setCurrentPageTourism] = useState(1);
   const [currentPageBusiness, setCurrentPageBusiness] = useState(1);
@@ -241,20 +243,47 @@ export default function Index() {
     }
   }, [selectedCity]);
 
-  // --- LÓGICA DEL CLIMA ---
+// --- LÓGICA DEL CLIMA ---
   useEffect(() => {
     const fetchWeather = async () => {
       const coords = CITY_COORDINATES[selectedCity];
       if (!coords) return;
       
       try {
-        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current_weather=true`);
+        // 1. URL actualizada: pedimos el clima actual + el pronóstico por horas (ajustado a la zona horaria local)
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current_weather=true&hourly=temperature_2m,weathercode&timezone=America%2FLima`);
         const data = await res.json();
+        
         if (data.current_weather) {
+          // Guardamos el clima actual
           setWeather({
             temp: Math.round(data.current_weather.temperature),
             code: data.current_weather.weathercode
           });
+        }
+
+        if (data.hourly) {
+          // 2. Buscamos qué hora es ahorita mismo en los datos que nos mandó la API
+          const currentHourIso = data.current_weather.time; 
+          const currentIndex = data.hourly.time.findIndex((t: string) => t >= currentHourIso);
+          
+          // 3. Extraemos mágicamente solo las siguientes 4 horas
+          const nextHours = [];
+          for (let i = 1; i <= 4; i++) { // Empezamos en i=1 para no repetir la hora actual
+            const index = currentIndex + i;
+            if (index < data.hourly.time.length) {
+              // Formateamos la hora para que se lea bonito (Ej: "02:00 PM")
+              const dateObj = new Date(data.hourly.time[index]);
+              const formattedTime = dateObj.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit', hour12: true });
+              
+              nextHours.push({
+                time: formattedTime,
+                temp: Math.round(data.hourly.temperature_2m[index]),
+                code: data.hourly.weathercode[index]
+              });
+            }
+          }
+          setHourlyForecast(nextHours); // Lo guardamos en la nueva memoria
         }
       } catch (error) {
         console.error("Error obteniendo el clima:", error);
@@ -475,14 +504,46 @@ export default function Index() {
                 <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
 
+              {/* 👇 NUEVO: WIDGET DE CLIMA INTERACTIVO 👇 */}
               {weather && (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-xl shadow-sm transition-all hover:shadow-md animate-in fade-in duration-500">
-                  {renderWeatherIcon(weather.code)}
-                  <span className="text-[11px] sm:text-sm font-black text-slate-700">
-                    {weather.temp}°C
-                  </span>
+                <div className="relative">
+                  {/* Botón Principal */}
+                  <button 
+                    onClick={() => setIsWeatherOpen(!isWeatherOpen)}
+                    onBlur={() => setTimeout(() => setIsWeatherOpen(false), 200)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-gray-100 rounded-xl shadow-sm transition-all hover:border-slate-200 hover:bg-slate-50 focus:outline-none"
+                  >
+                    {renderWeatherIcon(weather.code)}
+                    <span className="text-[11px] sm:text-sm font-black text-slate-700">
+                      {weather.temp}°C
+                    </span>
+                    <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-300 ${isWeatherOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Menú Desplegable con las Horas */}
+                  {isWeatherOpen && hourlyForecast.length > 0 && (
+                    <div className="absolute right-0 sm:left-0 mt-2 w-44 bg-white rounded-2xl shadow-xl py-2 z-[100] border border-gray-100 origin-top-right sm:origin-top-left animate-in fade-in zoom-in-95 duration-200">
+                      <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
+                          Pronóstico Próximas Horas
+                        </span>
+                      </div>
+                      
+                      {/* Bucle que dibuja las siguientes horas automáticamente */}
+                      {hourlyForecast.map((hour, idx) => (
+                        <div key={idx} className="flex items-center justify-between px-4 py-2.5 hover:bg-slate-50 transition-colors">
+                          <span className="text-xs font-bold text-slate-600">{hour.time}</span>
+                          <div className="flex items-center gap-2">
+                            {renderWeatherIcon(hour.code)}
+                            <span className="text-sm font-black text-slate-800">{hour.temp}°</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
+              {/* 👆 FIN WIDGET DE CLIMA 👆 */}
 
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <button
