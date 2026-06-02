@@ -182,6 +182,7 @@ export default function Index() {
   const [weather, setWeather] = useState<{ temp: number; code: number } | null>(null);
   const [hourlyForecast, setHourlyForecast] = useState<{ time: string; temp: number; code: number }[]>([]);
   const [isWeatherOpen, setIsWeatherOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   // --- ESTADOS DE PAGINACIÓN ---
   const [currentPageTourism, setCurrentPageTourism] = useState(1);
   const [currentPageBusiness, setCurrentPageBusiness] = useState(1);
@@ -839,7 +840,7 @@ export default function Index() {
               </>
             ) : (
               <div className="text-center py-12 bg-white/50 backdrop-blur-sm rounded-3xl border border-gray-100">
-                <p className="text-gray-500 text-sm font-bold">Próximamente más negocios en esta categoría para {selectedCity} 🏪</p>
+                <button onClick={() => setIsAboutModalOpen(true)} className="text-sm text-gray-500 hover:text-slate-900 transition-colors font-medium">Sobre el Proyecto</button>
               </div>
             )}
           </section>
@@ -871,53 +872,82 @@ export default function Index() {
         </section>
       </main>
 
-      {/* Footer con Redes Sociales - ¡DescubreYA! */}
-      <footer className="mt-auto py-10 border-t border-gray-100 bg-white/60 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-          
-          {/* Información del Proyecto */}
-          <div className="text-center md:text-left">
-            <h4 className={`text-lg font-black tracking-tight ${theme.accent.split(' ')[0]}`}>
-              ¡DescubreYA!
-            </h4>
-            <p className="text-xs text-gray-500 font-medium mt-1">
-              Conectando lo mejor del Perú, ciudad por ciudad. ⛵
+      {/* Footer Optimizado - ¡DescubreYA! */}
+      <footer className="mt-auto border-t border-gray-100 bg-white/80 backdrop-blur-md pt-12 pb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mb-10">
+            
+            {/* Columna 1: Marca y Misión */}
+            <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
+              <div className="flex items-center gap-2">
+                <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${theme.button} flex-shrink-0 flex items-center justify-center text-sm shadow-sm`}>
+                  🌍
+                </div>
+                <h4 className={`text-xl font-black tracking-tight text-slate-800`}>
+                  ¡Descubre<span className={theme.accent.split(' ')[0]}>YA</span>!
+                </h4>
+              </div>
+              <p className="text-sm text-gray-500 font-medium max-w-xs">
+                Tu plataforma publicitaria y turística de confianza. Conectando lo mejor del Perú, ciudad por ciudad. ⛵
+              </p>
+            </div>
+
+            {/* Columna 2: Nosotros (Enlaces) */}
+            <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
+              <h5 className="text-sm font-black text-slate-800 uppercase tracking-widest">Nosotros</h5>
+              <nav className="flex flex-col space-y-3">
+                <button onClick={() => setIsAboutModalOpen(true)} className="text-sm text-gray-500 hover:text-slate-900 transition-colors font-medium">Sobre el Proyecto</button>
+                <button onClick={() => alert('Próximamente: Cómo ser parte')} className="text-sm text-gray-500 hover:text-slate-900 transition-colors font-medium">Suma tu Negocio</button>
+                <button onClick={() => alert('Próximamente: Políticas')} className="text-sm text-gray-500 hover:text-slate-900 transition-colors font-medium">Términos y Privacidad</button>
+              </nav>
+            </div>
+
+            {/* Columna 3: Contáctenos */}
+            <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
+              <h5 className="text-sm font-black text-slate-800 uppercase tracking-widest">Contáctenos</h5>
+              <div className="flex flex-col space-y-3 w-full sm:w-auto items-center md:items-start">
+                {/* WhatsApp */}
+                <a 
+                  href={`https://wa.me/51995830154?text=${encodeURIComponent(`Hola, te escribo desde ¡DescubreYA! 🌍 Tengo una consulta sobre la ciudad de ${selectedCity}.`)}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-emerald-600 transition-colors font-medium group"
+                >
+                  <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" /> WhatsApp Soporte
+                </a>
+                {/* Correo (Reutilizando el icono Mail que ya tenías importado para el login) */}
+                <a 
+                  href="mailto:contacto@descubreya.org" 
+                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 transition-colors font-medium group"
+                >
+                  <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" /> contacto@descubreya.org
+                </a>
+                {/* Facebook */}
+                <a 
+                  href="https://www.facebook.com/profile.php?id=61589431358800" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 transition-colors font-medium group"
+                >
+                  <Facebook className="w-4 h-4 group-hover:scale-110 transition-transform" /> Síguenos en Facebook
+                </a>
+              </div>
+            </div>
+            
+          </div>
+
+          {/* Fila Inferior: Copyright */}
+          <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-gray-400 font-bold text-center md:text-left">
+              © {new Date().getFullYear()} ¡DescubreYA!. Todos los derechos reservados.
             </p>
-          </div>
-
-          {/* Botones de Contacto */}
-          <div className="flex items-center gap-4">
-            {/* WhatsApp con Mensaje Predefinido Dinámico */}
-            <a 
-              href={`https://wa.me/51995830154?text=${encodeURIComponent(
-                `Hola, te escribo desde ¡DescubreYA! 🌍 Tengo una consulta sobre la ciudad de ${selectedCity}.`
-              )}`} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border-2 transition-all hover:shadow-md active:scale-95 ${theme.accent.split(' ')[1]} ${theme.accent.split(' ')[0]}`}
-            >
-              <MessageCircle className="w-5 h-5" />
-              <span className="text-sm font-bold">WhatsApp</span>
-            </a>
-
-            {/* Facebook */}
-            <a 
-              href="https://www.facebook.com/profile.php?id=61589431358800" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className={`flex items-center gap-2 px-5 py-2.5 text-white rounded-xl bg-gradient-to-r shadow-lg transition-all hover:-translate-y-1 active:translate-y-0 ${theme.button}`}
-            >
-              <Facebook className="w-5 h-5" />
-              <span className="text-sm font-bold">Facebook</span>
-            </a>
-          </div>
-
-          {/* Copyright */}
-          <div className="text-xs text-gray-400 font-bold">
-            © 2026 ¡DescubreYA! - {selectedCity}
+            <div className="text-xs text-gray-400 font-bold flex gap-2">
+              <span>Desarrollado para</span>
+              <span className={`${theme.accent.split(' ')[0]}`}>{selectedCity}</span>
+            </div>
           </div>
         </div>
-      </footer>
+      </footer> 
 
       {/* 👇 NUEVO: MODAL DE RESEÑAS 👇 */}
       {activeReviewItem && (
@@ -1058,6 +1088,59 @@ export default function Index() {
           </div>
         </div>
       )}
+
+      {/* 👇 NUEVO: MODAL "NOSOTROS" 👇 */}
+      {isAboutModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 transition-all">
+          <div className="bg-white rounded-[2rem] w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
+            
+            {/* Cabecera decorativa */}
+            <div className={`relative p-6 sm:p-8 text-center text-white bg-gradient-to-br ${theme.button} overflow-hidden flex-shrink-0`}>
+              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+              <button 
+                onClick={() => setIsAboutModalOpen(false)}
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-black/10 text-white hover:bg-black/20 transition-colors z-20"
+              >
+                ✕
+              </button>
+              <h3 className="relative z-10 text-3xl sm:text-4xl font-black tracking-tight drop-shadow-md mb-1">
+                Nosotros
+              </h3>
+              <p className="relative z-10 text-sm font-medium text-white/90 drop-shadow-sm">
+                ¿Quiénes somos?
+              </p>
+            </div>
+
+            {/* Contenido (Tu texto) */}
+            <div className="overflow-y-auto p-6 sm:p-8 custom-scrollbar text-slate-600 space-y-4 text-sm sm:text-base leading-relaxed">
+              <p>
+                <strong className={`font-black ${theme.accent.split(' ')[0]}`}>¡DescubreYA!</strong> nació con una misión clara: conectar a las personas con lo mejor de cada ciudad, ya sean turistas que llegan por primera vez o residentes que quieren redescubrir su propio entorno.
+              </p>
+              
+              <p>
+                Somos un equipo apasionado por el turismo local y la tecnología, convencidos de que cada ciudad tiene algo increíble que ofrecer, y que la mejor forma de darlo a conocer es a través de una plataforma digital accesible, rápida y confiable.
+              </p>
+
+              <p>
+                En nuestra plataforma reunimos en un solo lugar los sitios turísticos, los negocios locales, las reseñas de la comunidad y las rutas de acceso, todo pensado para que explorar una ciudad sea una experiencia simple y memorable.
+              </p>
+
+              <p>
+                Creemos en el poder del comercio local, en la riqueza cultural de cada rincón y en que la tecnología puede ser el puente entre los viajeros y las comunidades que los reciben.
+              </p>
+
+              {/* Destacado para la Visión */}
+              <div className={`mt-6 p-5 rounded-2xl bg-slate-50 border-l-4 ${theme.accent.split(' ')[1]} shadow-sm`}>
+                <p className="font-bold text-slate-800 italic">
+                  "Nuestra visión es ser la plataforma de referencia para descubrir ciudades de manera auténtica, apoyando al mismo tiempo el crecimiento de los negocios locales."
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
+      {/* 👆 FIN MODAL "NOSOTROS" 👆 */}
     </div>
   );
 }
