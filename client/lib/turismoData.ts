@@ -181,7 +181,7 @@ export const sitiosTuristicos: SitioTuristico[] = [
     categoria: "Aventura",
     imagen: "/images/turismo/tingo_maria/cueva_pumas.webp",
     descripcion: "Caverna profunda y desafiante que requiere espíritu aventurero. Su nombre proviene de antiguas leyendas felinas.",
-    dificultad: "Ruta Exigente",
+    dificultad: "Acceso Fácil",
     mapUrl: "https://maps.app.goo.gl/xwnwnqFS344ivcun8"
   },
   {
