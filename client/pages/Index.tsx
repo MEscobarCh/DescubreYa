@@ -405,7 +405,7 @@ export default function Index() {
             </button>
 
             {/* Controles y Autenticación */}
-            <div className="flex items-center justify-center gap-3 w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0 border-gray-50">
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-3 sm:gap-3 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0 border-gray-50">
               
               {/* Usuario / Botón de Login */}
               {user ? (
