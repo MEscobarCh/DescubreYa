@@ -422,7 +422,7 @@ export default function Index() {
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-r ${theme.button}`}>
                       {user.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="hidden sm:block text-sm font-bold text-slate-700 group-hover:text-slate-900">
+                    <span className="block max-w-[75px] sm:max-w-none truncate text-xs sm:text-sm font-bold text-slate-700 group-hover:text-slate-900">
                       {user.name.split(' ')[0]}
                     </span>
                     <ChevronDown 
