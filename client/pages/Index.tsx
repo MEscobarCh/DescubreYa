@@ -130,9 +130,33 @@ export default function Index() {
   const [authPassword, setAuthPassword] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
-  const [isTourism, setIsTourism] = useState(true);
-  const [selectedCity, setSelectedCity] = useState("Tingo María");
-  const [selectedCategory, setSelectedCategory] = useState("Restaurantes");
+  // 1. Iniciamos leyendo la memoria del navegador (por defecto true para Turismo)
+  const [isTourism, setIsTourism] = useState(() => {
+    const saved = localStorage.getItem('isTourismMode');
+    return saved !== null ? saved === 'true' : true; // Convierte el texto guardado a booleano
+  });
+
+  // 2. Guardamos en memoria automáticamente cada vez que cambies de vista
+  useEffect(() => {
+    localStorage.setItem('isTourismMode', isTourism.toString());
+  }, [isTourism]);
+  // 3. Memoria para la Ciudad
+  const [selectedCity, setSelectedCity] = useState(() => {
+    return localStorage.getItem('ciudadGuardada') || "Tingo María";
+  });
+
+  useEffect(() => {
+    localStorage.setItem('ciudadGuardada', selectedCity);
+  }, [selectedCity]);
+
+  // 4. Memoria para la Categoría de Negocios
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    return localStorage.getItem('categoriaGuardada') || "Restaurantes";
+  });
+
+  useEffect(() => {
+    localStorage.setItem('categoriaGuardada', selectedCategory);
+  }, [selectedCategory]);
   const [emailInput, setEmailInput] = useState("");
 
   const [activeReviewItem, setActiveReviewItem] = useState<{id: string, name: string} | null>(null);
@@ -302,15 +326,22 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-4 py-2 sm:py-3">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-1">
             
-            {/* Logo */}
-            <div className="flex items-center gap-2 justify-center w-full sm:w-auto">
+            {/* Logo convertido a botón de inicio */}
+            <button 
+              onClick={() => {
+                setIsTourism(true); // Vuelve a la pestaña de Turismo
+                setCurrentPageTourism(1); // Regresa a la página 1 de resultados
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Deslizamiento suave hacia arriba
+              }}
+              className="flex items-center gap-2 justify-center w-full sm:w-auto hover:scale-105 active:scale-95 transition-transform duration-300 focus:outline-none cursor-pointer"
+            >
               <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${theme.button} flex-shrink-0 flex items-center justify-center text-sm shadow-sm`}>
                 🌍
               </div>
               <h1 className="text-xl sm:text-2xl font-black text-[hsl(var(--theme-primary))] tracking-tight">
                 ¡Descubre<span className={theme.accent.split(' ')[0]}>YA</span>!
               </h1>
-            </div>
+            </button>
 
             {/* Controles y Autenticación */}
             <div className="flex items-center justify-center gap-3 w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0 border-gray-50">
