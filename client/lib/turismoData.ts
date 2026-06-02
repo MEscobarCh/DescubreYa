@@ -215,6 +215,37 @@ export const sitiosTuristicos: SitioTuristico[] = [
     mapUrl: "https://maps.app.goo.gl/Cev4KGekHvkQHFae7"
   },
 
+  {
+    id: 21,
+    ciudad: "Tingo María",
+    nombre: "Mirador de Supte",
+    categoria: "Vista Panorámica",
+    imagen: "/images/turismo/tingo_maria/mirador_supte_nuevo.webp",
+    descripcion: "Impresionante mirador natural que ofrece una vista privilegiada del verdor de la selva alta y los paisajes de Supte.",
+    dificultad: "Ruta Exigente",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Mirador+de+Supte+Tingo+Maria"
+  },
+  {
+    id: 22,
+    ciudad: "Tingo María",
+    nombre: "Mirador Pérez",
+    categoria: "Vista Panorámica",
+    imagen: "/images/turismo/tingo_maria/mirador_perez.webp", // Recuerda añadir la imagen en esta ruta
+    descripcion: "Un excelente punto de observación para contemplar la belleza paisajística de la zona, ideal para tomar fotos del atardecer y relajarse.",
+    dificultad: "Ruta Exigente",
+    mapUrl: "https://maps.app.goo.gl/vERVABND7MLjvP779"
+  },
+  {
+    id: 23,
+    ciudad: "Tingo María",
+    nombre: "Mirador Cotomono",
+    categoria: "Vista Panorámica",
+    imagen: "/images/turismo/tingo_maria/mirador_cotomono.webp",
+    descripcion: "Atracción paisajística que destaca por su entorno natural y la posibilidad de avistar aves.",
+    dificultad: "Ruta Exigente",
+    mapUrl: "https://maps.app.goo.gl/LSHWug57zb5cRTu97"
+  },
+
   // --- HUÁNUCO (IDs 1001 al 2000) ---
   {
     id: 1001,
