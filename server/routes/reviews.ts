@@ -1,8 +1,19 @@
 import express from 'express';
 import { sql } from '@vercel/postgres';
 import jwt from 'jsonwebtoken';
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 const router = express.Router();
+
+// 👇 Configuramos el cliente de S3 igual que hicimos en la subida 👇
+const S3 = new S3Client({
+  region: "auto",
+  endpoint: process.env.R2_ENDPOINT,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID as string,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY as string,
+  },
+});
 
 // En server/routes/reviews.ts, pegar ESTO justo debajo de: const router = express.Router();
 
@@ -54,9 +65,10 @@ router.get('/:place_id', async (req, res) => {
         const stats = statsResult.rows[0];
 
         // B) Traer los 10 comentarios de esta página, unidos con la foto y nombre del usuario
+        // B) Traer los 10 comentarios de esta página, unidos con la foto y nombre del usuario
         const reviewsResult = await sql`
             SELECT 
-                r.id, r.rating, r.comment, r.created_at, r.updated_at,
+                r.id, r.rating, r.comment, r.image_url, r.created_at, r.updated_at,
                 u.name, u.avatar_url, u.id as user_id
             FROM reviews r
             JOIN users u ON r.user_id = u.id
@@ -96,7 +108,8 @@ router.post('/', async (req, res) => {
         const userId = decoded.userId;
 
         // Leer las estrellas y el comentario
-        const { place_id, rating, comment } = req.body;
+        // Leer las estrellas, el comentario y la foto
+        const { place_id, rating, comment, image_url } = req.body;
 
         if (!place_id || !rating || rating < 1 || rating > 5) {
             return res.status(400).json({ error: 'El rating debe ser entre 1 y 5 estrellas.' });
@@ -104,12 +117,13 @@ router.post('/', async (req, res) => {
 
         // Magia SQL: Intenta insertar. Si ya existe (ON CONFLICT), lo actualiza
         const result = await sql`
-            INSERT INTO reviews (user_id, place_id, rating, comment)
-            VALUES (${userId}, ${place_id}, ${rating}, ${comment})
+            INSERT INTO reviews (user_id, place_id, rating, comment, image_url)
+            VALUES (${userId}, ${place_id}, ${rating}, ${comment}, ${image_url})
             ON CONFLICT (user_id, place_id) 
             DO UPDATE SET 
                 rating = EXCLUDED.rating, 
                 comment = EXCLUDED.comment, 
+                image_url = COALESCE(EXCLUDED.image_url, reviews.image_url),
                 updated_at = CURRENT_TIMESTAMP
             RETURNING *;
         `;
@@ -140,13 +154,40 @@ router.delete('/', async (req, res) => {
             return res.status(400).json({ error: 'Falta el ID del lugar.' });
         }
 
-        // Eliminamos la reseña que coincida con este lugar Y que pertenezca a este usuario
+        // 1. ANTES de borrar, buscamos si esta reseña tiene una foto guardada
+        const reviewResult = await sql`
+            SELECT image_url FROM reviews 
+            WHERE user_id = ${userId} AND place_id = ${place_id}
+        `;
+        const reviewToDelete = reviewResult.rows[0];
+
+        // 2. Si hay una foto, disparamos el misil a Cloudflare R2
+        if (reviewToDelete && reviewToDelete.image_url) {
+            try {
+                // Extraemos el nombre exacto del archivo de la URL completa
+                // Ejemplo: pasa de "https://pub.r2.dev/reviews/foto.jpg" a "reviews/foto.jpg"
+                const urlParts = new URL(reviewToDelete.image_url);
+                const fileKey = urlParts.pathname.substring(1); 
+                
+                const deleteCommand = new DeleteObjectCommand({
+                    Bucket: process.env.R2_BUCKET_NAME,
+                    Key: fileKey,
+                });
+                
+                await S3.send(deleteCommand);
+            } catch (s3Error) {
+                console.error("Error eliminando foto física en Cloudflare:", s3Error);
+                // No detenemos el proceso aquí para asegurar que al menos se borre de la BD
+            }
+        }
+
+        // 3. Finalmente, borramos el rastro de la base de datos Neon
         await sql`
             DELETE FROM reviews 
             WHERE user_id = ${userId} AND place_id = ${place_id}
         `;
 
-        res.json({ message: "Reseña eliminada con éxito" });
+        res.json({ message: "Reseña e imagen eliminadas con éxito" });
 
     } catch (error) {
         console.error("Error eliminando reseña:", error);

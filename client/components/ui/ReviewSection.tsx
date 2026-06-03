@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Star, MessageSquare } from 'lucide-react';
-import { useAuthStore } from '@/store/authStore'; // Ajusta la ruta si es necesario
-import { useReviewStore } from '@/store/reviewStore'; // Ajusta la ruta si es necesario
+import { Star, MessageSquare, Camera, X } from 'lucide-react';
+import { useAuthStore } from '@/store/authStore'; 
+import { useReviewStore } from '@/store/reviewStore'; 
+import imageCompression from 'browser-image-compression';
 
 export function ReviewSection({ placeId }: { placeId: string }) {
   const { user, token } = useAuthStore();
@@ -13,9 +14,41 @@ export function ReviewSection({ placeId }: { placeId: string }) {
   const [comment, setComment] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [reviewPhotoTemp, setReviewPhotoTemp] = useState<string | null>(null);
+  const [reviewFileTemp, setReviewFileTemp] = useState<File | null>(null); // NUEVO: Guarda el archivo físico
+  const [isUploading, setIsUploading] = useState(false);
 
   // Saber si el usuario ya comentó
   const hasReviewed = reviews.some(r => r.user_id === user?.id);
+  
+  // --- FUNCIÓN DE COMPRESIÓN PARA RESEÑAS ---
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return; 
+
+    setIsUploading(true);
+
+    try {
+      const options = {
+        maxSizeMB: 0.15, 
+        maxWidthOrHeight: 1080, 
+        useWebWorker: true, 
+        fileType: "image/webp" 
+      };
+
+      const compressedFile = await imageCompression(file, options);
+      const tempImageUrl = URL.createObjectURL(compressedFile);
+      
+      setReviewPhotoTemp(tempImageUrl); 
+      setReviewFileTemp(compressedFile as File); // 👇 NUEVO: Guardamos el archivo listo para volar a R2
+      
+    } catch (error) {
+      console.error("Error al comprimir la imagen:", error);
+      alert("Hubo un problema al procesar tu foto.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   // Ordenar para que el comentario del usuario SIEMPRE salga primero
   const sortedReviews = [...reviews].sort((a, b) => {
@@ -46,11 +79,51 @@ export function ReviewSection({ placeId }: { placeId: string }) {
     if (!token || rating === 0) return;
     
     setIsSubmitting(true);
-    const success = await submitReview(placeId, rating, comment, token);
-    if (success) {
-      setIsEditing(false); // <-- Oculta el formulario tras guardar
+    let finalImageUrl = null;
+
+    try {
+      // 1. Si el usuario adjuntó una foto nueva, la subimos a Cloudflare R2 primero
+      if (reviewFileTemp) {
+        // Pedimos el Ticket Dorado al backend
+        const resUrl = await fetch('/api/upload-url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: reviewFileTemp.name || 'foto.webp',
+            contentType: reviewFileTemp.type
+          })
+        });
+
+        if (!resUrl.ok) throw new Error("Error obteniendo URL de subida");
+        const { signedUrl, publicUrl } = await resUrl.json();
+
+        // Subimos el archivo directamente a Cloudflare R2 usando el Ticket
+        const uploadRes = await fetch(signedUrl, {
+          method: 'PUT',
+          body: reviewFileTemp,
+          headers: { 'Content-Type': reviewFileTemp.type }
+        });
+
+        if (!uploadRes.ok) throw new Error("Error subiendo la foto a los servidores");
+
+        finalImageUrl = publicUrl; // Guardamos la URL pública final
+      }
+
+      // 2. Guardamos la reseña en tu Base de Datos (Neon) enviándole la URL de la foto
+      // Nota: Le pasamos 'finalImageUrl' como un quinto parámetro
+      const success = await submitReview(placeId, rating, comment, token, finalImageUrl);
+      
+      if (success) {
+        setIsEditing(false);
+        setReviewPhotoTemp(null); // Limpiamos la vista previa
+        setReviewFileTemp(null);  // Limpiamos el archivo temporal
+      }
+    } catch (error) {
+      console.error("Error publicando reseña:", error);
+      alert("Tuvimos un problema al publicar tu reseña. Inténtalo de nuevo.");
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   const handleDelete = async () => {
@@ -112,6 +185,50 @@ export function ReviewSection({ placeId }: { placeId: string }) {
               className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none h-24 text-sm"
               required
             />
+            
+            {/* 👇 NUEVO: ADJUNTAR FOTO A LA RESEÑA 👇 */}
+            <div className="flex items-center gap-4 mt-3">
+              <input 
+                type="file" 
+                id="upload-review-photo" 
+                accept="image/*" 
+                className="hidden" 
+                onChange={handleImageUpload}
+                disabled={isUploading}
+              />
+              <label 
+                htmlFor="upload-review-photo"
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold border-2 cursor-pointer transition-all ${
+                  isUploading 
+                    ? 'border-gray-200 text-gray-400 bg-gray-50' 
+                    : 'border-slate-200 text-slate-600 bg-white hover:border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                {isUploading ? (
+                  <span className="animate-pulse">⏳ Comprimiendo...</span>
+                ) : (
+                  <>
+                    <Camera className="w-4 h-4" />
+                    {reviewPhotoTemp ? "Cambiar foto" : "Adjuntar foto"}
+                  </>
+                )}
+              </label>
+
+              {/* Vista previa de la foto adjunta antes de publicar */}
+              {reviewPhotoTemp && (
+                <div className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-slate-200 shadow-sm flex-shrink-0">
+                  <img src={reviewPhotoTemp} alt="Vista previa" className="w-full h-full object-cover" />
+                  <button 
+                    type="button"
+                    onClick={() => setReviewPhotoTemp(null)}
+                    className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-0.5 hover:bg-red-500 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
+            </div>
+            {/* 👆 FIN ADJUNTAR FOTO 👆 */}
 
             {/* 👇 BOTONES ACTUALIZADOS 👇 */}
             <div className="mt-3 flex gap-3">
@@ -195,6 +312,19 @@ export function ReviewSection({ placeId }: { placeId: string }) {
               </div>
             </div>
             <p className="text-sm text-gray-600 mt-2 leading-relaxed">{review.comment}</p>
+            {/* 👇 NUEVO: Mostrar la foto si la reseña tiene una 👇 */}
+            {review.image_url && (
+              <div className="mt-3 rounded-xl overflow-hidden border border-gray-100 inline-block max-w-[200px] sm:max-w-xs shadow-sm">
+                <img 
+                  src={review.image_url} 
+                  alt={`Foto compartida por ${review.name}`} 
+                  loading="lazy"
+                  className="w-full h-auto object-cover max-h-48 cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={() => window.open(review.image_url, '_blank')}
+                />
+              </div>
+            )}
+            {/* 👆 FIN MOSTRAR FOTO 👆 */}
           </div>
         ))}
 

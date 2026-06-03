@@ -8,6 +8,7 @@ export interface Review {
   name: string;
   avatar_url: string | null;
   user_id: string;
+  image_url?: string | null; // 👇 NUEVO: Le avisamos que puede venir una foto
 }
 
 interface ReviewStats {
@@ -26,7 +27,7 @@ interface ReviewStore {
   fetchAllRatings: () => Promise<void>; 
   // 👆 --------------------------------
   fetchReviews: (placeId: string, page?: number) => Promise<void>;
-  submitReview: (placeId: string, rating: number, comment: string, token: string) => Promise<boolean>;
+  submitReview: (placeId: string, rating: number, comment: string, token: string, imageUrl?: string | null) => Promise<boolean>;
   deleteReview: (placeId: string, token: string) => Promise<boolean>;
   resetReviews: () => void;
 }
@@ -72,7 +73,7 @@ export const useReviewStore = create<ReviewStore>((set, get) => ({
     }
   },
 
-  submitReview: async (placeId, rating, comment, token) => {
+  submitReview: async (placeId, rating, comment, token, imageUrl = null) => {
     try {
       const res = await fetch('/api/reviews', {
         method: 'POST',
@@ -80,7 +81,7 @@ export const useReviewStore = create<ReviewStore>((set, get) => ({
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ place_id: placeId, rating, comment })
+        body: JSON.stringify({ place_id: placeId, rating, comment, image_url: imageUrl })
       });
 
       if (!res.ok) throw new Error("Error al guardar reseña");

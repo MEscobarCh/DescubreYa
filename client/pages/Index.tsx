@@ -917,7 +917,7 @@ export default function Index() {
                 </a>
                 {/* Correo (Reutilizando el icono Mail que ya tenías importado para el login) */}
                 <a 
-                  href="mailto:contacto@descubreya.org" 
+                  href="descubreya35@gmail.com" 
                   className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 transition-colors font-medium group"
                 >
                   <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" /> contacto@descubreya.org

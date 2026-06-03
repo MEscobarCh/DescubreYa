@@ -5,6 +5,7 @@ import { handleDemo } from "./routes/demo";
 import authRoutes from "./routes/auth"; 
 import favoritesRoutes from "./routes/favorites";
 import reviewsRoutes from './routes/reviews';
+import uploadUrlRoute from '../api/upload-url';
 
 export function createServer() {
   const app = express();
@@ -26,6 +27,7 @@ export function createServer() {
   app.use("/api/auth", authRoutes);
   app.use("/api/favorites", favoritesRoutes);
   app.use('/api/reviews', reviewsRoutes);
+  app.post('/api/upload-url', uploadUrlRoute);
 
   return app;
 }
