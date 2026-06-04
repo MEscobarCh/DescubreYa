@@ -490,32 +490,33 @@ export default function Index() {
             </div>
 
             {/* 4. CONTROLES SECUNDARIOS: En móvil (w-full) saltan a la 2da línea. En PC (w-auto) se quedan arriba. */}
-            <div className="w-full sm:w-auto flex flex-wrap items-center justify-center gap-x-2 gap-y-2 sm:gap-3 border-t sm:border-t-0 sm:border-l sm:pl-3 pt-3 sm:pt-0 border-gray-100">
+            <div className="w-full sm:w-auto flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 border-t sm:border-t-0 sm:border-l sm:pl-3 pt-3 sm:pt-0 border-gray-100">
               
+              {/* Selector de Ciudad */}
               <div className="relative">
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className={`appearance-none w-[100px] sm:w-44 px-2 sm:px-3 py-1.5 pr-6 sm:pr-8 border-2 rounded-xl bg-white text-[hsl(var(--theme-primary))] font-bold text-[10px] sm:text-sm focus:outline-none transition-all ${theme.accent.split(' ')[1]}`}
+                  className={`appearance-none w-[85px] sm:w-44 px-2 sm:px-3 py-1.5 pr-5 sm:pr-8 border-2 rounded-xl bg-white text-[hsl(var(--theme-primary))] font-bold text-[9px] sm:text-sm focus:outline-none transition-all ${theme.accent.split(' ')[1]}`}
                 >
                   {CITIES.map((city) => (
                     <option key={city} value={city}>{city}</option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
               </div>
 
-              {/* 👇 NUEVO: WIDGET DE CLIMA INTERACTIVO 👇 */}
+              {/* 👇 WIDGET DE CLIMA INTERACTIVO 👇 */}
               {weather && (
                 <div className="relative">
                   {/* Botón Principal */}
                   <button 
                     onClick={() => setIsWeatherOpen(!isWeatherOpen)}
                     onBlur={() => setTimeout(() => setIsWeatherOpen(false), 200)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-gray-100 rounded-xl shadow-sm transition-all hover:border-slate-200 hover:bg-slate-50 focus:outline-none"
+                    className="flex items-center gap-1 px-2 py-1.5 bg-white border-2 border-gray-100 rounded-xl shadow-sm transition-all hover:border-slate-200 hover:bg-slate-50 focus:outline-none"
                   >
                     {renderWeatherIcon(weather.code)}
-                    <span className="text-[11px] sm:text-sm font-black text-slate-700">
+                    <span className="text-[10px] sm:text-sm font-black text-slate-700">
                       {weather.temp}°C
                     </span>
                     <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-300 ${isWeatherOpen ? 'rotate-180' : ''}`} />
@@ -530,7 +531,6 @@ export default function Index() {
                         </span>
                       </div>
                       
-                      {/* Bucle que dibuja las siguientes horas automáticamente */}
                       {hourlyForecast.map((hour, idx) => (
                         <div key={idx} className="flex items-center justify-between px-4 py-2.5 hover:bg-slate-50 transition-colors">
                           <span className="text-xs font-bold text-slate-600">{hour.time}</span>
@@ -546,23 +546,20 @@ export default function Index() {
               )}
               {/* 👆 FIN WIDGET DE CLIMA 👆 */}
 
-              {/* 👇 NUEVO: SWITCH TIPO PASTILLA (SEGMENTED CONTROL) 👇 */}
+              {/* 👇 SWITCH TIPO PASTILLA 👇 */}
               <button
                 onClick={() => setIsTourism(!isTourism)}
-                className={`relative flex items-center h-8 sm:h-10 w-36 sm:w-48 rounded-full p-1 transition-colors duration-500 shadow-md flex-shrink-0 z-10 bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
+                className={`relative flex items-center h-8 sm:h-10 w-[125px] sm:w-48 rounded-full p-1 transition-colors duration-500 shadow-md flex-shrink-0 z-10 bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
               >
-                {/* 1. La pastilla blanca que se desliza por detrás */}
                 <div 
                   className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm transition-transform duration-700 ease-elastic ${isTourism ? 'translate-x-0' : 'translate-x-full'}`}
                 ></div>
 
-                {/* 2. Texto Izquierdo (Turismo) */}
-                <div className={`relative flex-1 flex justify-center items-center text-[10px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
+                <div className={`relative flex-1 flex justify-center items-center text-[9px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
                   Turismo
                 </div>
 
-                {/* 3. Texto Derecho (Ruta Local) */}
-                <div className={`relative flex-1 flex justify-center items-center text-[10px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${!isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
+                <div className={`relative flex-1 flex justify-center items-center text-[9px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${!isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
                   Ruta Local
                 </div>
               </button>
