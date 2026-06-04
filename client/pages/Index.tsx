@@ -546,7 +546,7 @@ export default function Index() {
               )}
               {/* 👆 FIN WIDGET DE CLIMA 👆 */}
 
-              {/* 👇 NUEVO: SWITCH CON TEXTO DINÁMICO QUE CAMBIA DE LADO 👇 */}
+              {/* 👇 NUEVO: SWITCH ANTI-SALTOS (Header estático) 👇 */}
               <div className="relative flex items-center gap-1.5 sm:gap-2">
 
                 {/* El Botón Switch */}
@@ -582,13 +582,13 @@ export default function Index() {
                   </span>
                 </button>
 
-                {/* 👇 AQUÍ ESTÁ LA MAGIA: El Texto que salta de lado 👇 */}
-                <span className={`whitespace-nowrap text-[10px] sm:text-sm font-black uppercase tracking-tighter transition-colors duration-500 ${isTourism ? 'order-first' : 'order-last'} ${theme.accent.split(' ')[0]}`}>
+                {/* 👇 EL ARREGLO: Caja de texto rígida con ancho fijo 👇 */}
+                <span className={`inline-block w-[60px] sm:w-[80px] text-center flex-shrink-0 whitespace-nowrap text-[10px] sm:text-sm font-black uppercase tracking-tighter transition-colors duration-500 ${isTourism ? 'order-first' : 'order-last'} ${theme.accent.split(' ')[0]}`}>
                   {isTourism ? "Turismo" : "Ruta Local"}
                 </span>
                 
               </div>
-              {/* 👆 FIN SWITCH CON TEXTO DINÁMICO 👆 */}
+              {/* 👆 FIN SWITCH ANTI-SALTOS 👆 */}
             </div>
 
           </div>
