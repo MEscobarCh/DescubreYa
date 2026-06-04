@@ -664,17 +664,6 @@ export default function Index() {
                 <div key={sitio.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100">
                   <div className="relative h-52 overflow-hidden">
                     <img src={sitio.imagen} alt={sitio.nombre} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                    
-                    {/* 👇 NUEVA INSIGNIA DE ESTRELLAS FLOTANTE 👇 */}
-                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-sm z-10">
-                      <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
-                      <span className="text-xs font-black text-slate-800">
-                        {/* Muestra el rating si existe en tus datos, o 4.8 por defecto */}
-                        {globalRatings[sitio.id]?.average?.toFixed(1) || '0.0'}
-                      </span>
-                    </div>
-                    {/* 👆 FIN INSIGNIA 👆 */}
-
                     {/* Botón de favoritos inyectado aquí */}
                     <FavoriteButton itemId={sitio.id} itemType="turismo" />
                   </div>
@@ -698,9 +687,10 @@ export default function Index() {
                       </button>
                       <button
                         onClick={() => setActiveReviewItem({ id: sitio.id.toString(), name: sitio.nombre })}
-                        className="flex-1 py-3 bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200 rounded-xl font-bold text-xs flex items-center justify-center gap-1 transition-all active:scale-95"
+                        className="flex-1 py-3 bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95"
                       >
-                        <Star className="w-4 h-4 fill-current" /> Reseñas
+                        <Star className="w-4 h-4 fill-current" /> 
+                        {globalRatings[sitio.id]?.average?.toFixed(1) || '0.0'} <span className="text-[10px] opacity-70 font-semibold">({globalRatings[sitio.id]?.count || 0})</span>
                       </button>
                     </div>
                   </div>
@@ -794,17 +784,6 @@ export default function Index() {
                       <div>
                         <div className="relative h-48 rounded-xl overflow-hidden mb-4">
                           <img src={negocio.image} alt={negocio.name} loading="lazy" className="w-full h-full object-cover" />
-                          
-                          {/* 👇 NUEVA INSIGNIA DE ESTRELLAS FLOTANTE 👇 */}
-                          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-sm z-10">
-                            <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
-                            <span className="text-xs font-black text-slate-800">
-                              {/* Muestra el rating si existe en tus datos, o 4.5 por defecto */}
-                              {globalRatings[negocio.id]?.average?.toFixed(1) || '0.0'}
-                            </span>
-                          </div>
-                          {/* 👆 FIN INSIGNIA 👆 */}
-
                           {/* Botón de favoritos inyectado aquí */}
                           <FavoriteButton itemId={negocio.id} itemType="negocio" />
                         </div>
@@ -835,7 +814,8 @@ export default function Index() {
                             onClick={() => setActiveReviewItem({ id: negocio.id.toString(), name: negocio.name })} 
                             className="flex-1 py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-amber-200"
                           >
-                            <Star className="w-4 h-4 fill-current" /> Reseñas
+                            <Star className="w-4 h-4 fill-current" /> 
+                            {globalRatings[negocio.id]?.average?.toFixed(1) || '0.0'} <span className="text-[10px] opacity-70 font-semibold">({globalRatings[negocio.id]?.count || 0})</span>
                           </button>
                         </div>
                       </div>
