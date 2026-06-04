@@ -414,7 +414,7 @@ export default function Index() {
       
       {/* Header Adaptativo */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-2 sm:py-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3">
           
           {/* Contenedor Principal: flex-wrap permite que los elementos salten a la siguiente línea si no caben */}
           <div className="flex flex-wrap items-center justify-between sm:justify-start gap-y-3">
@@ -576,6 +576,15 @@ export default function Index() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {isTourism ? (
           <section className="space-y-8 animate-in fade-in duration-700">
+            {/* 👇 NUEVO: TÍTULO Y SUBTÍTULO DE TURISMO 👇 */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Mountain className={`w-6 h-6 ${theme.accent.split(' ')[0]}`} />
+                <h2 className="text-3xl sm:text-5xl font-black text-[hsl(var(--theme-primary))]">Turismo</h2>
+              </div>
+              <p className="text-gray-600 max-w-2xl text-sm sm:text-lg">Descubre los mejores destinos, paisajes y aventuras en {selectedCity}.</p>
+            </div>
+            {/* 👆 FIN TÍTULO DE TURISMO 👆 */}
             {/* 👇 NUEVO: BUSCADOR Y FILTROS TURISMO 👇 */}
             <div className="flex flex-col xl:flex-row gap-4 py-4">
               {/* Barra de búsqueda */}
@@ -722,38 +731,40 @@ export default function Index() {
               <p className="text-gray-600 max-w-2xl text-sm sm:text-lg">Descubre comercios, servicios y que mas hacer en {selectedCity}.</p>
             </div>
 
-            {/* Grid de Categorías Optimizada a 5 Columnas Simétricas */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              {BUSINESS_CATEGORIES.map((cat) => (
-                <button 
-                  key={cat.id} 
-                  onClick={() => setSelectedCategory(cat.name)} 
-                  className={`p-4 rounded-2xl flex flex-col items-center gap-2 border-2 transition-all ${
-                    selectedCategory === cat.name 
-                      ? `bg-gradient-to-br ${theme.button} text-white border-transparent shadow-lg scale-105` 
-                      : `bg-white border-gray-100 hover:${theme.accent.split(' ')[1]} text-slate-700`
-                  }`}
-                >
-                  <span className="text-2xl">{cat.icon}</span>
-                  <span className="text-[10px] font-bold text-center">{cat.name}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* 👇 NUEVO: BUSCADOR NEGOCIOS 👇 */}
-            <div className="relative max-w-md mt-4 mb-2">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder={`Buscar en ${selectedCategory}...`}
-                value={searchBusiness}
-                onChange={(e) => setSearchBusiness(e.target.value)}
-                className={`w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 focus:border-${theme.accent.split(' ')[1].replace('border-', '')} outline-none transition-all shadow-sm text-sm font-medium text-slate-700 bg-white`}
-              />
-            </div>
-            {/* 👆 FIN BUSCADOR NEGOCIOS 👆 */}
-
-            {/* Listado de Negocios Filtrados (Paginado) */}
+            {/* 👇 NUEVO: CONTENEDOR EN LÍNEA (BUSCADOR + FILTROS) IGUAL A TURISMO 👇 */}
+            <div className="flex flex-col xl:flex-row gap-4 py-4">
+              
+              {/* Barra de búsqueda de Negocios */}
+              <div className="relative flex-1 max-w-xl">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder={`Buscar en ${selectedCategory}...`}
+                  value={searchBusiness}
+                  onChange={(e) => setSearchBusiness(e.target.value)}
+                  className={`w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 focus:border-${theme.accent.split(' ')[1].replace('border-', '')} outline-none transition-all shadow-sm text-sm font-medium text-slate-700 bg-white`}
+                />
+              </div>
+              
+              {/* Pastillas (Pills) de Categorías de Negocios */}
+              <div className="flex gap-2 overflow-x-auto hide-scrollbar items-center pb-2 xl:pb-0">
+                {BUSINESS_CATEGORIES.map((cat) => (
+                  <button 
+                    key={cat.id} 
+                    onClick={() => setSelectedCategory(cat.name)} 
+                    className={`px-4 py-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 border-2 ${
+                      selectedCategory === cat.name 
+                        ? `bg-gradient-to-r ${theme.button} text-white border-transparent shadow-md` 
+                        : `bg-white text-slate-600 border-gray-100 hover:border-slate-300`
+                    }`}
+                  >
+                    <span className="text-sm">{cat.icon}</span>
+                    {cat.name}
+                  </button>
+                ))}
+              </div>
+              </div>
+            {/* 👆 FIN Filtros de Categorías 👆 */}
             {paginatedBusinesses.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
