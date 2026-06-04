@@ -546,22 +546,23 @@ export default function Index() {
               )}
               {/* 👆 FIN WIDGET DE CLIMA 👆 */}
 
-              {/* 👇 NUEVO: SWITCH FINAL (SIN ANUNCIO Y CON FLECHAS GIGANTES) 👇 */}
+              {/* 👇 NUEVO: SWITCH CON TEXTO DINÁMICO QUE CAMBIA DE LADO 👇 */}
               <div className="relative flex items-center gap-1.5 sm:gap-2">
 
+                {/* El Botón Switch */}
                 <button
                   onClick={() => setIsTourism(!isTourism)}
                   className={`relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full transition-colors duration-500 shadow-md flex-shrink-0 z-10 overflow-hidden bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
                 >
                   
-                  {/* Pista direccional interna */}
-                  <div className="absolute inset-0 flex items-center justify-between px-2 pointer-events-none">
+                  {/* Pista direccional interna (con márgenes responsivos px-1.5 a px-4) */}
+                  <div className="absolute inset-0 flex items-center justify-between px-1.5 sm:px-4 pointer-events-none">
                     
-                    <span className={`text-white/80 text-[18px] sm:text-[22px] tracking-[-0.2em] font-black transition-opacity duration-750 ${!isTourism ? 'opacity-100 animate-nudge-left' : 'opacity-0'}`}>
+                    <span className={`text-white/80 text-[18px] sm:text-[22px] tracking-[-0.2em] font-black transition-opacity duration-700 ${!isTourism ? 'opacity-100 animate-nudge-left' : 'opacity-0'}`}>
                       ❮❮❮
                     </span>
                     
-                    <span className={`text-white/80 text-[18px] sm:text-[22px] tracking-[-0.2em] font-black transition-opacity duration-750 ${isTourism ? 'opacity-100 animate-nudge-right' : 'opacity-0'}`}>
+                    <span className={`text-white/80 text-[18px] sm:text-[22px] tracking-[-0.2em] font-black transition-opacity duration-700 ${isTourism ? 'opacity-100 animate-nudge-right' : 'opacity-0'}`}>
                       ❯❯❯
                     </span>
                     
@@ -581,11 +582,13 @@ export default function Index() {
                   </span>
                 </button>
 
-                <span className={`whitespace-nowrap text-[10px] sm:text-sm font-black uppercase tracking-tighter transition-colors duration-500 ${theme.accent.split(' ')[0]}`}>
+                {/* 👇 AQUÍ ESTÁ LA MAGIA: El Texto que salta de lado 👇 */}
+                <span className={`whitespace-nowrap text-[10px] sm:text-sm font-black uppercase tracking-tighter transition-colors duration-500 ${isTourism ? 'order-first' : 'order-last'} ${theme.accent.split(' ')[0]}`}>
                   {isTourism ? "Turismo" : "Ruta Local"}
                 </span>
+                
               </div>
-              {/* 👆 FIN SWITCH FINAL 👆 */}
+              {/* 👆 FIN SWITCH CON TEXTO DINÁMICO 👆 */}
             </div>
 
           </div>
