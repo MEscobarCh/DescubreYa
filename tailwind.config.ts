@@ -75,27 +75,43 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "switch-pulse": {
+          "0%, 100%": { 
+            transform: "scale(1)", 
+            filter: "brightness(1)" 
           },
-          to: {
-            height: "0",
+          "50%": { 
+            transform: "scale(1.02)", 
+            filter: "brightness(1.05)" 
           },
+        },
+        "nudge-right": {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(3px)" },
+        },
+        "nudge-left": {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(-3px)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "switch-pulse": "switch-pulse 2s ease-in-out infinite",
+        "nudge-right": "nudge-right 1.5s ease-in-out infinite",
+        "nudge-left": "nudge-left 1.5s ease-in-out infinite",
+      },
+      transitionTimingFunction: {
+        'elastic': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+}

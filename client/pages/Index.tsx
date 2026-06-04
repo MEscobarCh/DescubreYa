@@ -161,6 +161,20 @@ export default function Index() {
     return localStorage.getItem('ciudadGuardada') || "Tingo María";
   });
 
+  // --- MEMORIA DEL SWITCH INTERACTIVO ---
+  const [hasInteracted, setHasInteracted] = useState(() => {
+    return localStorage.getItem('switchInteracted') === 'true';
+  });
+
+  const handleSwitchToggle = () => {
+    setIsTourism(!isTourism);
+    // Si es su primera vez interactuando, guardamos el secreto para apagar las animaciones de alerta
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      localStorage.setItem('switchInteracted', 'true');
+    }
+  };
+
   useEffect(() => {
     localStorage.setItem('ciudadGuardada', selectedCity);
   }, [selectedCity]);
@@ -546,19 +560,59 @@ export default function Index() {
               )}
               {/* 👆 FIN WIDGET DE CLIMA 👆 */}
 
-              <div className="flex items-center gap-1.5 sm:gap-2">
+              {/* 👇 NUEVO: SWITCH LIMPIO CON FLECHAS MÁS GRANDES 👇 */}
+              <div className="relative flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-0">
+                
+                {/* La flechita de ayuda inicial (flotante exterior) */}
+                {!hasInteracted && (
+                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center pointer-events-none z-20">
+                    <span className="bg-slate-800 text-white text-[10px] font-black px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap tracking-wider">
+                      ¡Haz clic aquí!
+                    </span>
+                    <div className="w-2 h-2 bg-slate-800 rotate-45 -mt-1.5"></div>
+                  </div>
+                )}
+
+                {/* 👇 Botón sólido SIN pulso, con overflow-hidden para proteger los bordes 👇 */}
                 <button
-                  onClick={() => setIsTourism(!isTourism)}
-                  className={`relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full transition-all duration-500 shadow-md flex-shrink-0 bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
+                  onClick={handleSwitchToggle}
+                  className={`relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full transition-colors duration-500 shadow-md flex-shrink-0 z-10 overflow-hidden bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
                 >
-                  <span className={`inline-block h-6 w-6 sm:h-8 sm:w-8 transform rounded-full bg-white transition-all duration-300 flex items-center justify-center text-sm shadow-lg ${isTourism ? "translate-x-1" : "translate-x-7 sm:translate-x-11"}`}>
-                    {isTourism ? "⛰️" : "🏪"}
+                  
+                  {/* 👇 Pista direccional interna (Flechas EL DOBLE de grandes y juntas) 👇 */}
+                  <div className="absolute inset-0 flex items-center justify-between px-3 pointer-events-none">
+                    
+                    {/* Flechas izquierda */}
+                    <span className={`text-white/80 text-[15px] sm:text-[22px] tracking-[-0.2em] font-black transition-opacity duration-750 ${!isTourism ? 'opacity-100 animate-nudge-left' : 'opacity-0'}`}>
+                      ❮❮❮
+                    </span>
+                    
+                    {/* Flechas derecha */}
+                    <span className={`text-white/80 text-[15px] sm:text-[22px] tracking-[-0.2em] font-black transition-opacity duration-750 ${isTourism ? 'opacity-100 animate-nudge-right' : 'opacity-0'}`}>
+                      ❯❯❯
+                    </span>
+                    
+                  </div>
+
+                  {/* El círculo blanco interior con sus iconos rotativos */}
+                  <span className={`relative z-10 inline-block h-6 w-6 sm:h-8 sm:w-8 transform rounded-full bg-white flex items-center justify-center text-sm shadow-lg transition-all duration-700 ease-elastic ${isTourism ? "translate-x-1" : "translate-x-7 sm:translate-x-11"}`}>
+                    
+                    <div className={`absolute transition-all duration-500 ${isTourism ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-180 scale-50"}`}>
+                      ⛰️
+                    </div>
+                    
+                    <div className={`absolute transition-all duration-500 ${!isTourism ? "opacity-100 rotate-0 scale-100" : "opacity-0 rotate-180 scale-50"}`}>
+                      🏪
+                    </div>
+
                   </span>
                 </button>
+
                 <span className={`whitespace-nowrap text-[10px] sm:text-sm font-black uppercase tracking-tighter transition-colors duration-500 ${theme.accent.split(' ')[0]}`}>
                   {isTourism ? "Turismo" : "Ruta Local"}
                 </span>
               </div>
+              {/* 👆 FIN SWITCH LIMPIO CON FLECHAS MÁS GRANDES 👆 */}
             </div>
 
           </div>
