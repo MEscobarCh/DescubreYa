@@ -690,7 +690,7 @@ export default function Index() {
                         className="flex-1 py-3 bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95"
                       >
                         <Star className="w-4 h-4 fill-current" /> 
-                        {globalRatings[sitio.id]?.average?.toFixed(1) || '0.0'} <span className="text-[10px] opacity-70 font-semibold">({globalRatings[sitio.id]?.count || 0})</span>
+                        {globalRatings[sitio.id]?.average?.toFixed(1) || '0.0'} <span className="text-[10px] opacity-70 font-semibold">({globalRatings[sitio.id]?.total || 0})</span>
                       </button>
                     </div>
                   </div>
@@ -815,7 +815,7 @@ export default function Index() {
                             className="flex-1 py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-amber-200"
                           >
                             <Star className="w-4 h-4 fill-current" /> 
-                            {globalRatings[negocio.id]?.average?.toFixed(1) || '0.0'} <span className="text-[10px] opacity-70 font-semibold">({globalRatings[negocio.id]?.count || 0})</span>
+                            {globalRatings[negocio.id]?.average?.toFixed(1) || '0.0'} <span className="text-[10px] opacity-70 font-semibold">({globalRatings[negocio.id]?.total || 0})</span>
                           </button>
                         </div>
                       </div>
