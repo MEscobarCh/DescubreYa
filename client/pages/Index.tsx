@@ -546,49 +546,27 @@ export default function Index() {
               )}
               {/* 👆 FIN WIDGET DE CLIMA 👆 */}
 
-              {/* 👇 NUEVO: SWITCH ANTI-SALTOS (Header estático) 👇 */}
-              <div className="relative flex items-center gap-1.5 sm:gap-2">
+              {/* 👇 NUEVO: SWITCH TIPO PASTILLA (SEGMENTED CONTROL) 👇 */}
+              <button
+                onClick={() => setIsTourism(!isTourism)}
+                className={`relative flex items-center h-8 sm:h-10 w-36 sm:w-48 rounded-full p-1 transition-colors duration-500 shadow-md flex-shrink-0 z-10 bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
+              >
+                {/* 1. La pastilla blanca que se desliza por detrás */}
+                <div 
+                  className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm transition-transform duration-700 ease-elastic ${isTourism ? 'translate-x-0' : 'translate-x-full'}`}
+                ></div>
 
-                {/* El Botón Switch */}
-                <button
-                  onClick={() => setIsTourism(!isTourism)}
-                  className={`relative inline-flex h-8 w-14 sm:h-10 sm:w-20 items-center rounded-full transition-colors duration-500 shadow-md flex-shrink-0 z-10 overflow-hidden bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
-                >
-                  
-                  {/* Pista direccional interna (con márgenes responsivos px-1.5 a px-4) */}
-                  <div className="absolute inset-0 flex items-center justify-between px-1.5 sm:px-4 pointer-events-none">
-                    
-                    <span className={`text-white/80 text-[18px] sm:text-[22px] tracking-[-0.2em] font-black transition-opacity duration-700 ${!isTourism ? 'opacity-100 animate-nudge-left' : 'opacity-0'}`}>
-                      ❮❮❮
-                    </span>
-                    
-                    <span className={`text-white/80 text-[18px] sm:text-[22px] tracking-[-0.2em] font-black transition-opacity duration-700 ${isTourism ? 'opacity-100 animate-nudge-right' : 'opacity-0'}`}>
-                      ❯❯❯
-                    </span>
-                    
-                  </div>
+                {/* 2. Texto Izquierdo (Turismo) */}
+                <div className={`relative flex-1 flex justify-center items-center text-[10px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
+                  Turismo
+                </div>
 
-                  {/* Círculo blanco con iconos rotativos */}
-                  <span className={`relative z-10 inline-block h-6 w-6 sm:h-8 sm:w-8 transform rounded-full bg-white flex items-center justify-center text-sm shadow-lg transition-all duration-700 ease-elastic ${isTourism ? "translate-x-1" : "translate-x-7 sm:translate-x-11"}`}>
-                    
-                    <div className={`absolute transition-all duration-500 ${isTourism ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-180 scale-50"}`}>
-                      ⛰️
-                    </div>
-                    
-                    <div className={`absolute transition-all duration-500 ${!isTourism ? "opacity-100 rotate-0 scale-100" : "opacity-0 rotate-180 scale-50"}`}>
-                      🏪
-                    </div>
-
-                  </span>
-                </button>
-
-                {/* 👇 EL ARREGLO: Caja de texto rígida con ancho fijo 👇 */}
-                <span className={`inline-block w-[60px] sm:w-[80px] text-center flex-shrink-0 whitespace-nowrap text-[10px] sm:text-sm font-black uppercase tracking-tighter transition-colors duration-500 ${isTourism ? 'order-first' : 'order-last'} ${theme.accent.split(' ')[0]}`}>
-                  {isTourism ? "Turismo" : "Ruta Local"}
-                </span>
-                
-              </div>
-              {/* 👆 FIN SWITCH ANTI-SALTOS 👆 */}
+                {/* 3. Texto Derecho (Ruta Local) */}
+                <div className={`relative flex-1 flex justify-center items-center text-[10px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${!isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
+                  Ruta Local
+                </div>
+              </button>
+              {/* 👆 FIN SWITCH TIPO PASTILLA 👆 */}
             </div>
 
           </div>
