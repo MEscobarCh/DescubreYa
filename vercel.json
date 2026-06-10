@@ -3,27 +3,7 @@
   "cleanUrls": true,
   "routes": [
     {
-      "src": "/api/businesses",
-      "dest": "server/index.ts"
-    },
-    {
-      "src": "/api/tourism",
-      "dest": "server/index.ts"
-    },
-    {
-      "src": "/api/auth/(.*)",
-      "dest": "server/index.ts"
-    },
-    {
-      "src": "/api/favorites(.*)",
-      "dest": "server/index.ts"
-    },
-    {
-      "src": "/api/reviews(.*)",
-      "dest": "server/index.ts"
-    },
-    {
-      "src": "/api/upload-url",
+      "src": "/api/(.*)",
       "dest": "server/index.ts"
     },
     {
