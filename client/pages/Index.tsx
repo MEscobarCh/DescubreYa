@@ -20,8 +20,6 @@ import {
   CloudRain,
 } from "lucide-react";
 import { applyThemeToDOM } from "@/lib/cityThemes";
-import { sitiosTuristicos } from "@/lib/turismoData";
-import { BUSINESSES } from "@/lib/negociosData";
 import { useAuthStore } from "@/store/authStore";
 import { GoogleLogin } from '@react-oauth/google';
 import { User as UserIcon, LogOut, Mail, Lock, UserPlus } from "lucide-react";
@@ -107,8 +105,52 @@ export default function Index() {
   // 1. Actualizamos la llamada al store
   const { user, token, login, logout, setFavorites } = useAuthStore();
   const { globalRatings, fetchAllRatings } = useReviewStore();
+  const [businesses, setBusinesses] = useState<Business[]>([]);
+  const [sitiosTuristicos, setSitiosTuristicos] = useState<any[]>([]);
+  const [loadingTourism, setLoadingTourism] = useState(true);
+  const [loadingBusinesses, setLoadingBusinesses] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const loadNeonTourism = async () => {
+      try {
+        setLoadingTourism(true);
+        const res = await fetch('/api/tourism');
+        if (res.ok) {
+          const data = await res.json();
+          setSitiosTuristicos(data);
+        } else {
+          console.error("Error al responder la API de turismo");
+        }
+      } catch (error) {
+        console.error("Error de conexión al cargar turismo:", error);
+      } finally {
+        setLoadingTourism(false);
+      }
+    };
+    loadNeonTourism();
+  }, []);
+
+  useEffect(() => {
+    const loadNeonBusinesses = async () => {
+      try {
+        setLoadingBusinesses(true);
+        const res = await fetch('/api/businesses');
+        if (res.ok) {
+          const data = await res.json();
+          setBusinesses(data);
+        } else {
+          console.error("Error al responder la API de negocios");
+        }
+      } catch (error) {
+        console.error("Error de conexión al cargar negocios:", error);
+      } finally {
+        setLoadingBusinesses(false);
+      }
+    };
+    loadNeonBusinesses();
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -212,7 +254,7 @@ export default function Index() {
   );
 
   // --- LÓGICA DE DATOS: RUTA LOCAL ---
-  const filteredBusinesses = BUSINESSES.filter((b) => {
+  const filteredBusinesses = businesses.filter((b) => {
     const matchCity = b.ciudad === selectedCity;
     const matchCategory = b.category === selectedCategory;
     const matchSearch = b.name.toLowerCase().includes(searchBusiness.toLowerCase());
