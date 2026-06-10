@@ -1,17 +1,23 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "routes": [
+  "builds": [
     {
-      "src": "/api/(.*)",
-      "dest": "server/index.ts"
+      "src": "dist/server/node-build.mjs",
+      "use": "@vercel/node"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "dist/server/node-build.mjs"
     },
     {
       "handle": "filesystem"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
