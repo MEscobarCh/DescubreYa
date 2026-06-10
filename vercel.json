@@ -1,36 +1,37 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "builds": [
+  "routes": [
     {
-      "src": "server/index.ts",
-      "use": "@vercel/node"
-    }
-  ],
-  "rewrites": [
-    { 
-      "source": "/api/businesses", 
-      "destination": "server/index.ts" 
+      "src": "/api/businesses",
+      "dest": "server/index.ts"
     },
-    { 
-      "source": "/api/tourism", 
-      "destination": "server/index.ts" 
+    {
+      "src": "/api/tourism",
+      "dest": "server/index.ts"
     },
-    { 
-      "source": "/api/auth/(.*)", 
-      "destination": "server/index.ts" 
+    {
+      "src": "/api/auth/(.*)",
+      "dest": "server/index.ts"
     },
-    { 
-      "source": "/api/favorites(.*)", 
-      "destination": "server/index.ts" 
+    {
+      "src": "/api/favorites(.*)",
+      "dest": "server/index.ts"
     },
-    { 
-      "source": "/api/reviews(.*)", 
-      "destination": "server/index.ts" 
+    {
+      "src": "/api/reviews(.*)",
+      "dest": "server/index.ts"
     },
-    { 
-      "source": "/(.*)", 
-      "destination": "/" 
+    {
+      "src": "/api/upload-url",
+      "dest": "server/index.ts"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
