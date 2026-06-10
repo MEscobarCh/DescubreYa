@@ -1,17 +1,15 @@
 {
   "version": 2,
+  "public": true,
   "cleanUrls": true,
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "dist/server/node-build.mjs"
+  "rewrites": [
+    { 
+      "source": "/api/(.*)", 
+      "destination": "/api" 
     },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+    { 
+      "source": "/(.*)", 
+      "destination": "/" 
     }
   ]
 }
