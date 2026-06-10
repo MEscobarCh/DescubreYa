@@ -1,11 +1,32 @@
 {
   "version": 2,
-  "public": true,
   "cleanUrls": true,
+  "builds": [
+    {
+      "src": "server/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
   "rewrites": [
     { 
-      "source": "/api/(.*)", 
-      "destination": "/api" 
+      "source": "/api/businesses", 
+      "destination": "server/index.ts" 
+    },
+    { 
+      "source": "/api/tourism", 
+      "destination": "server/index.ts" 
+    },
+    { 
+      "source": "/api/auth/(.*)", 
+      "destination": "server/index.ts" 
+    },
+    { 
+      "source": "/api/favorites(.*)", 
+      "destination": "server/index.ts" 
+    },
+    { 
+      "source": "/api/reviews(.*)", 
+      "destination": "server/index.ts" 
     },
     { 
       "source": "/(.*)", 
