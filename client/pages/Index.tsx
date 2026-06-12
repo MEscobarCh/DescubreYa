@@ -78,6 +78,31 @@ const CITY_COORDINATES: Record<string, { lat: number; lon: number }> = {
   "Cusco": { lat: -13.5226, lon: -71.9673 }
 };
 
+// 4. Eventos Próximos Destacados (Activación automática por mes)
+const UPCOMING_EVENTS: Record<string, { title: string; description: string; date: string; icon: string; activeMonth: number }> = {
+  "Tingo María": {
+    title: "¡La Fiesta de San Juan ya está aquí!",
+    description: "Se acerca el 24 de junio. ¡Corre por tu juane, alista tus cosas y prepárate para rumbear en el río! 🌴🍲",
+    date: "24 de Junio",
+    icon: "🎉",
+    activeMonth: 5 // 5 = Junio
+  },
+  "Tarapoto": {
+    title: "¡La Fiesta de San Juan ya está aquí!",
+    description: "La selva está de fiesta. ¡Disfruta de la pandilla, los juanes y nuestras hermosas cataratas! 🌿💃",
+    date: "24 de Junio",
+    icon: "🌴",
+    activeMonth: 5 // 5 = Junio
+  },
+  "Cusco": {
+    title: "¡Mes Jubilar del Cusco e Inti Raymi!",
+    description: "Únete a la celebración más grande del Imperio Inca. ¡Siente la energía de la Ciudad Imperial! ☀️🏛️",
+    date: "24 de Junio",
+    icon: "🌞",
+    activeMonth: 5 // 5 = Junio
+  }
+};
+
 // 2. Categorías Optimizadas (Propuesta A)
 const BUSINESS_CATEGORIES = [
   { id: 1, name: "Restaurantes", icon: "🍽️" },
@@ -613,6 +638,34 @@ export default function Index() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        {/* 👇 NUEVO: BANNER GLOBAL DE EVENTO PRÓXIMO 👇 */}
+        {UPCOMING_EVENTS[selectedCity] && new Date().getMonth() === UPCOMING_EVENTS[selectedCity].activeMonth && (
+          <div className={`mb-8 relative overflow-hidden rounded-2xl bg-gradient-to-r ${theme.button} p-6 shadow-lg animate-in slide-in-from-top-4 duration-500`}>
+            {/* Patrón de fondo decorativo */}
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+            
+            <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-white">
+              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-3xl shadow-inner shrink-0">
+                {UPCOMING_EVENTS[selectedCity].icon}
+              </div>
+              
+              <div className="flex-1 text-center sm:text-left">
+                <div className="inline-block px-3 py-1 mb-2 text-[10px] font-black tracking-widest uppercase bg-white/20 rounded-full border border-white/30 backdrop-blur-md">
+                  Próximo Evento • {UPCOMING_EVENTS[selectedCity].date}
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black tracking-tight mb-1 drop-shadow-md">
+                  {UPCOMING_EVENTS[selectedCity].title}
+                </h3>
+                <p className="text-sm sm:text-base font-medium text-white/90 drop-shadow-sm max-w-2xl">
+                  {UPCOMING_EVENTS[selectedCity].description}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* 👆 FIN BANNER GLOBAL DE EVENTO PRÓXIMO 👆 */}
+
         {isTourism ? (
           <section className="space-y-8 animate-in fade-in duration-700">
             {/* 👇 NUEVO: TÍTULO Y SUBTÍTULO DE TURISMO 👇 */}
@@ -769,7 +822,6 @@ export default function Index() {
               </div>
               <p className="text-gray-600 max-w-2xl text-sm sm:text-lg">Descubre comercios, servicios y que mas hacer en {selectedCity}.</p>
             </div>
-
             {/* 👇 NUEVO: CONTENEDOR EN LÍNEA (BUSCADOR + FILTROS) IGUAL A TURISMO 👇 */}
             <div className="flex flex-col xl:flex-row gap-4 py-4">
               
@@ -909,7 +961,7 @@ export default function Index() {
           </div>
         </section>
       </main>
-
+      
       {/* Footer Optimizado - ¡DescubreYA! */}
       <footer className="mt-auto border-t border-gray-100 bg-white/80 backdrop-blur-md pt-12 pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
