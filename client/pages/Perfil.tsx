@@ -1,17 +1,39 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapIcon, Mountain, Store as StoreIcon, HeartOff } from 'lucide-react';
+import { ArrowLeft, MapIcon, Mountain, Store as StoreIcon, HeartOff, Loader2 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
-import { sitiosTuristicos } from '@/lib/turismoData';
-import { BUSINESSES } from '@/lib/negociosData';
 import { FavoriteButton } from '../components/ui/FavoriteButton';
 
+// Definimos los tipos básicos para que TypeScript no se queje
+interface SitioTuristico {
+  id: string;
+  ciudad: string;
+  nombre: string;
+  imagen: string;
+  mapurl?: string;
+  mapUrl?: string;
+}
+
+interface Negocio {
+  id: string;
+  ciudad: string;
+  name: string;
+  image: string;
+  mapurl?: string;
+  mapUrl?: string;
+}
 
 export default function Perfil() {
   const navigate = useNavigate();
   const { user, token, favorites, setFavorites } = useAuthStore();
+  const [activeTab, setActiveTab] = useState<'turismo' | 'negocio'>('turismo');
+  
+  // Nuevos estados para guardar la data de la API
+  const [turismoData, setTurismoData] = useState<SitioTuristico[]>([]);
+  const [negociosData, setNegociosData] = useState<Negocio[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Forzar la descarga de favoritos al entrar al perfil
+  // 1. Forzar la descarga de favoritos
   useEffect(() => {
     const fetchFavorites = async () => {
       if (user && token) {
@@ -30,7 +52,26 @@ export default function Perfil() {
     };
     fetchFavorites();
   }, [user, token, setFavorites]);
-  const [activeTab, setActiveTab] = useState<'turismo' | 'negocio'>('turismo');
+
+  // 2. Descargar TODOS los negocios y turismo de Neon para poder cruzarlos
+  useEffect(() => {
+    const fetchCatalogos = async () => {
+      try {
+        const [resTurismo, resNegocios] = await Promise.all([
+          fetch('/api/tourism'),
+          fetch('/api/businesses')
+        ]);
+        
+        if (resTurismo.ok) setTurismoData(await resTurismo.json());
+        if (resNegocios.ok) setNegociosData(await resNegocios.json());
+      } catch (error) {
+        console.error('Error al descargar catálogos:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCatalogos();
+  }, []);
 
   // Si alguien intenta entrar sin iniciar sesión, lo devolvemos al inicio
   if (!user) {
@@ -38,12 +79,12 @@ export default function Perfil() {
     return null;
   }
 
-// Filtramos la data real cruzándola con los IDs guardados en Zustand
-  const misLugaresTuristicos = sitiosTuristicos.filter(sitio => 
+  // Filtramos la data real cruzándola con los IDs guardados en Zustand
+  const misLugaresTuristicos = turismoData.filter(sitio => 
     favorites.some(f => f.item_type === 'turismo' && f.item_id === sitio.id.toString())
   );
 
-  const misNegocios = BUSINESSES.filter(negocio => 
+  const misNegocios = negociosData.filter(negocio => 
     favorites.some(f => f.item_type === 'negocio' && f.item_id === negocio.id.toString())
   );
 
@@ -85,7 +126,7 @@ export default function Perfil() {
                 : 'text-slate-500 hover:text-slate-700'
             }`}
           >
-            <Mountain className="w-4 h-4" /> Turismo ({misLugaresTuristicos.length})
+            <Mountain className="w-4 h-4" /> Turismo ({isLoading ? '...' : misLugaresTuristicos.length})
           </button>
           <button
             onClick={() => setActiveTab('negocio')}
@@ -95,68 +136,78 @@ export default function Perfil() {
                 : 'text-slate-500 hover:text-slate-700'
             }`}
           >
-            <StoreIcon className="w-4 h-4" /> Local ({misNegocios.length})
+            <StoreIcon className="w-4 h-4" /> Local ({isLoading ? '...' : misNegocios.length})
           </button>
         </div>
 
-        {/* Contenido: Turismo */}
-        {activeTab === 'turismo' && (
-          misLugaresTuristicos.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-500">
-              {misLugaresTuristicos.map(sitio => (
-                <div key={sitio.id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100">
-                  <div className="relative h-48">
-                    <img src={sitio.imagen} alt={sitio.nombre} className="w-full h-full object-cover" />
-                    <FavoriteButton itemId={sitio.id} itemType="turismo" />
-                    <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-lg text-[10px] font-black uppercase text-indigo-700 shadow-sm">
-                      {sitio.ciudad}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-black text-slate-800 text-lg mb-2">{sitio.nombre}</h3>
-                    <button
-                      onClick={() => window.open(sitio.mapUrl, "_blank")}
-                      className="w-full py-2.5 bg-slate-50 hover:bg-indigo-50 text-indigo-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-200"
-                    >
-                      <MapIcon className="w-4 h-4" /> Ver en Mapa
-                    </button>
-                  </div>
+        {/* Pantalla de carga mientras se descargan los catálogos */}
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-4" />
+            <p className="text-slate-500 font-medium">Cargando tus lugares favoritos...</p>
+          </div>
+        ) : (
+          <>
+            {/* Contenido: Turismo */}
+            {activeTab === 'turismo' && (
+              misLugaresTuristicos.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-500">
+                  {misLugaresTuristicos.map(sitio => (
+                    <div key={sitio.id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100">
+                      <div className="relative h-48">
+                        <img src={sitio.imagen} alt={sitio.nombre} className="w-full h-full object-cover" />
+                        <FavoriteButton itemId={sitio.id} itemType="turismo" />
+                        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-lg text-[10px] font-black uppercase text-indigo-700 shadow-sm">
+                          {sitio.ciudad}
+                        </span>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-black text-slate-800 text-lg mb-2">{sitio.nombre}</h3>
+                        <button
+                          onClick={() => window.open(sitio.mapurl || sitio.mapUrl, "_blank")}
+                          className="w-full py-2.5 bg-slate-50 hover:bg-indigo-50 text-indigo-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-200"
+                        >
+                          <MapIcon className="w-4 h-4" /> Ver en Mapa
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <EmptyState message="Aún no has guardado ningún destino turístico." />
-          )
-        )}
+              ) : (
+                <EmptyState message="Aún no has guardado ningún destino turístico." />
+              )
+            )}
 
-        {/* Contenido: Negocios */}
-        {activeTab === 'negocio' && (
-          misNegocios.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-500">
-              {misNegocios.map(negocio => (
-                <div key={negocio.id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100">
-                  <div className="relative h-48">
-                    <img src={negocio.image} alt={negocio.name} className="w-full h-full object-cover" />
-                    <FavoriteButton itemId={negocio.id} itemType="negocio" />
-                    <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-lg text-[10px] font-black uppercase text-indigo-700 shadow-sm">
-                      {negocio.ciudad}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-black text-slate-800 text-lg mb-2">{negocio.name}</h3>
-                    <button
-                      onClick={() => window.open(negocio.mapUrl, "_blank")}
-                      className="w-full py-2.5 bg-slate-50 hover:bg-indigo-50 text-indigo-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-200"
-                    >
-                      <MapIcon className="w-4 h-4" /> Ubicar Local
-                    </button>
-                  </div>
+            {/* Contenido: Negocios */}
+            {activeTab === 'negocio' && (
+              misNegocios.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-500">
+                  {misNegocios.map(negocio => (
+                    <div key={negocio.id} className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100">
+                      <div className="relative h-48">
+                        <img src={negocio.image} alt={negocio.name} className="w-full h-full object-cover" />
+                        <FavoriteButton itemId={negocio.id} itemType="negocio" />
+                        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-lg text-[10px] font-black uppercase text-indigo-700 shadow-sm">
+                          {negocio.ciudad}
+                        </span>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-black text-slate-800 text-lg mb-2">{negocio.name}</h3>
+                        <button
+                          onClick={() => window.open(negocio.mapurl || negocio.mapUrl, "_blank")}
+                          className="w-full py-2.5 bg-slate-50 hover:bg-indigo-50 text-indigo-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-200"
+                        >
+                          <MapIcon className="w-4 h-4" /> Ubicar Local
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <EmptyState message="Aún no has guardado negocios o locales." />
-          )
+              ) : (
+                <EmptyState message="Aún no has guardado negocios o locales." />
+              )
+            )}
+          </>
         )}
       </main>
     </div>
