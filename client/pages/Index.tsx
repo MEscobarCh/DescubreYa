@@ -139,6 +139,7 @@ export default function Index() {
   const menuRef = useRef<HTMLDivElement>(null);
   const [isRouteCtaOpen, setIsRouteCtaOpen] = useState(false);
   const [pendingRoute, setPendingRoute] = useState<string | null>(null);
+  const [pendingItemName, setPendingItemName] = useState("");
 
   useEffect(() => {
     const loadNeonTourism = async () => {
@@ -403,21 +404,17 @@ export default function Index() {
     }
   };
 
+  // 👇 PARTE 2: FUNCIÓN INTERCEPTORA DEFINITIVA 👇
   const handleRouteClick = (url: string, itemName: string, category: string) => {
+    // 1. Mantenemos el rastreo analítico de tus rutas
     trackRutaClick(itemName, category);
     
-    // Verificamos si ya vio el CTA en esta sesión/navegador
-    const hasSeenCta = localStorage.getItem('hasSeenRouteCta');
+    // 2. Guardamos la información del destino para el Mapa y el WhatsApp del Guía
+    setPendingRoute(url);
+    setPendingItemName(itemName);
     
-    // Si NO lo ha visto y NO está logeado, mostramos el Drawer
-    if (!hasSeenCta && !user) {
-      setPendingRoute(url);
-      setIsRouteCtaOpen(true);
-      localStorage.setItem('hasSeenRouteCta', 'true');
-    } else {
-      // Si ya lo vio o ya es usuario registrado, va directo al mapa
-      window.open(url, "_blank");
-    }
+    // 3. SIEMPRE abrimos el menú (la interfaz gráfica ya se encarga de mostrar/ocultar el login)
+    setIsRouteCtaOpen(true);
   };
 
   const trackSuscripcion = async () => {
@@ -1274,81 +1271,108 @@ export default function Index() {
         </div>
       )}
       {/* 👆 FIN MODAL "NOSOTROS" 👆 */}
-      {/* 👇 NUEVO: DRAWER CALL-TO-ACTION (VAUL) 👇 */}
+      {/* 👇 PARTE 1: DRAWER INTELIGENTE DE RUTAS 👇 */}
       <Drawer.Root open={isRouteCtaOpen} onOpenChange={setIsRouteCtaOpen}>
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100]" />
           <Drawer.Content className="bg-white flex flex-col rounded-t-[2rem] mt-24 fixed bottom-0 left-0 right-0 z-[101] outline-none">
-            <div className="p-6 bg-white rounded-t-[2rem] flex-1">
+            {/* Contenedor con scroll para pantallas pequeñas */}
+            <div className="p-6 bg-white rounded-t-[2rem] flex-1 max-h-[85vh] overflow-y-auto custom-scrollbar">
               <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-200 mb-6" />
               
-              <div className="max-w-md mx-auto text-center space-y-6 pb-4">
-                <div>
-                  <div className="w-16 h-16 mx-auto bg-emerald-50 rounded-full flex items-center justify-center mb-4">
-                    <MapPin className="w-8 h-8 text-emerald-500" />
-                  </div>
-                  <h3 className="text-2xl font-black text-slate-800">¡Tu ruta está lista! 🗺️</h3>
-                  
-                  {/* Texto dinámico dependiendo de si está logeado o no */}
-                  <p className="text-gray-500 text-sm mt-2">
-                    {user ? (
-                      <>Antes de irte, apoya el proyecto <strong className={`font-black ${theme.accent.split(' ')[0]}`}>¡DescubreYA!</strong> siguiéndonos en nuestras redes para seguir creciendo en {selectedCity}.</>
-                    ) : (
-                      <>Antes de irte, apoya el proyecto <strong className={`font-black ${theme.accent.split(' ')[0]}`}>¡DescubreYA!</strong> siguiéndonos en nuestras redes o creando tu cuenta para guardar tus lugares favoritos de {selectedCity}.</>
-                    )}
-                  </p>
-                </div>
+              <div className="max-w-md mx-auto text-center pb-4">
                 
-                <div className="space-y-3">
-                  {/* 👇 Botón de Registro: SOLO se muestra si NO hay usuario 👇 */}
-                  {!user && (
-                    <button 
-                      onClick={() => { 
-                        setIsRouteCtaOpen(false); 
-                        setIsAuthModalOpen(true); 
-                      }} 
-                      className={`w-full py-4 rounded-xl text-white font-black text-sm tracking-wide bg-gradient-to-r shadow-lg hover:shadow-xl transition-all ${theme.button}`}
-                    >
-                      CREAR CUENTA / INGRESAR
-                    </button>
-                  )}
-                  
-                  {/* Botón de Facebook (Siempre visible) */}
-                  <a 
-                    href="https://www.facebook.com/profile.php?id=61589431358800" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl text-blue-600 font-bold text-sm bg-blue-50 hover:bg-blue-100 transition-colors"
-                  >
-                    <Facebook className="w-5 h-5" /> Síguenos en Facebook
-                  </a>
+                {/* --- SECCIÓN 1: CABECERA Y REDES SOCIALES --- */}
+                <div className="mb-6 space-y-4">
+                  <div>
+                    <div className="w-16 h-16 mx-auto bg-emerald-50 rounded-full flex items-center justify-center mb-4">
+                      <MapPin className="w-8 h-8 text-emerald-500" />
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-800">¡Tu ruta está lista! 🗺️</h3>
+                    
+                    {/* Texto dinámico: Cambia si está logeado */}
+                    <p className="text-gray-500 text-sm mt-2">
+                      {user ? (
+                        <>Antes de irte, apoya el proyecto <strong className={`font-black ${theme.accent.split(' ')[0]}`}>¡DescubreYA!</strong> siguiéndonos en nuestras redes para seguir creciendo en {selectedCity}.</>
+                      ) : (
+                        <>Antes de irte, apoya el proyecto <strong className={`font-black ${theme.accent.split(' ')[0]}`}>¡DescubreYA!</strong> siguiéndonos en nuestras redes o creando tu cuenta para guardar tus lugares favoritos de {selectedCity}.</>
+                      )}
+                    </p>
+                  </div>
 
-                  {/* Botón de TikTok (Siempre visible) */}
-                  <a 
-                    href="https://www.tiktok.com/@descubreyaoficial?is_from_webapp=1&sender_device=pc" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl text-slate-800 font-bold text-sm bg-slate-100 hover:bg-slate-200 transition-colors"
-                  >
-                    <span className="text-lg">🎵</span> Síguenos en TikTok
-                  </a>
+                  <div className="space-y-3">
+                    {/* Botón de Registro (SOLO se muestra si no hay usuario) */}
+                    {!user && (
+                      <button 
+                        onClick={() => { 
+                          setIsRouteCtaOpen(false); 
+                          setIsAuthModalOpen(true); 
+                        }} 
+                        className={`w-full py-4 rounded-xl text-white font-black text-sm tracking-wide bg-gradient-to-r shadow-lg hover:shadow-xl transition-all ${theme.button}`}
+                      >
+                        CREAR CUENTA / INGRESAR
+                      </button>
+                    )}
+                    
+                    {/* Facebook y TikTok (Siempre visibles) */}
+                    <a 
+                      href="https://www.facebook.com/profile.php?id=61589431358800" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="flex items-center justify-center gap-2 w-full py-4 rounded-xl text-blue-600 font-bold text-sm bg-blue-50 hover:bg-blue-100 transition-colors"
+                    >
+                      <Facebook className="w-5 h-5" /> Síguenos en Facebook
+                    </a>
+
+                    <a 
+                      href="https://www.tiktok.com/@descubreyaoficial?is_from_webapp=1&sender_device=pc" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="flex items-center justify-center gap-2 w-full py-4 rounded-xl text-slate-800 font-bold text-sm bg-slate-100 hover:bg-slate-200 transition-colors"
+                    >
+                      <span className="text-lg">🎵</span> Síguenos en TikTok
+                    </a>
+                  </div>
                 </div>
 
-                <button 
-                  onClick={() => {
-                    if(pendingRoute) window.open(pendingRoute, "_blank");
-                    setIsRouteCtaOpen(false);
-                  }}
-                  className="w-full pt-4 pb-2 text-slate-400 font-bold text-xs hover:text-slate-600 transition-colors uppercase tracking-widest"
-                >
-                  Continuar al mapa sin apoyar
-                </button>
+                {/* --- SECCIÓN 2: GUÍA TURÍSTICO Y MAPA --- */}
+                <div className="pt-5 mt-5 border-t border-gray-100">
+                  
+                  {/* Botón del Guía (Solo en Turismo) */}
+                  {isTourism && (
+                    <div className="mb-3">
+                      <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-3">
+                        ¿Necesitas ayuda para llegar?
+                      </p>
+                      <a 
+                        href={`https://wa.me/51995830154?text=${encodeURIComponent(`Hola, vi en ¡DescubreYA! y me gustaría contratar un guía local para ir a ${pendingItemName} en ${selectedCity}.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full py-4 rounded-xl text-white font-bold text-sm bg-emerald-500 hover:bg-emerald-600 transition-colors shadow-md active:scale-95"
+                      >
+                        <MessageCircle className="w-5 h-5" /> Contactar Guía Recomendado
+                      </a>
+                    </div>
+                  )}
+
+                  {/* Botón del Mapa (Siempre al final) */}
+                  <button 
+                    onClick={() => {
+                      if(pendingRoute) window.open(pendingRoute, "_blank");
+                      setIsRouteCtaOpen(false);
+                    }}
+                    className="w-full py-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  >
+                    <MapIcon className="w-5 h-5" /> Abrir en Google Maps
+                  </button>
+                </div>
+
               </div>
             </div>
           </Drawer.Content>
         </Drawer.Portal>
       </Drawer.Root>
-      {/* 👆 FIN DRAWER CALL-TO-ACTION 👆 */}
+      {/* 👆 FIN DRAWER INTELIGENTE 👆 */}
     </div>
   );
 }
