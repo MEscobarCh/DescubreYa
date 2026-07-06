@@ -29,6 +29,7 @@ import { FavoriteButton } from "../components/ui/FavoriteButton";
 import { Link } from 'react-router-dom';
 import { ReviewSection } from '@/components/ui/ReviewSection';
 import { useReviewStore } from "@/store/reviewStore"
+import { Drawer } from 'vaul';
 
 // Piloto enfocado exclusivamente en 4 ciudades controladas
 const CITIES = ["Tingo María", "Huánuco", "Tarapoto", "Cusco"];
@@ -109,6 +110,8 @@ export default function Index() {
   const { globalRatings, fetchAllRatings } = useReviewStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [isRouteCtaOpen, setIsRouteCtaOpen] = useState(false);
+  const [pendingRoute, setPendingRoute] = useState<string | null>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -294,6 +297,28 @@ export default function Index() {
     fetchWeather();
   }, [selectedCity]);
 
+  // 👇 NUEVO: Mostrar modal de registro en la primera visita 👇
+  useEffect(() => {
+    // Verificamos si es la primera vez que el usuario entra a DescubreYa
+    const hasVisited = localStorage.getItem('hasVisitedDescubreYa');
+    
+    // Si NO ha visitado antes y NO tiene sesión iniciada
+    if (!hasVisited && !user) {
+      // Le damos 2 segundos (2000ms) para que alcance a ver la interfaz
+      // antes de mostrarle el modal de bienvenida
+      const timer = setTimeout(() => {
+        setIsAuthModalOpen(true);
+        // Guardamos en memoria que ya visitó para no volver a interrumpirlo
+        // en futuras recargas de la página
+        localStorage.setItem('hasVisitedDescubreYa', 'true');
+      }, 2000);
+      
+      // Limpiamos el temporizador si el componente se desmonta
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
+  // 👆 FIN PRIMERA VISITA 👆
+
   // Función para traducir el código del clima a un ícono visual
   const renderWeatherIcon = (code: number) => {
     if (code <= 2) return <Sun className="w-4 h-4 text-amber-500 fill-current" />; // Despejado / Parcial
@@ -308,6 +333,23 @@ export default function Index() {
         'category': categoria,
         'city': selectedCity
       });
+    }
+  };
+
+  const handleRouteClick = (url: string, itemName: string, category: string) => {
+    trackRutaClick(itemName, category);
+    
+    // Verificamos si ya vio el CTA en esta sesión/navegador
+    const hasSeenCta = localStorage.getItem('hasSeenRouteCta');
+    
+    // Si NO lo ha visto y NO está logeado, mostramos el Drawer
+    if (!hasSeenCta && !user) {
+      setPendingRoute(url);
+      setIsRouteCtaOpen(true);
+      localStorage.setItem('hasSeenRouteCta', 'true');
+    } else {
+      // Si ya lo vio o ya es usuario registrado, va directo al mapa
+      window.open(url, "_blank");
     }
   };
 
@@ -489,37 +531,36 @@ export default function Index() {
               )}
             </div>
 
-            {/* 4. CONTROLES SECUNDARIOS: En móvil (w-full) saltan a la 2da línea. En PC (w-auto) se quedan arriba. */}
-            <div className="w-full sm:w-auto flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 border-t sm:border-t-0 sm:border-l sm:pl-3 pt-3 sm:pt-0 border-gray-100">
+            {/* 4. CONTROLES SECUNDARIOS: En móvil usan todo el ancho distribuyendo el espacio. En PC se quedan a la derecha. */}
+            <div className="w-full sm:w-auto flex items-center justify-between gap-1 sm:gap-3 border-t sm:border-t-0 sm:border-l sm:pl-3 pt-3 sm:pt-0 border-gray-100">
               
-              {/* Selector de Ciudad */}
+              {/* Selector de Ciudad (Sin estirar, respetando su tamaño natural) */}
               <div className="relative">
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className={`appearance-none w-[85px] sm:w-44 px-2 sm:px-3 py-1.5 pr-5 sm:pr-8 border-2 rounded-xl bg-white text-[hsl(var(--theme-primary))] font-bold text-[9px] sm:text-sm focus:outline-none transition-all ${theme.accent.split(' ')[1]}`}
+                  className={`appearance-none w-[105px] sm:w-44 px-2.5 py-1.5 pr-8 border-2 rounded-xl bg-white text-[hsl(var(--theme-primary))] font-bold text-xs sm:text-sm focus:outline-none transition-all ${theme.accent.split(' ')[1]}`}
                 >
                   {CITIES.map((city) => (
                     <option key={city} value={city}>{city}</option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
 
               {/* 👇 WIDGET DE CLIMA INTERACTIVO 👇 */}
               {weather && (
                 <div className="relative">
-                  {/* Botón Principal */}
                   <button 
                     onClick={() => setIsWeatherOpen(!isWeatherOpen)}
                     onBlur={() => setTimeout(() => setIsWeatherOpen(false), 200)}
-                    className="flex items-center gap-1 px-2 py-1.5 bg-white border-2 border-gray-100 rounded-xl shadow-sm transition-all hover:border-slate-200 hover:bg-slate-50 focus:outline-none"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white border-2 border-gray-100 rounded-xl shadow-sm transition-all hover:border-slate-200 hover:bg-slate-50 focus:outline-none"
                   >
                     {renderWeatherIcon(weather.code)}
-                    <span className="text-[10px] sm:text-sm font-black text-slate-700">
+                    <span className="text-xs sm:text-sm font-black text-slate-700">
                       {weather.temp}°C
                     </span>
-                    <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-300 ${isWeatherOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-300 ${isWeatherOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {/* Menú Desplegable con las Horas */}
@@ -549,17 +590,17 @@ export default function Index() {
               {/* 👇 SWITCH TIPO PASTILLA 👇 */}
               <button
                 onClick={() => setIsTourism(!isTourism)}
-                className={`relative flex items-center h-8 sm:h-10 w-[125px] sm:w-48 rounded-full p-1 transition-colors duration-500 shadow-md flex-shrink-0 z-10 bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
+                className={`relative flex items-center h-8 sm:h-10 w-[130px] sm:w-48 rounded-full p-1 transition-colors duration-500 shadow-md flex-shrink-0 z-10 bg-gradient-to-r ${isTourism ? theme.turismo : theme.rutaLocal}`}
               >
                 <div 
                   className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm transition-transform duration-700 ease-elastic ${isTourism ? 'translate-x-0' : 'translate-x-full'}`}
                 ></div>
 
-                <div className={`relative flex-1 flex justify-center items-center text-[9px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
+                <div className={`relative flex-1 flex justify-center items-center text-[10px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
                   Turismo
                 </div>
 
-                <div className={`relative flex-1 flex justify-center items-center text-[9px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${!isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
+                <div className={`relative flex-1 flex justify-center items-center text-[10px] sm:text-xs font-black uppercase tracking-tighter transition-colors duration-500 z-20 ${!isTourism ? theme.accent.split(' ')[0] : 'text-white'}`}>
                   Ruta Local
                 </div>
               </button>
@@ -660,11 +701,9 @@ export default function Index() {
                     </div>
                     {/* Botones de acción divididos */}
                     <div className="flex gap-2">
+                      {/* Botón actualizado en la tarjeta de Turismo */}
                       <button
-                        onClick={() => {
-                          trackRutaClick(sitio.nombre, sitio.categoria);
-                          window.open(sitio.mapUrl, "_blank");
-                        }}
+                        onClick={() => handleRouteClick(sitio.mapUrl, sitio.nombre, sitio.categoria)}
                         className={`flex-1 py-3 bg-gradient-to-r text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1 hover:shadow-lg transition-all active:scale-95 ${theme.button}`}
                       >
                         <MapIcon className="w-4 h-4" /> Ruta
@@ -787,9 +826,13 @@ export default function Index() {
                           <a href={`https://wa.me/${negocio.whatsapp}?text=${encodeURIComponent(`Hola ${negocio.name}, los encontré mediante ¡DescubreYA! 🌍 Estoy consultando sobre sus servicios en ${selectedCity}.`)}`} target="_blank" rel="noopener noreferrer" className="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95">
                             <MessageCircle className="w-4 h-4" /> WhatsApp
                           </a>
-                          <a href={negocio.mapUrl} target="_blank" rel="noopener noreferrer" className={`flex-1 py-2.5 bg-gradient-to-r text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 ${theme.button}`}>
+                          {/* Botón actualizado en la tarjeta de Ruta Local */}
+                          <button 
+                            onClick={() => handleRouteClick(negocio.mapUrl, negocio.name, negocio.category)}
+                            className={`flex-1 py-2.5 bg-gradient-to-r text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 ${theme.button}`}
+                          >
                             <MapIcon className="w-4 h-4" /> Ubicar
-                          </a>
+                          </button>
                         </div>
                         {/* Fila inferior: Teléfono y Reseñas */}
                         <div className="flex gap-2 mt-2">
@@ -1137,6 +1180,81 @@ export default function Index() {
         </div>
       )}
       {/* 👆 FIN MODAL "NOSOTROS" 👆 */}
+      {/* 👇 NUEVO: DRAWER CALL-TO-ACTION (VAUL) 👇 */}
+      <Drawer.Root open={isRouteCtaOpen} onOpenChange={setIsRouteCtaOpen}>
+        <Drawer.Portal>
+          <Drawer.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100]" />
+          <Drawer.Content className="bg-white flex flex-col rounded-t-[2rem] mt-24 fixed bottom-0 left-0 right-0 z-[101] outline-none">
+            <div className="p-6 bg-white rounded-t-[2rem] flex-1">
+              <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-200 mb-6" />
+              
+              <div className="max-w-md mx-auto text-center space-y-6 pb-4">
+                <div>
+                  <div className="w-16 h-16 mx-auto bg-emerald-50 rounded-full flex items-center justify-center mb-4">
+                    <MapPin className="w-8 h-8 text-emerald-500" />
+                  </div>
+                  <h3 className="text-2xl font-black text-slate-800">¡Tu ruta está lista! 🗺️</h3>
+                  
+                  {/* Texto dinámico dependiendo de si está logeado o no */}
+                  <p className="text-gray-500 text-sm mt-2">
+                    {user ? (
+                      <>Antes de irte, apoya el proyecto <strong className={`font-black ${theme.accent.split(' ')[0]}`}>¡DescubreYA!</strong> siguiéndonos en nuestras redes para seguir creciendo en {selectedCity}.</>
+                    ) : (
+                      <>Antes de irte, apoya el proyecto <strong className={`font-black ${theme.accent.split(' ')[0]}`}>¡DescubreYA!</strong> siguiéndonos en nuestras redes o creando tu cuenta para guardar tus lugares favoritos de {selectedCity}.</>
+                    )}
+                  </p>
+                </div>
+                
+                <div className="space-y-3">
+                  {/* 👇 Botón de Registro: SOLO se muestra si NO hay usuario 👇 */}
+                  {!user && (
+                    <button 
+                      onClick={() => { 
+                        setIsRouteCtaOpen(false); 
+                        setIsAuthModalOpen(true); 
+                      }} 
+                      className={`w-full py-4 rounded-xl text-white font-black text-sm tracking-wide bg-gradient-to-r shadow-lg hover:shadow-xl transition-all ${theme.button}`}
+                    >
+                      CREAR CUENTA / INGRESAR
+                    </button>
+                  )}
+                  
+                  {/* Botón de Facebook (Siempre visible) */}
+                  <a 
+                    href="https://www.facebook.com/profile.php?id=61589431358800" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl text-blue-600 font-bold text-sm bg-blue-50 hover:bg-blue-100 transition-colors"
+                  >
+                    <Facebook className="w-5 h-5" /> Síguenos en Facebook
+                  </a>
+
+                  {/* Botón de TikTok (Siempre visible) */}
+                  <a 
+                    href="https://www.tiktok.com/@descubreyaoficial?is_from_webapp=1&sender_device=pc" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl text-slate-800 font-bold text-sm bg-slate-100 hover:bg-slate-200 transition-colors"
+                  >
+                    <span className="text-lg">🎵</span> Síguenos en TikTok
+                  </a>
+                </div>
+
+                <button 
+                  onClick={() => {
+                    if(pendingRoute) window.open(pendingRoute, "_blank");
+                    setIsRouteCtaOpen(false);
+                  }}
+                  className="w-full pt-4 pb-2 text-slate-400 font-bold text-xs hover:text-slate-600 transition-colors uppercase tracking-widest"
+                >
+                  Continuar al mapa sin apoyar
+                </button>
+              </div>
+            </div>
+          </Drawer.Content>
+        </Drawer.Portal>
+      </Drawer.Root>
+      {/* 👆 FIN DRAWER CALL-TO-ACTION 👆 */}
     </div>
   );
 }
