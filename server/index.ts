@@ -6,6 +6,8 @@ import authRoutes from "./routes/auth";
 import favoritesRoutes from "./routes/favorites";
 import reviewsRoutes from './routes/reviews';
 import uploadUrlRoute from '../api/upload-url';
+import businessesRoutes from "./routes/businesses";
+import tourismRoutes from "./routes/tourism";
 
 export function createServer() {
   const app = express();
@@ -28,6 +30,10 @@ export function createServer() {
   app.use("/api/favorites", favoritesRoutes);
   app.use('/api/reviews', reviewsRoutes);
   app.post('/api/upload-url', uploadUrlRoute);
+  app.use("/api/businesses", businessesRoutes);
+  app.use("/api/tourism", tourismRoutes);
 
   return app;
 }
+const app = createServer();
+export default app;
